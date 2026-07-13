@@ -10,6 +10,9 @@ import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
 import games.strategy.engine.framework.GameDataManager;
+import games.strategy.triplea.Constants;
+import games.strategy.triplea.attachments.TerritoryAttachment;
+import games.strategy.triplea.attachments.UnitAttachment;
 import games.strategy.triplea.delegate.battle.BattleDelegate;
 import games.strategy.triplea.delegate.battle.BattleTracker;
 import games.strategy.triplea.delegate.battle.IBattle;
@@ -84,9 +87,15 @@ class SavedGameBattleScenarioLoaderTest {
     gameData.getPlayerList().addPlayerId(defender);
 
     final Territory territory = new Territory(territoryName, gameData);
+    territory.addAttachment(
+        Constants.TERRITORY_ATTACHMENT_NAME,
+        new TerritoryAttachment(Constants.TERRITORY_ATTACHMENT_NAME, territory, gameData));
     gameData.getMap().addTerritory(territory);
 
     final UnitType infantry = new UnitType("infantry", gameData);
+    infantry.addAttachment(
+        Constants.UNIT_ATTACHMENT_NAME,
+        new UnitAttachment(Constants.UNIT_ATTACHMENT_NAME, infantry, gameData));
     gameData.getUnitTypeList().addUnitType(infantry);
     final Unit attackingUnit = infantry.create(attacker);
     final Unit defendingUnit = infantry.create(defender);
