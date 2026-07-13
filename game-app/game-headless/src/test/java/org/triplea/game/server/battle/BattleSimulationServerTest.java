@@ -13,8 +13,7 @@ class BattleSimulationServerTest {
   @Test
   void pingReturnsSchemaVersionWithoutEnvironment() {
     final BattleSimulationServer.Response response =
-        BattleSimulationServer.handle(
-            "{\"command\":\"ping\",\"data\":{}}", Optional.empty());
+        BattleSimulationServer.handle("{\"command\":\"ping\",\"data\":{}}", Optional.empty());
 
     assertTrue(response.ok());
     assertEquals("pong", response.type());
