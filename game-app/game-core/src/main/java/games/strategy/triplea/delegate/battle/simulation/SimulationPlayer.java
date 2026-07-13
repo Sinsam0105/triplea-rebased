@@ -22,8 +22,7 @@ import java.util.UUID;
 final class SimulationPlayer extends AbstractAi {
   private final BattleDecisionController decisionController;
 
-  SimulationPlayer(
-      final BattleDecisionController decisionController, final GamePlayer gamePlayer) {
+  SimulationPlayer(final BattleDecisionController decisionController, final GamePlayer gamePlayer) {
     super(gamePlayer.getName(), "BattleSimulation");
     this.decisionController = decisionController;
     initialize(null, gamePlayer);
