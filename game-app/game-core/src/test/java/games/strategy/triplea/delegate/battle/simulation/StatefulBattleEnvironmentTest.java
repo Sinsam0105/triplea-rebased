@@ -29,8 +29,7 @@ class StatefulBattleEnvironmentTest {
     final StatefulBattleEnvironment environment =
         new StatefulBattleEnvironment(request -> scenario);
 
-    final BattleObservation initial =
-        environment.reset(new BattleResetRequest("fixture.xml", 7));
+    final BattleObservation initial = environment.reset(new BattleResetRequest("fixture.xml", 7));
 
     assertFalse(initial.over());
     assertEquals(List.of(RETREAT, WAIT), environment.legalActions());
