@@ -1,0 +1,41 @@
+name: Inspect Stack Capacity Paths
+
+on:
+  push:
+    branches:
+      - agent/territory-stack-capacity
+    paths:
+      - .github/workflows/inspect-stack-capacity.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Inspect unit-entry paths
+        shell: bash
+        run: |
+          {
+            echo '=== UnitStackingLimitFilter usages ==='
+            grep -R -n "UnitStackingLimitFilter" game-app/game-core/src/main/java || true
+            echo
+            echo '=== Trigger placement and add-unit paths ==='
+            grep -R -n -E "TriggerAttachment|ChangeFactory\.(addUnits|moveUnits)|AddUnits" game-app/game-core/src/main/java/games/strategy/triplea/attachments game-app/game-core/src/main/java/games/strategy/triplea/delegate | head -n 800 || true
+            echo
+            echo '=== Retreat move paths ==='
+            grep -R -n "ChangeFactory.moveUnits" game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/steps/retreat || true
+            echo
+            echo '=== UnitAttachment stacking methods ==='
+            grep -n -E "movementLimit|attackingLimit|placementLimit|getPropertyOrEmpty" game-app/game-core/src/main/java/games/strategy/triplea/attachments/UnitAttachment.java || true
+            echo
+            echo '=== TerritoryEffectAttachment property registry ==='
+            grep -n -E "maxGroundBattleRounds|maxAirBattleRounds|getPropertyOrEmpty" game-app/game-core/src/main/java/games/strategy/triplea/attachments/TerritoryEffectAttachment.java || true
+          } > stack-inspection.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stack-capacity-inspection
+          path: stack-inspection.txt
+          if-no-files-found: error
