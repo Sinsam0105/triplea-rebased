@@ -21,22 +21,20 @@ final class LoadedBattleScenario implements BattleScenario {
     this.gameData = Objects.requireNonNull(gameData);
     this.battle = Objects.requireNonNull(battle);
     if (!(battle instanceof BattleState state)) {
-      throw new IllegalArgumentException("battle does not expose BattleState: " + battle.getClass());
+      throw new IllegalArgumentException(
+          "battle does not expose BattleState: " + battle.getClass());
     }
     battleState = state;
     this.seed = seed;
     initializeClientSettingsIfNeeded();
-    bridge =
-        new SimulationDelegateBridge(
-            gameData, battle.getAttacker(), decisionController, seed);
+    bridge = new SimulationDelegateBridge(gameData, battle.getAttacker(), decisionController, seed);
     advanceUntilDecision();
   }
 
   @Override
   public BattleObservation observation() {
     try (GameData.Unlocker ignored = gameData.acquireReadLock()) {
-      return BattleObservationFactory.create(
-          battleState, seed, decisionController.observation());
+      return BattleObservationFactory.create(battleState, seed, decisionController.observation());
     }
   }
 
