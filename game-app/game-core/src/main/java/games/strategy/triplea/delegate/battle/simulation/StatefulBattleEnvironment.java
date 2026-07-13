@@ -175,14 +175,19 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
   @Override
   public BattleBatchResult batch(final BattleBatchRequest request) {
     Objects.requireNonNull(request);
+    final long startedAt = System.nanoTime();
     if (request.episodes().isEmpty()) {
-      return BattleBatchResult.from(List.of());
-    }
-    if (request.parallelism() == 1 || request.episodes().size() == 1) {
-      return BattleBatchResult.from(request.episodes().stream().map(this::replay).toList());
+      return BattleBatchResult.from(List.of(), 0, System.nanoTime() - startedAt, usedMemoryBytes());
     }
 
     final int workerCount = Math.min(request.parallelism(), request.episodes().size());
+    if (workerCount == 1) {
+      final List<BattleReplayResult> results =
+          request.episodes().stream().map(this::replay).toList();
+      return BattleBatchResult.from(
+          results, workerCount, System.nanoTime() - startedAt, usedMemoryBytes());
+    }
+
     final ExecutorService executor = Executors.newFixedThreadPool(workerCount);
     try {
       final List<Callable<BattleReplayResult>> tasks =
@@ -194,7 +199,8 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
       for (final Future<BattleReplayResult> future : futures) {
         results.add(future.get());
       }
-      return BattleBatchResult.from(results);
+      return BattleBatchResult.from(
+          results, workerCount, System.nanoTime() - startedAt, usedMemoryBytes());
     } catch (final InterruptedException e) {
       Thread.currentThread().interrupt();
       throw new IllegalStateException("battle replay batch was interrupted", e);
@@ -242,6 +248,11 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
     final Map<String, String> deterministic = new TreeMap<>(info);
     deterministic.remove("episodeId");
     return deterministic;
+  }
+
+  private static long usedMemoryBytes() {
+    final Runtime runtime = Runtime.getRuntime();
+    return runtime.totalMemory() - runtime.freeMemory();
   }
 
   private static String canonicalParameters(final BattleAction action) {
