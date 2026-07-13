@@ -11,8 +11,7 @@ final class LoadedBattleScenario implements BattleScenario {
   private final BattleState battleState;
   private final long seed;
 
-  LoadedBattleScenario(
-      final GameData gameData, final BattleState battleState, final long seed) {
+  LoadedBattleScenario(final GameData gameData, final BattleState battleState, final long seed) {
     this.gameData = Objects.requireNonNull(gameData);
     this.battleState = Objects.requireNonNull(battleState);
     this.seed = seed;
