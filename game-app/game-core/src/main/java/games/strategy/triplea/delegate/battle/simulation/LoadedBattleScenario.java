@@ -3,6 +3,7 @@ package games.strategy.triplea.delegate.battle.simulation;
 import games.strategy.engine.data.GameData;
 import games.strategy.triplea.delegate.battle.BattleState;
 import games.strategy.triplea.delegate.battle.IBattle;
+import games.strategy.triplea.settings.ClientSetting;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +25,7 @@ final class LoadedBattleScenario implements BattleScenario {
     }
     battleState = state;
     this.seed = seed;
+    initializeClientSettingsIfNeeded();
     bridge =
         new SimulationDelegateBridge(
             gameData, battle.getAttacker(), decisionController, seed);
@@ -73,6 +75,14 @@ final class LoadedBattleScenario implements BattleScenario {
     if (!battle.isOver() && decisionController.observation().type() == BattleDecisionType.NONE) {
       throw new IllegalStateException(
           "battle execution returned without ending or requesting a decision");
+    }
+  }
+
+  private static void initializeClientSettingsIfNeeded() {
+    try {
+      ClientSetting.useWebsocketNetwork.getValue();
+    } catch (final IllegalStateException uninitialized) {
+      ClientSetting.initialize();
     }
   }
 }
