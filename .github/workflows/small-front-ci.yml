@@ -34,23 +34,16 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Apply formatting and run focused tests
+      - name: Run focused tests and formatting checks
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee gradle.log
-          git diff -- game-app/game-core/src/main/java game-app/game-core/src/test/java > spotless.patch
+          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
 
-      - name: Upload Gradle log and formatted sources
+      - name: Upload Gradle log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: small-front-format-output
-          path: |
-            gradle.log
-            spotless.patch
-            game-app/game-core/src/main/java/games/strategy/triplea/attachments/TerritoryEffectAttachment.java
-            game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/BattleRoundResolver.java
-            game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/MustFightBattle.java
-            game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/BattleRoundResolverTest.java
+          name: small-front-gradle-log
+          path: gradle.log
           if-no-files-found: error

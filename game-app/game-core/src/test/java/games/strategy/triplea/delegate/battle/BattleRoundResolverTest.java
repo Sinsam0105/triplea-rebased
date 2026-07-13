@@ -49,7 +49,8 @@ class BattleRoundResolverTest {
         2,
         BattleRoundResolver.resolveGroundBattleRounds(
             new Territory("Mountain City", gameData),
-            List.of(effect(gameData, -1, null), effect(gameData, 4, null), effect(gameData, 2, null)),
+            List.of(
+                effect(gameData, -1, null), effect(gameData, 4, null), effect(gameData, 2, null)),
             gameData));
   }
 
@@ -71,9 +72,7 @@ class BattleRoundResolverTest {
     gameData.getProperties().set(Constants.AIR_BATTLE_ROUNDS, 1);
 
     assertEquals(
-        3,
-        BattleRoundResolver.resolveAirBattleRounds(
-            List.of(effect(gameData, 1, 3)), gameData));
+        3, BattleRoundResolver.resolveAirBattleRounds(List.of(effect(gameData, 1, 3)), gameData));
   }
 
   @Test
@@ -81,8 +80,7 @@ class BattleRoundResolverTest {
     final GameData gameData = new GameData();
     final TerritoryEffect effect = new TerritoryEffect("Mountain", gameData);
     final TerritoryEffectAttachment attachment =
-        new TerritoryEffectAttachment(
-            Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData);
+        new TerritoryEffectAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData);
     effect.addAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, attachment);
 
     attachment
@@ -120,8 +118,7 @@ class BattleRoundResolverTest {
     TerritoryEffectAttachment.get(terrain).setMaxGroundBattleRounds(2);
 
     final MustFightBattle battle =
-        new MustFightBattle(
-            sicily, GameDataTestUtil.usa(gameData), gameData, new BattleTracker());
+        new MustFightBattle(sicily, GameDataTestUtil.usa(gameData), gameData, new BattleTracker());
 
     assertEquals(2, battle.getStatus().getMaxRounds());
     assertFalse(battle.getStatus().isLastRound());
@@ -155,8 +152,7 @@ class BattleRoundResolverTest {
             "effect-" + groundRounds + "-" + airRounds + "-" + System.identityHashCode(gameData),
             gameData);
     final TerritoryEffectAttachment attachment =
-        new TerritoryEffectAttachment(
-            Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData);
+        new TerritoryEffectAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData);
     if (groundRounds != null) {
       attachment.setMaxGroundBattleRounds(groundRounds);
     }
