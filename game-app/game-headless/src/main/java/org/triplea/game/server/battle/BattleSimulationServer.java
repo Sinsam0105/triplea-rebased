@@ -24,15 +24,7 @@ import java.util.ServiceLoader;
 public final class BattleSimulationServer {
   private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
   private static final List<String> COMMANDS =
-      List.of(
-          "ping",
-          "schema",
-          "reset",
-          "legalActions",
-          "step",
-          "episodeLog",
-          "replay",
-          "batch");
+      List.of("ping", "schema", "reset", "legalActions", "step", "episodeLog", "replay", "batch");
 
   private BattleSimulationServer() {}
 
