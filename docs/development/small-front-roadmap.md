@@ -4,7 +4,7 @@ This roadmap keeps engine infrastructure, variant rules, map content, and reinfo
 
 ## 0. Simulation foundation
 
-Status: in progress in PR #1.
+Status: complete in PR #1.
 
 - UI-independent battle observation DTOs
 - deterministic unit grouping
@@ -17,6 +17,8 @@ Status: in progress in PR #1.
 Exit condition: the protocol boundary is stable and fully testable without loading a real map.
 
 ## 1. TripleA battle environment provider
+
+Status: next.
 
 - load a saved-game or scenario fixture from a path
 - select one pending battle by battle ID or territory
