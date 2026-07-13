@@ -141,6 +141,10 @@ public class TerritoryEffectAttachment extends DefaultAttachment {
         : OptionalInt.of(maxGroundBattleRounds);
   }
 
+  private @Nullable Integer getMaxGroundBattleRoundsProperty() {
+    return maxGroundBattleRounds;
+  }
+
   private void resetMaxGroundBattleRounds() {
     maxGroundBattleRounds = null;
   }
@@ -157,6 +161,10 @@ public class TerritoryEffectAttachment extends DefaultAttachment {
 
   public OptionalInt getMaxAirBattleRounds() {
     return maxAirBattleRounds == null ? OptionalInt.empty() : OptionalInt.of(maxAirBattleRounds);
+  }
+
+  private @Nullable Integer getMaxAirBattleRoundsProperty() {
+    return maxAirBattleRounds;
   }
 
   private void resetMaxAirBattleRounds() {
@@ -281,14 +289,14 @@ public class TerritoryEffectAttachment extends DefaultAttachment {
               MutableProperty.of(
                   this::setMaxGroundBattleRounds,
                   this::setMaxGroundBattleRounds,
-                  this::getMaxGroundBattleRounds,
+                  this::getMaxGroundBattleRoundsProperty,
                   this::resetMaxGroundBattleRounds));
       case MAX_AIR_BATTLE_ROUNDS ->
           Optional.of(
               MutableProperty.of(
                   this::setMaxAirBattleRounds,
                   this::setMaxAirBattleRounds,
-                  this::getMaxAirBattleRounds,
+                  this::getMaxAirBattleRoundsProperty,
                   this::resetMaxAirBattleRounds));
       case "movementCostModifier" ->
           Optional.of(
