@@ -29,8 +29,7 @@ public final class BattleSimulationServer {
   public static void main(final String[] args) throws IOException {
     final Optional<BattleEnvironment> environment =
         ServiceLoader.load(BattleEnvironment.class).findFirst();
-    try (var reader =
-            new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+    try (var reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         var writer = new PrintWriter(System.out, true, StandardCharsets.UTF_8)) {
       String line;
       while ((line = reader.readLine()) != null) {
@@ -41,8 +40,7 @@ public final class BattleSimulationServer {
     }
   }
 
-  static Response handle(
-      final String requestLine, final Optional<BattleEnvironment> environment) {
+  static Response handle(final String requestLine, final Optional<BattleEnvironment> environment) {
     try {
       final JsonObject request = JsonParser.parseString(requestLine).getAsJsonObject();
       final String command = request.get("command").getAsString();
@@ -75,14 +73,12 @@ public final class BattleSimulationServer {
                             value.reset(GSON.fromJson(data, BattleResetRequest.class)))));
         case "legalActions" ->
             withEnvironment(
-                environment,
-                value -> Response.success("legalActions", value.legalActions()));
+                environment, value -> Response.success("legalActions", value.legalActions()));
         case "step" ->
             withEnvironment(
                 environment,
                 value ->
-                    Response.success(
-                        "step", value.step(GSON.fromJson(data, BattleAction.class))));
+                    Response.success("step", value.step(GSON.fromJson(data, BattleAction.class))));
         default -> Response.error("unknown command: " + command);
       };
     } catch (final RuntimeException e) {
@@ -91,8 +87,7 @@ public final class BattleSimulationServer {
   }
 
   private static Response withEnvironment(
-      final Optional<BattleEnvironment> environment,
-      final EnvironmentCommand command) {
+      final Optional<BattleEnvironment> environment, final EnvironmentCommand command) {
     return environment
         .map(command::execute)
         .orElseGet(
