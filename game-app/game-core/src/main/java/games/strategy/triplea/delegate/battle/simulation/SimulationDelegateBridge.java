@@ -65,10 +65,7 @@ final class SimulationDelegateBridge implements IDelegateBridge {
 
   @Override
   public int getRandom(
-      final int max,
-      final GamePlayer player,
-      final DiceType diceType,
-      final String annotation) {
+      final int max, final GamePlayer player, final DiceType diceType, final String annotation) {
     return random.nextInt(max);
   }
 
