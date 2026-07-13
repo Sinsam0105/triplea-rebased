@@ -57,10 +57,7 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
     final List<BattleAction> legalActions = legalActions();
     if (!scenario.isLegalAction(action)) {
       throw new IllegalArgumentException(
-          "action is not legal in the current battle state: "
-              + action
-              + "; mask: "
-              + legalActions);
+          "action is not legal in the current battle state: " + action + "; mask: " + legalActions);
     }
 
     final BattleScenarioStep scenarioStep = Objects.requireNonNull(scenario.step(action));
