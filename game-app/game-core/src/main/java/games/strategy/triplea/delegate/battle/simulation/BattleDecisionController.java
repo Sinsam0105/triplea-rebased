@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -47,7 +45,8 @@ final class BattleDecisionController {
   void submit(final BattleAction action) {
     Objects.requireNonNull(action);
     if (!isLegalAction(action)) {
-      throw new IllegalArgumentException("action is not legal for the pending battle decision: " + action);
+      throw new IllegalArgumentException(
+          "action is not legal for the pending battle decision: " + action);
     }
     if (submittedAction != null) {
       throw new IllegalStateException("a battle decision action is already queued");
@@ -64,12 +63,7 @@ final class BattleDecisionController {
       final boolean allowMultipleHitsPerUnit) {
     final CasualtyDecision decision =
         new CasualtyDecision(
-            selectFrom,
-            count,
-            message,
-            hitPlayer,
-            defaultCasualties,
-            allowMultipleHitsPerUnit);
+            selectFrom, count, message, hitPlayer, defaultCasualties, allowMultipleHitsPerUnit);
     return resolveOrPause(decision, decision::resolve);
   }
 
@@ -84,8 +78,7 @@ final class BattleDecisionController {
   }
 
   private <T> T resolveOrPause(
-      final PendingDecision currentDecision,
-      final Function<BattleAction, T> resolver) {
+      final PendingDecision currentDecision, final Function<BattleAction, T> resolver) {
     if (submittedAction == null) {
       pendingDecision = currentDecision;
       throw new BattleDecisionRequiredException();
@@ -122,7 +115,8 @@ final class BattleDecisionController {
         final boolean allowMultipleHitsPerUnit) {
       candidates = selectFrom.stream().sorted(Comparator.comparing(Unit::getId)).toList();
       candidatesById =
-          candidates.stream().collect(Collectors.toMap(unit -> unit.getId().toString(), unit -> unit));
+          candidates.stream()
+              .collect(Collectors.toMap(unit -> unit.getId().toString(), unit -> unit));
       this.requiredHits = requiredHits;
       this.message = Objects.requireNonNullElse(message, "");
       this.player = Objects.requireNonNull(player);
@@ -192,13 +186,15 @@ final class BattleDecisionController {
         throw new IllegalArgumentException("killedUnitIds must not contain duplicates");
       }
       if (!allowMultipleHitsPerUnit && !damagedIds.isEmpty()) {
-        throw new IllegalArgumentException("damagedUnitIds are not allowed for this casualty decision");
+        throw new IllegalArgumentException(
+            "damagedUnitIds are not allowed for this casualty decision");
       }
 
       final List<Unit> killed = resolveUnits(killedIds, candidatesById);
       final List<Unit> damaged = resolveUnits(damagedIds, candidatesById);
       final Map<Unit, Long> damageFrequency =
-          damaged.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+          damaged.stream()
+              .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
       for (final Map.Entry<Unit, Long> entry : damageFrequency.entrySet()) {
         final Unit unit = entry.getKey();
         final int maximumDamageBeforeDeath =
@@ -258,8 +254,7 @@ final class BattleDecisionController {
       final String actionType = submerge ? SUBMERGE : RETREAT;
       territories.forEach(
           territory ->
-              actions.add(
-                  new BattleAction(actionType, Map.of("territory", territory.getName()))));
+              actions.add(new BattleAction(actionType, Map.of("territory", territory.getName()))));
       return List.copyOf(actions);
     }
 
@@ -296,10 +291,7 @@ final class BattleDecisionController {
     if (value == null || value.isBlank()) {
       return List.of();
     }
-    return Arrays.stream(value.split(","))
-        .map(String::trim)
-        .filter(id -> !id.isEmpty())
-        .toList();
+    return Arrays.stream(value.split(",")).map(String::trim).filter(id -> !id.isEmpty()).toList();
   }
 
   private static List<Unit> resolveUnits(
