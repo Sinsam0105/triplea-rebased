@@ -120,8 +120,7 @@ class StatefulBattleEnvironmentTest {
     @Override
     public List<BattleAction> legalActions() {
       return List.of(
-          new BattleAction(
-              "select_casualties", Map.of("candidateUnitIds", "unit-1,unit-2")));
+          new BattleAction("select_casualties", Map.of("candidateUnitIds", "unit-1,unit-2")));
     }
 
     @Override
