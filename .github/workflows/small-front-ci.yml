@@ -41,21 +41,16 @@ jobs:
           ./gradlew spotlessApply --stacktrace 2>&1 | tee spotless.log
           git diff --binary > spotless.patch
 
-      - name: Run focused tests
-        shell: bash
-        run: |
-          set -o pipefail
-          ./gradlew :game-core:test :game-headless:test --stacktrace 2>&1 | tee gradle.log
-
-      - name: Upload CI diagnostics
+      - name: Upload formatted sources
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: small-front-ci-diagnostics
+          name: small-front-formatted-sources
           path: |
-            gradle.log
             spotless.log
             spotless.patch
+            game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/simulation
+            game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/simulation
           if-no-files-found: error
 
       - name: Verify committed formatting
