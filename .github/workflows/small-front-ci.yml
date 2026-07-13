@@ -35,4 +35,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Run focused tests and formatting checks
-        run: ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
+
+      - name: Upload Gradle log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: small-front-gradle-log
+          path: gradle.log
+          if-no-files-found: error
