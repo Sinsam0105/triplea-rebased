@@ -63,8 +63,7 @@ class SavedGameBattleScenarioLoaderTest {
     final BattleScenarioStep step =
         scenario.step(
             new BattleAction(
-                "select_casualties",
-                Map.of("damagedUnitIds", "", "killedUnitIds", casualty)));
+                "select_casualties", Map.of("damagedUnitIds", "", "killedUnitIds", casualty)));
 
     assertEquals("SELECT_CASUALTIES", step.info().get("resolvedDecision"));
     assertTrue(scenario.observation().over());
@@ -143,12 +142,7 @@ class SavedGameBattleScenarioLoaderTest {
         .getSequence()
         .addStep(
             new GameStep(
-                "attackerBattle",
-                "Battle",
-                attacker,
-                battleDelegate,
-                gameData,
-                new Properties()));
+                "attackerBattle", "Battle", attacker, battleDelegate, gameData, new Properties()));
 
     final BattleTracker battleTracker = battleDelegate.getBattleTracker();
     final MustFightBattle battle =
