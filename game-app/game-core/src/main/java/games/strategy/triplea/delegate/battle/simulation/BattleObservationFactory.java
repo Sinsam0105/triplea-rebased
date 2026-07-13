@@ -33,11 +33,9 @@ public final class BattleObservationFactory {
         battleState.getPlayer(BattleState.Side.OFFENSE).getName(),
         battleState.getPlayer(BattleState.Side.DEFENSE).getName(),
         summarize(
-            battleState.filterUnits(
-                BattleState.UnitBattleFilter.ALIVE, BattleState.Side.OFFENSE)),
+            battleState.filterUnits(BattleState.UnitBattleFilter.ALIVE, BattleState.Side.OFFENSE)),
         summarize(
-            battleState.filterUnits(
-                BattleState.UnitBattleFilter.ALIVE, BattleState.Side.DEFENSE)),
+            battleState.filterUnits(BattleState.UnitBattleFilter.ALIVE, BattleState.Side.DEFENSE)),
         battleState.getAttackerRetreatTerritories().stream()
             .map(territory -> territory.getName())
             .sorted()
