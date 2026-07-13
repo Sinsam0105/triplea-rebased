@@ -54,6 +54,7 @@ jobs:
           ruff format --check .
 
       - name: Mypy
+        if: matrix.python-version == '3.11'
         working-directory: python/battle-gym
         run: mypy src
 
