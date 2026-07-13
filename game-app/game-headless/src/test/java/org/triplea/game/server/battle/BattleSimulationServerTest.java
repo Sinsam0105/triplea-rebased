@@ -35,8 +35,7 @@ class BattleSimulationServerTest {
     assertTrue(response.ok());
     assertEquals("schema", response.type());
     final Map<?, ?> data = (Map<?, ?>) response.data();
-    assertEquals(
-        BattleEpisodeLog.CURRENT_LOG_SCHEMA_VERSION, data.get("episodeLogSchemaVersion"));
+    assertEquals(BattleEpisodeLog.CURRENT_LOG_SCHEMA_VERSION, data.get("episodeLogSchemaVersion"));
     final List<?> commands = (List<?>) data.get("commands");
     assertTrue(commands.containsAll(List.of("episodeLog", "replay", "batch")));
   }
