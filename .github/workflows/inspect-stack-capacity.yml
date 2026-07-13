@@ -1,6 +1,9 @@
 name: Inspect Stack Capacity Paths
 
 on:
+  pull_request:
+    branches:
+      - variant-dev
   push:
     branches:
       - agent/territory-stack-capacity
