@@ -33,8 +33,7 @@ public final class SavedGameBattleScenarioLoader implements BattleScenarioLoader
     this(GameDataManager::loadGame);
   }
 
-  SavedGameBattleScenarioLoader(
-      final Function<Path, Optional<GameData>> gameDataLoader) {
+  SavedGameBattleScenarioLoader(final Function<Path, Optional<GameData>> gameDataLoader) {
     this.gameDataLoader = Objects.requireNonNull(gameDataLoader);
   }
 
@@ -70,8 +69,7 @@ public final class SavedGameBattleScenarioLoader implements BattleScenarioLoader
     final IDelegate delegate =
         gameData
             .getDelegateOptional("battle")
-            .orElseThrow(
-                () -> new IllegalArgumentException("save game has no battle delegate"));
+            .orElseThrow(() -> new IllegalArgumentException("save game has no battle delegate"));
     if (!(delegate instanceof BattleDelegate battleDelegate)) {
       throw new IllegalArgumentException(
           "save game's battle delegate has unsupported type: " + delegate.getClass().getName());
@@ -102,8 +100,7 @@ public final class SavedGameBattleScenarioLoader implements BattleScenarioLoader
     }
     if (request.territory() != null) {
       matches =
-          matches.filter(
-              battle -> battle.getTerritory().getName().equals(request.territory()));
+          matches.filter(battle -> battle.getTerritory().getName().equals(request.territory()));
     }
 
     return matches
