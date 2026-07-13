@@ -39,10 +39,7 @@ class SavedGameBattleScenarioLoaderTest {
     final BattleScenario scenario =
         loader.load(
             new BattleResetRequest(
-                saveGame.toString(),
-                91,
-                fixture.battle().getBattleId().toString(),
-                "Front"));
+                saveGame.toString(), 91, fixture.battle().getBattleId().toString(), "Front"));
     final BattleObservation observation = scenario.observation();
 
     assertEquals(BattleObservation.CURRENT_SCHEMA_VERSION, observation.schemaVersion());
@@ -70,8 +67,7 @@ class SavedGameBattleScenarioLoaderTest {
             IllegalArgumentException.class,
             () ->
                 loader.load(
-                    new BattleResetRequest(
-                        saveGame.toString(), 1, null, "Missing Territory")));
+                    new BattleResetRequest(saveGame.toString(), 1, null, "Missing Territory")));
 
     assertTrue(error.getMessage().contains("available"));
     assertTrue(error.getMessage().contains("Front"));
@@ -90,9 +86,7 @@ class SavedGameBattleScenarioLoaderTest {
     gameData
         .getRelationshipTracker()
         .setRelationship(
-            attacker,
-            defender,
-            gameData.getRelationshipTypeList().getDefaultWarRelationship());
+            attacker, defender, gameData.getRelationshipTypeList().getDefaultWarRelationship());
 
     final Territory territory = new Territory(territoryName, gameData);
     territory.addAttachment(
@@ -115,12 +109,7 @@ class SavedGameBattleScenarioLoaderTest {
     final BattleTracker battleTracker = battleDelegate.getBattleTracker();
     final MustFightBattle battle =
         new MustFightBattle(territory, attacker, gameData, battleTracker);
-    battle.setUnits(
-        List.of(defendingUnit),
-        List.of(attackingUnit),
-        List.of(),
-        defender,
-        List.of());
+    battle.setUnits(List.of(defendingUnit), List.of(attackingUnit), List.of(), defender, List.of());
     addPendingBattle(battleTracker, battle);
     return new Fixture(gameData, battle);
   }
@@ -134,8 +123,8 @@ class SavedGameBattleScenarioLoaderTest {
   }
 
   @SuppressWarnings("unchecked")
-  private static void addPendingBattle(
-      final BattleTracker battleTracker, final IBattle battle) throws Exception {
+  private static void addPendingBattle(final BattleTracker battleTracker, final IBattle battle)
+      throws Exception {
     final Field pendingBattlesField = BattleTracker.class.getDeclaredField("pendingBattles");
     pendingBattlesField.setAccessible(true);
     ((Set<IBattle>) pendingBattlesField.get(battleTracker)).add(battle);
