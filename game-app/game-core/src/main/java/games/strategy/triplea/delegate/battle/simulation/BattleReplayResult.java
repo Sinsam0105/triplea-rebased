@@ -4,10 +4,7 @@ import java.util.Objects;
 
 /** Result of replaying a recorded episode against a fresh battle environment. */
 public record BattleReplayResult(
-    boolean matched,
-    int verifiedTransitions,
-    String mismatch,
-    BattleEpisodeLog actualEpisode) {
+    boolean matched, int verifiedTransitions, String mismatch, BattleEpisodeLog actualEpisode) {
 
   public BattleReplayResult {
     if (verifiedTransitions < 0) {
