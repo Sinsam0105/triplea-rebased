@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
+import games.strategy.engine.data.GameStep;
 import games.strategy.engine.data.Resource;
 import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.Unit;
@@ -25,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -137,6 +139,16 @@ class SavedGameBattleScenarioLoaderTest {
     final BattleDelegate battleDelegate = new BattleDelegate();
     battleDelegate.initialize("battle", "Battle");
     gameData.addDelegate(battleDelegate);
+    gameData
+        .getSequence()
+        .addStep(
+            new GameStep(
+                "attackerBattle",
+                "Battle",
+                attacker,
+                battleDelegate,
+                gameData,
+                new Properties()));
 
     final BattleTracker battleTracker = battleDelegate.getBattleTracker();
     final MustFightBattle battle =
