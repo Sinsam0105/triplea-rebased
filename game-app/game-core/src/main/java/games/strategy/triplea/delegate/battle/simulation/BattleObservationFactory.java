@@ -28,9 +28,7 @@ public final class BattleObservationFactory {
   }
 
   public static BattleObservation create(
-      final BattleState battleState,
-      final long seed,
-      final BattleDecisionObservation decision) {
+      final BattleState battleState, final long seed, final BattleDecisionObservation decision) {
     final BattleState.BattleStatus status = battleState.getStatus();
     return new BattleObservation(
         BattleObservation.CURRENT_SCHEMA_VERSION,
