@@ -85,6 +85,14 @@ class SavedGameBattleScenarioLoaderTest {
     final GamePlayer defender = new GamePlayer("defender", gameData);
     gameData.getPlayerList().addPlayerId(attacker);
     gameData.getPlayerList().addPlayerId(defender);
+    gameData.getRelationshipTracker().setSelfRelations();
+    gameData.getRelationshipTracker().setNullPlayerRelations();
+    gameData
+        .getRelationshipTracker()
+        .setRelationship(
+            attacker,
+            defender,
+            gameData.getRelationshipTypeList().getDefaultWarRelationship());
 
     final Territory territory = new Territory(territoryName, gameData);
     territory.addAttachment(
