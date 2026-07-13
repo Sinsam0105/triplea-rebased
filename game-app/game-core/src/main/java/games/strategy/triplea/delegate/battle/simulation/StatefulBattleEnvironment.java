@@ -222,8 +222,7 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
       final StatefulBattleEnvironment environment,
       final int verifiedTransitions,
       final String message) {
-    return new BattleReplayResult(
-        false, verifiedTransitions, message, environment.episodeLog());
+    return new BattleReplayResult(false, verifiedTransitions, message, environment.episodeLog());
   }
 
   private static String compareResults(
