@@ -37,10 +37,11 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
 
   @Override
   public synchronized List<BattleAction> legalActions() {
+    final BattleScenario scenario = requireScenario();
     if (finished) {
       return List.of();
     }
-    return requireScenario().legalActions().stream()
+    return scenario.legalActions().stream()
         .map(Objects::requireNonNull)
         .sorted(ACTION_ORDER)
         .toList();
@@ -56,7 +57,8 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
 
     final List<BattleAction> legalActions = legalActions();
     if (!legalActions.contains(action)) {
-      throw new IllegalArgumentException("action is not legal in the current battle state: " + action);
+      throw new IllegalArgumentException(
+          "action is not legal in the current battle state: " + action);
     }
 
     final BattleScenarioStep scenarioStep = Objects.requireNonNull(scenario.step(action));
