@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
+import games.strategy.engine.data.Resource;
 import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
@@ -103,6 +104,7 @@ class SavedGameBattleScenarioLoaderTest {
     final GameData gameData = new GameData();
     gameData.setGameName("saved battle fixture");
     gameData.setDiceSides(1);
+    gameData.getResourceList().addResource(new Resource(Constants.PUS, gameData));
 
     final GamePlayer attacker = new GamePlayer("attacker", gameData);
     final GamePlayer defender = new GamePlayer("defender", gameData);
