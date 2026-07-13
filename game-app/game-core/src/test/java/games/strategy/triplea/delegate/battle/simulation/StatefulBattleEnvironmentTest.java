@@ -59,7 +59,7 @@ class StatefulBattleEnvironmentTest {
     assertThrows(IllegalArgumentException.class, () -> environment.step(illegal));
   }
 
-  private static BattleObservation observation(final boolean over) {
+  private static BattleObservation createObservation(final boolean over) {
     return new BattleObservation(
         BattleObservation.CURRENT_SCHEMA_VERSION,
         "battle-id",
@@ -77,7 +77,7 @@ class StatefulBattleEnvironmentTest {
   }
 
   private static final class FakeBattleScenario implements BattleScenario {
-    private BattleObservation observation = observation(false);
+    private BattleObservation observation = createObservation(false);
 
     @Override
     public BattleObservation observation() {
@@ -91,7 +91,7 @@ class StatefulBattleEnvironmentTest {
 
     @Override
     public BattleScenarioStep step(final BattleAction action) {
-      observation = observation(true);
+      observation = createObservation(true);
       return new BattleScenarioStep(0.75, false, Map.of("result", "resolved"));
     }
   }
