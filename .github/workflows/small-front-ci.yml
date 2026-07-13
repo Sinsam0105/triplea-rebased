@@ -34,26 +34,16 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate Spotless patch
-        run: |
-          ./gradlew spotlessApply --stacktrace
-          git diff --binary > spotless.patch
-
-      - name: Run focused tests
+      - name: Run focused tests and formatting checks
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew :game-core:test :game-headless:test --stacktrace 2>&1 | tee gradle.log
+          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
 
-      - name: Upload CI diagnostics
+      - name: Upload Gradle log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: small-front-ci-diagnostics
-          path: |
-            gradle.log
-            spotless.patch
+          name: small-front-gradle-log
+          path: gradle.log
           if-no-files-found: error
-
-      - name: Verify committed formatting
-        run: git diff --exit-code
