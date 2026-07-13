@@ -34,25 +34,16 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate Spotless patch
+      - name: Run focused tests and formatting checks
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew spotlessApply --stacktrace 2>&1 | tee spotless.log
-          git diff --binary > spotless.patch
+          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
 
-      - name: Upload formatted sources
+      - name: Upload Gradle log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: small-front-formatted-sources
-          path: |
-            spotless.log
-            spotless.patch
-            game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/simulation
-            game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/simulation
+          name: small-front-gradle-log
+          path: gradle.log
           if-no-files-found: error
-
-      - name: Verify committed formatting
-        shell: bash
-        run: test ! -s spotless.patch
