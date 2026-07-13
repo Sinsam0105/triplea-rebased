@@ -197,6 +197,13 @@ class SavedGameBattleScenarioLoaderTest {
     final Field pendingBattlesField = BattleTracker.class.getDeclaredField("pendingBattles");
     pendingBattlesField.setAccessible(true);
     ((Set<IBattle>) pendingBattlesField.get(battleTracker)).add(battle);
+    battleTracker
+        .getBattleRecords()
+        .addBattle(
+            battle.getAttacker(),
+            battle.getBattleId(),
+            battle.getTerritory(),
+            battle.getBattleType());
   }
 
   private record Fixture(GameData gameData, MustFightBattle battle) {}
