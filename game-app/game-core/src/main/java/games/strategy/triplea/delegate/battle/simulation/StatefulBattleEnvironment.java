@@ -29,8 +29,7 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
     activeScenario = Objects.requireNonNull(scenarioLoader.load(request));
     episodeId++;
     stepId = 0;
-    final BattleObservation observation =
-        Objects.requireNonNull(activeScenario.observation());
+    final BattleObservation observation = Objects.requireNonNull(activeScenario.observation());
     finished = observation.over();
     return observation;
   }
@@ -73,11 +72,7 @@ public final class StatefulBattleEnvironment implements BattleEnvironment {
     info.put("actionType", action.type());
 
     return new BattleStepResult(
-        observation,
-        scenarioStep.reward(),
-        terminated,
-        scenarioStep.truncated(),
-        info);
+        observation, scenarioStep.reward(), terminated, scenarioStep.truncated(), info);
   }
 
   private BattleScenario requireScenario() {
