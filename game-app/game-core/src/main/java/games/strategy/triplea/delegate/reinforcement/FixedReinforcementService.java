@@ -82,8 +82,12 @@ public final class FixedReinforcementService {
 
   private static boolean isFriendlyDestination(
       final GameData data, final GamePlayer player, final Territory territory) {
-    return player.equals(territory.getOwner())
-        || data.getRelationshipTracker().isAllied(player, territory.getOwner());
+    final GamePlayer owner = territory.getOwner();
+    if (player.equals(owner)) {
+      return true;
+    }
+    return data.getRelationshipTracker().getRelationship(player, owner) != null
+        && data.getRelationshipTracker().isAllied(player, owner);
   }
 
   private static String describe(final FixedReinforcementOrder order) {
