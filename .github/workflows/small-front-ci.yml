@@ -36,12 +36,13 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Apply, format, and test
-        id: validation
+      - name: Apply implementation
+        id: apply
+        continue-on-error: true
         shell: bash
         run: |
-          set +e
-          python - <<'PY'
+          set -euo pipefail
+          python - <<'PY' > /tmp/apply.log 2>&1
           from pathlib import Path
           path = Path('docs/development/small-front-roadmap.md')
           text = path.read_text(encoding='utf-8')
@@ -52,59 +53,65 @@ jobs:
           )
           path.write_text(text, encoding='utf-8')
           PY
-          python tools/apply_separate_air_ground_combat.py > /tmp/apply.log 2>&1
-          apply_status=$?
-          test_status=0
-          if [[ $apply_status -eq 0 ]]; then
-            python - <<'PY'
-            from pathlib import Path
-            path = Path('game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/CombatDomainParticipantsTest.java')
-            text = path.read_text(encoding='utf-8')
-            text = text.replace(
-                'import games.strategy.engine.data.GamePlayer;\n',
-                'import games.strategy.engine.data.GameData;\n'
-                'import games.strategy.engine.data.GamePlayer;\n'
-                'import games.strategy.engine.data.RelationshipTracker;\n',
-                1,
-            )
-            text = text.replace(
-                '  private final GameState data = mock(GameState.class);\n'
-                '  private final GameProperties properties = mock(GameProperties.class);\n'
-                '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
-                '  private final GamePlayer defender = mock(GamePlayer.class);\n',
-                '  private final GameState data = mock(GameState.class);\n'
-                '  private final GameProperties properties = mock(GameProperties.class);\n'
-                '  private final GameData playerData = mock(GameData.class);\n'
-                '  private final RelationshipTracker relationships = mock(RelationshipTracker.class);\n'
-                '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
-                '  private final GamePlayer defender = mock(GamePlayer.class);\n',
-                1,
-            )
-            text = text.replace(
-                '    when(data.getProperties()).thenReturn(properties);\n'
-                '    when(attacker.isAtWar(defender)).thenReturn(true);\n',
-                '    when(data.getProperties()).thenReturn(properties);\n'
-                '    when(attacker.getData()).thenReturn(playerData);\n'
-                '    when(playerData.getRelationshipTracker()).thenReturn(relationships);\n'
-                '    when(relationships.isAtWar(attacker, defender)).thenReturn(true);\n',
-                1,
-            )
-            path.write_text(text, encoding='utf-8')
-            PY
-            set -o pipefail
-            ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee /tmp/gradle.log
-            test_status=$?
-          else
-            : > /tmp/gradle.log
-          fi
-          echo "apply_status=$apply_status" >> "$GITHUB_OUTPUT"
-          echo "test_status=$test_status" >> "$GITHUB_OUTPUT"
-          if [[ $apply_status -ne 0 || $test_status -ne 0 ]]; then
-            exit 1
-          fi
+          python tools/apply_separate_air_ground_combat.py >> /tmp/apply.log 2>&1
+
+      - name: Repair generated relationship fixture
+        id: patch
+        if: steps.apply.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' > /tmp/patch.log 2>&1
+          from pathlib import Path
+          path = Path('game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/CombatDomainParticipantsTest.java')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace(
+              'import games.strategy.engine.data.GamePlayer;\n',
+              'import games.strategy.engine.data.GameData;\n'
+              'import games.strategy.engine.data.GamePlayer;\n'
+              'import games.strategy.engine.data.RelationshipTracker;\n',
+              1,
+          )
+          text = text.replace(
+              '  private final GameState data = mock(GameState.class);\n'
+              '  private final GameProperties properties = mock(GameProperties.class);\n'
+              '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
+              '  private final GamePlayer defender = mock(GamePlayer.class);\n',
+              '  private final GameState data = mock(GameState.class);\n'
+              '  private final GameProperties properties = mock(GameProperties.class);\n'
+              '  private final GameData playerData = mock(GameData.class);\n'
+              '  private final RelationshipTracker relationships = mock(RelationshipTracker.class);\n'
+              '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
+              '  private final GamePlayer defender = mock(GamePlayer.class);\n',
+              1,
+          )
+          text = text.replace(
+              '    when(data.getProperties()).thenReturn(properties);\n'
+              '    when(attacker.isAtWar(defender)).thenReturn(true);\n',
+              '    when(data.getProperties()).thenReturn(properties);\n'
+              '    when(attacker.getData()).thenReturn(playerData);\n'
+              '    when(playerData.getRelationshipTracker()).thenReturn(relationships);\n'
+              '    when(relationships.isAtWar(attacker, defender)).thenReturn(true);\n',
+              1,
+          )
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Format and test
+        id: test
+        if: steps.apply.outcome == 'success' && steps.patch.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee /tmp/gradle.log
 
       - name: Commit validated implementation
-        if: success()
+        if: >-
+          steps.apply.outcome == 'success' &&
+          steps.patch.outcome == 'success' &&
+          steps.test.outcome == 'success'
         shell: bash
         run: |
           git fetch origin variant-dev
@@ -118,22 +125,33 @@ jobs:
           git push origin HEAD:agent/separate-air-ground-combat
 
       - name: Commit validation diagnostics
-        if: failure()
+        if: >-
+          always() &&
+          (steps.apply.outcome != 'success' ||
+           steps.patch.outcome != 'success' ||
+           steps.test.outcome != 'success')
         shell: bash
         run: |
-          cp /tmp/apply.log /tmp/apply-saved.log || true
-          cp /tmp/gradle.log /tmp/gradle-saved.log || true
+          cp /tmp/apply.log /tmp/apply-saved.log 2>/dev/null || true
+          cp /tmp/patch.log /tmp/patch-saved.log 2>/dev/null || true
+          cp /tmp/gradle.log /tmp/gradle-saved.log 2>/dev/null || true
           git reset --hard "$GITHUB_SHA"
           mkdir -p docs/development/validation
           {
             echo '# Separate air and ground combat validation failure'
             echo
-            echo "apply status: ${{ steps.validation.outputs.apply_status }}"
-            echo "test status: ${{ steps.validation.outputs.test_status }}"
+            echo "apply outcome: ${{ steps.apply.outcome }}"
+            echo "patch outcome: ${{ steps.patch.outcome }}"
+            echo "test outcome: ${{ steps.test.outcome }}"
             echo
             echo '## Apply log'
             echo '```text'
             cat /tmp/apply-saved.log 2>/dev/null || true
+            echo '```'
+            echo
+            echo '## Patch log'
+            echo '```text'
+            cat /tmp/patch-saved.log 2>/dev/null || true
             echo '```'
             echo
             echo '## Gradle log'
