@@ -20,8 +20,8 @@ import org.triplea.java.collections.IntegerMap;
 /**
  * Calculates offense strength and roll for non-AA dice
  *
- * <p>This takes into account marine, bombarding, territory effects, friendly support, enemy support,
- * and ground-strength modifiers.
+ * <p>This takes into account marine, bombarding, territory effects, friendly support, enemy
+ * support, and ground-strength modifiers.
  */
 @Builder
 @Value
