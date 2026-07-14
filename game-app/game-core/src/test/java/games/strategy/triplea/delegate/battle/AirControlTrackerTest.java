@@ -35,8 +35,7 @@ class AirControlTrackerTest {
 
     gameData.performChange(change);
 
-    assertThat(AirControlTracker.get(gameData).getController(territory, gameData))
-        .contains(player);
+    assertThat(AirControlTracker.get(gameData).getController(territory, gameData)).contains(player);
     assertThat(territory.getOwner()).isSameAs(groundOwner);
 
     gameData.performChange(change.invert());
@@ -61,8 +60,7 @@ class AirControlTrackerTest {
 
     gameData.getSequence().setRoundOffset(3);
 
-    assertThat(AirControlTracker.get(gameData).getController(territory, gameData))
-        .contains(player);
+    assertThat(AirControlTracker.get(gameData).getController(territory, gameData)).contains(player);
   }
 
   @Test
@@ -95,7 +93,6 @@ class AirControlTrackerTest {
     }
     gameData.getProperties().set(AirControlTracker.STATE_PROPERTY, restored);
 
-    assertThat(AirControlTracker.get(gameData).getController(territory, gameData))
-        .contains(player);
+    assertThat(AirControlTracker.get(gameData).getController(territory, gameData)).contains(player);
   }
 }
