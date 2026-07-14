@@ -1,5 +1,6 @@
 package games.strategy.triplea.delegate.battle;
 
+import games.strategy.engine.data.GameState;
 import games.strategy.engine.data.Unit;
 import games.strategy.triplea.delegate.Matches;
 import games.strategy.triplea.delegate.battle.IBattle.BattleDomain;
@@ -10,7 +11,15 @@ import java.util.List;
 
 /** Common domain partitioning and scheduling policy for separated air and ground combat. */
 public final class AirGroundBattlePolicy {
+  public static final String SEPARATE_AIR_AND_GROUND_COMBAT =
+      "Separate Air And Ground Combat";
+
   private AirGroundBattlePolicy() {}
+
+  public static boolean isSeparatedCombatEnabled(final GameState gameState) {
+    return gameState != null
+        && gameState.getProperties().get(SEPARATE_AIR_AND_GROUND_COMBAT, false);
+  }
 
   public static List<Unit> unitsForDomain(
       final Collection<Unit> units, final BattleDomain domain) {
@@ -22,7 +31,9 @@ public final class AirGroundBattlePolicy {
   }
 
   public static List<BattleType> orderForResolution(final Collection<BattleType> battleTypes) {
-    return battleTypes.stream().sorted(Comparator.comparingInt(AirGroundBattlePolicy::priority)).toList();
+    return battleTypes.stream()
+        .sorted(Comparator.comparingInt(AirGroundBattlePolicy::priority))
+        .toList();
   }
 
   public static boolean mustPrecede(final BattleType blocking, final BattleType blocked) {
