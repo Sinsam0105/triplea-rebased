@@ -1,6 +1,16 @@
 # Separate air and ground combat
 
-Milestone 9 makes combat domain explicit before changing battle scheduling and rosters.
+Milestone 9 makes combat domains explicit and separates aircraft from normal land and sea combat.
+
+## Activation
+
+Separated combat is opt-in through the game property:
+
+```xml
+<property name="Separate Air And Ground Combat" value="true" editable="false"/>
+```
+
+Maps that want contested air battles should also enable TripleA's existing air-battle-before-normal-battle option. Keeping the new property disabled preserves the existing TripleA combat roster behavior.
 
 ## Domain model
 
@@ -10,7 +20,7 @@ Each `IBattle.BattleType` has one domain:
 - `AIR`: fighter and interceptor combat that determines the local air result
 - `RAID`: strategic bombing and its escort/interception phase
 
-`AirGroundBattlePolicy` is the common source for unit partitioning and resolution priority.
+`AirGroundBattlePolicy` is the common source for activation, unit partitioning, and resolution priority.
 
 ## Required resolution order
 
@@ -20,16 +30,26 @@ For battles in the same territory:
 2. air-domain combat
 3. ground-domain combat
 
-The tracker must represent this as dependencies rather than relying on collection iteration order.
+The tracker represents this through battle dependencies rather than collection iteration order.
 
 ## Unit participation
 
 When separated combat is enabled:
 
-- aircraft are assigned to the air-domain battle
-- non-air units are assigned to the ground-domain battle
-- aircraft are not copied into the ground battle roster
+- aircraft are assigned to the air domain
+- non-air units are assigned to the ground domain
+- immediately before a normal battle, aircraft on both sides are marked as handled by the air domain
+- the existing non-combatant removal step then removes those aircraft from the normal battle roster
+- the legacy behavior is unchanged when the property is disabled
+
+The implementation reuses `Unit.PropertyName.WAS_IN_AIR_BATTLE`, so existing battle filtering, UI notifications, save serialization, and dependent-battle handling remain authoritative.
+
+## Ownership boundary
+
+The ground-domain roster change does not by itself introduce air control. Territory ownership remains a ground concept. The remaining milestone work must ensure that:
+
 - air-only forces cannot create an ownership-changing empty or ground battle
+- enemy aircraft alone do not prevent an eligible ground force from resolving ground ownership
 - only a surviving eligible non-air attacker may capture territory
 
 ## Round limits
@@ -44,9 +64,9 @@ The existing `BattleRoundResolver` remains authoritative:
 
 This milestone is implemented in reviewable slices:
 
-1. explicit domain model and deterministic policy
-2. tracker roster partitioning and dependency integration
-3. air-battle survivor handoff and withdrawal rules
-4. ownership and regression coverage
+1. explicit domain model and deterministic policy — complete
+2. ground-roster separation and dependency integration — complete
+3. air-battle survivor handoff and withdrawal rules — next
+4. ownership and regression coverage — pending
 
-Air control is intentionally deferred to milestone 10. The result of an air battle is exposed there without overloading `Territory.owner`.
+Air control is intentionally deferred to milestone 10. Its result will be exposed without overloading `Territory.owner`.
