@@ -69,7 +69,10 @@ public final class AirControlTracker implements Serializable {
       return 0;
     }
     return getController(territory, data)
-        .filter(controller -> data.getRelationshipTracker().isAllied(controller, player))
+        .filter(
+            controller ->
+                controller.equals(player)
+                    || data.getRelationshipTracker().isAllied(controller, player))
         .map(controller -> configuredGroundAttackBonus(data))
         .orElse(0);
   }
