@@ -35,17 +35,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Apply fog-of-war UI patch in CI workspace
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          workflow = Path('.github/workflows/apply-fog-of-war-ui.yml').read_text().splitlines()
-          start = workflow.index('          from pathlib import Path')
-          end = workflow.index('      - name: Format patched sources')
-          script = '\n'.join(line[10:] for line in workflow[start:end])
-          exec(compile(script, 'fog-ui-patch', 'exec'))
-          PY
+        run: python tools/apply_fog_ui_patch.py
 
       - name: Format patched sources
         run: ./gradlew :game-core:spotlessApply
