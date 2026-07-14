@@ -41,7 +41,9 @@ class AirGroundBattlePolicyTest {
 
     assertThat(AirGroundBattlePolicy.unitsForDomain(List.of(fighter, infantry), BattleDomain.AIR))
         .containsExactly(fighter);
-    assertThat(AirGroundBattlePolicy.unitsForDomain(List.of(fighter, infantry), BattleDomain.GROUND))
+    assertThat(
+            AirGroundBattlePolicy.unitsForDomain(
+                List.of(fighter, infantry), BattleDomain.GROUND))
         .containsExactly(infantry);
   }
 
@@ -51,8 +53,10 @@ class AirGroundBattlePolicyTest {
             AirGroundBattlePolicy.orderForResolution(
                 List.of(BattleType.NORMAL, BattleType.AIR_BATTLE, BattleType.BOMBING_RAID)))
         .containsExactly(BattleType.BOMBING_RAID, BattleType.AIR_BATTLE, BattleType.NORMAL);
-    assertThat(AirGroundBattlePolicy.mustPrecede(BattleType.AIR_BATTLE, BattleType.NORMAL)).isTrue();
-    assertThat(AirGroundBattlePolicy.mustPrecede(BattleType.NORMAL, BattleType.AIR_BATTLE)).isFalse();
+    assertThat(AirGroundBattlePolicy.mustPrecede(BattleType.AIR_BATTLE, BattleType.NORMAL))
+        .isTrue();
+    assertThat(AirGroundBattlePolicy.mustPrecede(BattleType.NORMAL, BattleType.AIR_BATTLE))
+        .isFalse();
   }
 
   private static Unit unit(final boolean air) {
