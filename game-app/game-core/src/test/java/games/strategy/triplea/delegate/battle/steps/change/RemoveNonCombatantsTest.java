@@ -1,5 +1,6 @@
 package games.strategy.triplea.delegate.battle.steps.change;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -173,10 +174,7 @@ class RemoveNonCombatantsTest {
     final UnitAttachment aircraftAttachment =
         new UnitAttachment(Constants.UNIT_ATTACHMENT_NAME, aircraftType, gameData);
     aircraftType.addAttachment(Constants.UNIT_ATTACHMENT_NAME, aircraftAttachment);
-    aircraftAttachment
-        .getPropertyOrEmpty("isAir")
-        .orElseThrow()
-        .setValue(true);
+    aircraftAttachment.getPropertyOrEmpty("isAir").orElseThrow().setValue(true);
     final Unit aircraft = new Unit(aircraftType, offense, gameData);
     final IDelegateHistoryWriter historyWriter = mock(IDelegateHistoryWriter.class);
 
@@ -184,7 +182,6 @@ class RemoveNonCombatantsTest {
     when(delegateBridge.getHistoryWriter()).thenReturn(historyWriter);
     when(battleState.getBattleSite()).thenReturn(territory);
     when(battleState.getPlayer(BattleState.Side.OFFENSE)).thenReturn(offense);
-    when(battleState.getPlayer(BattleState.Side.DEFENSE)).thenReturn(defense);
     when(battleState.filterUnits(BattleState.UnitBattleFilter.ACTIVE, BattleState.Side.OFFENSE))
         .thenReturn(List.of(aircraft));
     when(battleState.filterUnits(BattleState.UnitBattleFilter.ACTIVE, BattleState.Side.DEFENSE))
@@ -202,8 +199,8 @@ class RemoveNonCombatantsTest {
     final ArgumentCaptor<Change> changes = ArgumentCaptor.forClass(Change.class);
     verify(delegateBridge, times(2)).addChange(changes.capture());
     gameData.performChange(changes.getAllValues().get(0));
-    assert AirControlTracker.get(gameData).getController(territory, gameData).orElseThrow()
-        == offense;
+    assertThat(AirControlTracker.get(gameData).getController(territory, gameData))
+        .contains(offense);
     verify(historyWriter).addChildToEvent("Blue gains air control over Front");
   }
 }
