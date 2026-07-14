@@ -10,9 +10,7 @@ public final class FixedReinforcementObservationFactory {
   private FixedReinforcementObservationFactory() {}
 
   public static FixedReinforcementObservation create(
-      final GameState data,
-      final GamePlayer player,
-      final FixedReinforcementTracker tracker) {
+      final GameState data, final GamePlayer player, final FixedReinforcementTracker tracker) {
     final int currentRound = data.getSequence().getRound();
     final List<FixedReinforcementObservation.Entry> pending =
         tracker.getPending(player).stream().map(FixedReinforcementObservation.Entry::from).toList();
