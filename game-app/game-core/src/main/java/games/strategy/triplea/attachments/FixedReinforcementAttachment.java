@@ -62,8 +62,7 @@ public final class FixedReinforcementAttachment extends DefaultAttachment {
       throw new GameParseException(
           "reinforcement unit type does not exist: " + unitTypeName + thisErrorMsg());
     }
-    reinforcements.add(
-        new FixedReinforcementRule(round, territoryName, unitTypeName, quantity));
+    reinforcements.add(new FixedReinforcementRule(round, territoryName, unitTypeName, quantity));
   }
 
   public List<FixedReinforcementRule> getReinforcements() {
