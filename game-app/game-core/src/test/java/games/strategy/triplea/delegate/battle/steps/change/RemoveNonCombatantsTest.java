@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import games.strategy.engine.data.Change;
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
+import games.strategy.engine.data.PlayerList;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
 import games.strategy.engine.data.properties.GameProperties;
@@ -123,8 +124,12 @@ class RemoveNonCombatantsTest {
         new RemoveNonCombatants(battleState, battleActions);
     final GameData gameData = mock(GameData.class);
     final GameProperties gameProperties = mock(GameProperties.class);
+    final PlayerList playerList = mock(PlayerList.class);
     final UnitType unitType = mock(UnitType.class);
     final UnitAttachment unitAttachment = mock(UnitAttachment.class);
+
+    when(gameData.getPlayerList()).thenReturn(playerList);
+    when(playerList.getNullPlayer()).thenReturn(attacker);
     final Unit aircraft = new Unit(unitType, attacker, gameData);
 
     when(delegateBridge.getData()).thenReturn(gameData);
