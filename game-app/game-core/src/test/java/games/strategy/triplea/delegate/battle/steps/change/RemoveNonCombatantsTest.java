@@ -2,6 +2,7 @@ package games.strategy.triplea.delegate.battle.steps.change;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -134,8 +135,9 @@ class RemoveNonCombatantsTest {
         .thenReturn(true);
     when(aircraft.getUnitAttachment()).thenReturn(unitAttachment);
     when(unitAttachment.isAir()).thenReturn(true);
-    when(aircraft.getPropertyOrThrow(Unit.PropertyName.WAS_IN_AIR_BATTLE.toString()))
-        .thenReturn(wasInAirBattle);
+    doReturn(wasInAirBattle)
+        .when(aircraft)
+        .getPropertyOrThrow(Unit.PropertyName.WAS_IN_AIR_BATTLE.toString());
     when(wasInAirBattle.getValue()).thenReturn(false);
     when(battleState.filterUnits(
             BattleState.UnitBattleFilter.ACTIVE,
