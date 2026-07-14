@@ -19,8 +19,7 @@ public final class AirControlTracker implements Serializable {
 
   public static final String AIR_CONTROL_ENABLED = "Air Control Enabled";
   public static final String AIR_CONTROL_PERSISTENT = "Air Control Persistent";
-  public static final String AIR_CONTROL_GROUND_ATTACK_BONUS =
-      "Air Control Ground Attack Bonus";
+  public static final String AIR_CONTROL_GROUND_ATTACK_BONUS = "Air Control Ground Attack Bonus";
 
   static final String STATE_PROPERTY = "__smallFrontAirControlTracker";
   private static final AirControlTracker EMPTY = new AirControlTracker();
@@ -92,9 +91,7 @@ public final class AirControlTracker implements Serializable {
   }
 
   public static Change changeControl(
-      final Territory territory,
-      final @Nullable GamePlayer newController,
-      final GameState data) {
+      final Territory territory, final @Nullable GamePlayer newController, final GameState data) {
     final AirControlTracker tracker = get(data);
     final ControlEntry oldEntry = tracker.controlByTerritory.get(territory.getName());
     if (isPersistent(data)
@@ -113,8 +110,7 @@ public final class AirControlTracker implements Serializable {
     return new AirControlChange(territory.getName(), oldEntry, newEntry);
   }
 
-  private Optional<ControlEntry> activeEntry(
-      final Territory territory, final GameState data) {
+  private Optional<ControlEntry> activeEntry(final Territory territory, final GameState data) {
     final ControlEntry entry = controlByTerritory.get(territory.getName());
     if (entry == null) {
       return Optional.empty();
