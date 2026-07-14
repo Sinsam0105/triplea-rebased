@@ -29,8 +29,7 @@ public final class VisibilityService {
   }
 
   public static int getVisionRadius(final GameState data) {
-    return Math.max(
-        0, data.getProperties().get(FOG_OF_WAR_VISION_RADIUS, DEFAULT_VISION_RADIUS));
+    return Math.max(0, data.getProperties().get(FOG_OF_WAR_VISION_RADIUS, DEFAULT_VISION_RADIUS));
   }
 
   public static Set<Territory> getVisibleTerritories(
@@ -71,16 +70,12 @@ public final class VisibilityService {
   }
 
   public static boolean isVisible(
-      final Territory territory,
-      final Collection<GamePlayer> viewers,
-      final GameState data) {
+      final Territory territory, final Collection<GamePlayer> viewers, final GameState data) {
     return getVisibleTerritories(viewers, data).contains(territory);
   }
 
   public static List<Unit> getVisibleUnits(
-      final Territory territory,
-      final Collection<GamePlayer> viewers,
-      final GameState data) {
+      final Territory territory, final Collection<GamePlayer> viewers, final GameState data) {
     if (!isVisible(territory, viewers, data)) {
       return List.of();
     }
@@ -90,9 +85,7 @@ public final class VisibilityService {
   }
 
   private static boolean isFriendlyToAny(
-      final GamePlayer candidate,
-      final Collection<GamePlayer> viewers,
-      final GameState data) {
+      final GamePlayer candidate, final Collection<GamePlayer> viewers, final GameState data) {
     return viewers.stream().anyMatch(viewer -> isFriendly(candidate, viewer, data));
   }
 
@@ -105,8 +98,7 @@ public final class VisibilityService {
         && data.getRelationshipTracker().isAllied(viewer, candidate);
   }
 
-  private static Set<Territory> immutableSortedSet(
-      final Collection<Territory> territories) {
+  private static Set<Territory> immutableSortedSet(final Collection<Territory> territories) {
     final List<Territory> sorted = new ArrayList<>(territories);
     sorted.sort(TERRITORY_ORDER);
     return Collections.unmodifiableSet(new LinkedHashSet<>(sorted));
