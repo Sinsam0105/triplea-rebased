@@ -42,8 +42,7 @@ class AirGroundBattlePolicyTest {
     assertThat(AirGroundBattlePolicy.unitsForDomain(List.of(fighter, infantry), BattleDomain.AIR))
         .containsExactly(fighter);
     assertThat(
-            AirGroundBattlePolicy.unitsForDomain(
-                List.of(fighter, infantry), BattleDomain.GROUND))
+            AirGroundBattlePolicy.unitsForDomain(List.of(fighter, infantry), BattleDomain.GROUND))
         .containsExactly(infantry);
   }
 
