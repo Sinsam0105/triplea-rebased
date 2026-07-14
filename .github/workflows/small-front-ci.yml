@@ -15,7 +15,9 @@ concurrency:
 
 jobs:
   apply:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/agent/separate-air-ground-combat'
+    if: >-
+      github.ref == 'refs/heads/agent/separate-air-ground-combat' &&
+      !contains(github.event.head_commit.message, '[skip separate-apply]')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -34,16 +36,29 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Apply implementation
-        run: python tools/apply_separate_air_ground_combat.py
-
-      - name: Format and test
+      - name: Apply, format, and test
+        id: validation
         shell: bash
         run: |
-          set -o pipefail
-          ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee gradle.log
+          set +e
+          python tools/apply_separate_air_ground_combat.py > /tmp/apply.log 2>&1
+          apply_status=$?
+          test_status=0
+          if [[ $apply_status -eq 0 ]]; then
+            set -o pipefail
+            ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee /tmp/gradle.log
+            test_status=$?
+          else
+            : > /tmp/gradle.log
+          fi
+          echo "apply_status=$apply_status" >> "$GITHUB_OUTPUT"
+          echo "test_status=$test_status" >> "$GITHUB_OUTPUT"
+          if [[ $apply_status -ne 0 || $test_status -ne 0 ]]; then
+            exit 1
+          fi
 
       - name: Commit validated implementation
+        if: success()
         shell: bash
         run: |
           git fetch origin variant-dev
@@ -52,13 +67,35 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Separate air and ground combat"
+          git commit -m "[skip separate-apply] Separate air and ground combat"
           git push origin HEAD:agent/separate-air-ground-combat
 
-      - name: Upload Gradle log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: separate-air-ground-gradle-log
-          path: gradle.log
-          if-no-files-found: ignore
+      - name: Commit validation diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          cp /tmp/apply.log /tmp/apply-saved.log || true
+          cp /tmp/gradle.log /tmp/gradle-saved.log || true
+          git reset --hard "$GITHUB_SHA"
+          mkdir -p docs/development/validation
+          {
+            echo '# Separate air and ground combat validation failure'
+            echo
+            echo "apply status: ${{ steps.validation.outputs.apply_status }}"
+            echo "test status: ${{ steps.validation.outputs.test_status }}"
+            echo
+            echo '## Apply log'
+            echo '```text'
+            cat /tmp/apply-saved.log 2>/dev/null || true
+            echo '```'
+            echo
+            echo '## Gradle log'
+            echo '```text'
+            tail -n 500 /tmp/gradle-saved.log 2>/dev/null || true
+            echo '```'
+          } > docs/development/validation/separate-air-ground.log.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/development/validation/separate-air-ground.log.md
+          git commit -m "[skip separate-apply] Record separate combat validation failure"
+          git push origin HEAD:agent/separate-air-ground-combat
