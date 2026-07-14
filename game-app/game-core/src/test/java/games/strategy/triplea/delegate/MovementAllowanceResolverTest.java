@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
+import games.strategy.engine.data.GameSequence;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
 import games.strategy.triplea.Constants;
@@ -48,6 +49,23 @@ class MovementAllowanceResolverTest {
             MovementAllowanceResolver.resolveMaximumMovement(
                 unit, MovementAllowanceResolver.MovementPhase.OTHER))
         .isEqualTo(4);
+  }
+
+  @Test
+  void usesLegacyMovementBeforeTheGameSequenceIsInitialized() {
+    final GameData data = mock(GameData.class);
+    final GameSequence sequence = mock(GameSequence.class);
+    final Unit unit = mock(Unit.class);
+    final UnitAttachment attachment = mock(UnitAttachment.class);
+    final GamePlayer player = mock(GamePlayer.class);
+    when(data.getSequence()).thenReturn(sequence);
+    when(sequence.size()).thenReturn(0);
+    when(unit.getData()).thenReturn(data);
+    when(unit.getUnitAttachment()).thenReturn(attachment);
+    when(unit.getOwner()).thenReturn(player);
+    when(attachment.getMovement(player)).thenReturn(4);
+
+    assertThat(MovementAllowanceResolver.resolveMaximumMovement(unit)).isEqualTo(4);
   }
 
   @Test
