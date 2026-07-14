@@ -48,6 +48,6 @@ class SupplyAwareMoveDelegateTest {
         delegate.performMove(new MoveDescription(List.of(unit), new Route(start, end)));
 
     assertThat(result)
-        .contains(SupplyAwareMoveDelegate.OUT_OF_SUPPLY_UNITS_CANNOT_MOVE + ": infantry");
+        .contains(SupplyAwareMoveDelegate.OUT_OF_SUPPLY_UNITS_CANNOT_MOVE + ": 1 infantry");
   }
 }
