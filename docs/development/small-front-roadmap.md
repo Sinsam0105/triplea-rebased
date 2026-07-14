@@ -105,6 +105,8 @@ Exit condition: every unit-entry path enforces the same terrain capacity rule.
 
 ## 7. Combat and redeployment movement
 
+Status: next.
+
 - separate combat and after-combat movement values
 - `MovementAllowanceResolver`
 - validator, pathfinder, UI, AI, transport, and aircraft integration
