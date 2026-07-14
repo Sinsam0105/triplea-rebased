@@ -94,6 +94,12 @@ public final class AirControlTracker implements Serializable {
       final GameState data) {
     final AirControlTracker tracker = get(data);
     final ControlEntry oldEntry = tracker.controlByTerritory.get(territory.getName());
+    if (isPersistent(data)
+        && oldEntry != null
+        && newController != null
+        && oldEntry.playerName().equals(newController.getName())) {
+      return ChangeFactory.EMPTY_CHANGE;
+    }
     final ControlEntry newEntry =
         newController == null
             ? null
