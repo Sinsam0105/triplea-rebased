@@ -19,10 +19,8 @@ class FixedReinforcementTrackerTest {
             new FixedReinforcementRule(1, "Front", "infantry", 2),
             new FixedReinforcementRule(3, "Front", "armor", 1));
 
-    final List<FixedReinforcementOrder> roundOne =
-        tracker.getOrdersForRound(player, 1, schedule);
-    assertThat(roundOne)
-        .containsExactly(new FixedReinforcementOrder(1, "Front", "infantry", 2));
+    final List<FixedReinforcementOrder> roundOne = tracker.getOrdersForRound(player, 1, schedule);
+    assertThat(roundOne).containsExactly(new FixedReinforcementOrder(1, "Front", "infantry", 2));
     tracker.completeRound(
         player, 1, List.of(new FixedReinforcementOrder(1, "Front", "infantry", 1)));
 
