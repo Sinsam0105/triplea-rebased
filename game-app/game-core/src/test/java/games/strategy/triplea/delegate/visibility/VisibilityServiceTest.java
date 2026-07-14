@@ -45,8 +45,7 @@ class VisibilityServiceTest {
 
   @Test
   void usesOneTerritoryDefaultRadiusFromFriendlyControlledTerritories() {
-    assertThat(VisibilityService.getVisibleTerritories(blue, data))
-        .containsExactly(alpha, bravo);
+    assertThat(VisibilityService.getVisibleTerritories(blue, data)).containsExactly(alpha, bravo);
   }
 
   @Test
@@ -62,8 +61,7 @@ class VisibilityServiceTest {
   void enemyUnitsDoNotCreateVisionOrigins() {
     delta.getUnitCollection().add(scout.create(1, red).getFirst());
 
-    assertThat(VisibilityService.getVisibleTerritories(blue, data))
-        .containsExactly(alpha, bravo);
+    assertThat(VisibilityService.getVisibleTerritories(blue, data)).containsExactly(alpha, bravo);
   }
 
   @Test
