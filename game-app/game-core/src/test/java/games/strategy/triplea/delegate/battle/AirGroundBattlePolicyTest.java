@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import games.strategy.engine.data.GameState;
 import games.strategy.engine.data.Unit;
+import games.strategy.engine.data.properties.GameProperties;
 import games.strategy.triplea.attachments.UnitAttachment;
 import games.strategy.triplea.delegate.battle.IBattle.BattleDomain;
 import games.strategy.triplea.delegate.battle.IBattle.BattleType;
@@ -18,6 +20,18 @@ class AirGroundBattlePolicyTest {
     assertThat(BattleType.AIR_BATTLE.getDomain()).isEqualTo(BattleDomain.AIR);
     assertThat(BattleType.AIR_RAID.getDomain()).isEqualTo(BattleDomain.RAID);
     assertThat(BattleType.BOMBING_RAID.getDomain()).isEqualTo(BattleDomain.RAID);
+  }
+
+  @Test
+  void separatedCombatIsOptIn() {
+    final GameState gameState = mock(GameState.class);
+    final GameProperties properties = mock(GameProperties.class);
+    when(gameState.getProperties()).thenReturn(properties);
+    when(properties.get(AirGroundBattlePolicy.SEPARATE_AIR_AND_GROUND_COMBAT, false))
+        .thenReturn(true);
+
+    assertThat(AirGroundBattlePolicy.isSeparatedCombatEnabled(gameState)).isTrue();
+    assertThat(AirGroundBattlePolicy.isSeparatedCombatEnabled(null)).isFalse();
   }
 
   @Test
@@ -45,7 +59,7 @@ class AirGroundBattlePolicyTest {
     final Unit unit = mock(Unit.class);
     final UnitAttachment attachment = mock(UnitAttachment.class);
     when(unit.getUnitAttachment()).thenReturn(attachment);
-    when(attachment.getIsAir()).thenReturn(air);
+    when(attachment.isAir()).thenReturn(air);
     return unit;
   }
 }
