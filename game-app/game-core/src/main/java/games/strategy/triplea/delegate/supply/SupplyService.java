@@ -54,10 +54,7 @@ public final class SupplyService {
           tracker.clear(unit);
           if (previousTurns > 0) {
             history.addChildToEvent(
-                unit.getType().getName()
-                    + " in "
-                    + territory.getName()
-                    + " is supplied again",
+                unit.getType().getName() + " in " + territory.getName() + " is supplied again",
                 List.of(unit));
           }
           continue;
