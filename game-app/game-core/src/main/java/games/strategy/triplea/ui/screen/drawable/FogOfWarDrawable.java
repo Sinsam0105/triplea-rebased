@@ -21,6 +21,11 @@ public final class FogOfWarDrawable extends TerritoryDrawable {
       final GameData data,
       final Graphics2D graphics,
       final MapData mapData) {
+    draw(bounds, graphics, mapData);
+  }
+
+  public void draw(
+      final Rectangle bounds, final Graphics2D graphics, final MapData mapData) {
     draw(bounds, graphics, mapData, territory, FOG_COLOR);
   }
 
