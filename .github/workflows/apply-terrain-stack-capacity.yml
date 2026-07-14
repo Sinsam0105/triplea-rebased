@@ -1,0 +1,42 @@
+name: Apply Terrain Stack Capacity
+
+on:
+  push:
+    branches:
+      - agent/terrain-stack-capacity
+    paths:
+      - tools/apply_terrain_stack_capacity.py
+      - .github/workflows/apply-terrain-stack-capacity.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/terrain-stack-capacity
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Apply implementation
+        run: python tools/apply_terrain_stack_capacity.py
+
+      - name: Format and test
+        run: ./gradlew spotlessApply :game-core:test --tests games.strategy.triplea.delegate.StackCapacityResolverTest --stacktrace
+
+      - name: Commit implementation
+        run: |
+          rm tools/apply_terrain_stack_capacity.py
+          rm .github/workflows/apply-terrain-stack-capacity.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add terrain stack capacity rules"
+          git push origin HEAD:agent/terrain-stack-capacity
