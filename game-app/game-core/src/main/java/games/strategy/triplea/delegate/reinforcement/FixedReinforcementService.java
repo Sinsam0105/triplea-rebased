@@ -61,20 +61,14 @@ public final class FixedReinforcementService {
         final List<Unit> placed = unitType.create(acceptedCount, player);
         bridge.addChange(ChangeFactory.addUnits(territory, placed));
         history.addChildToEvent(
-            "Placed "
-                + acceptedCount
-                + " "
-                + unitType.getName()
-                + " in "
-                + territory.getName(),
+            "Placed " + acceptedCount + " " + unitType.getName() + " in " + territory.getName(),
             placed);
       }
       final int remainingQuantity = order.quantity() - acceptedCount;
       if (remainingQuantity > 0) {
         final FixedReinforcementOrder queued = order.withQuantity(remainingQuantity);
         remaining.add(queued);
-        history.addChildToEvent(
-            "Queued " + describe(queued) + " because terrain capacity is full");
+        history.addChildToEvent("Queued " + describe(queued) + " because terrain capacity is full");
       }
     }
     tracker.completeRound(player, currentRound, remaining);
