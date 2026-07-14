@@ -11,22 +11,9 @@ def replace_once(path: Path, old: str, new: str) -> None:
 root = Path(__file__).resolve().parents[1]
 
 territory_attachment = root / "game-app/game-core/src/main/java/games/strategy/triplea/attachments/TerritoryEffectAttachment.java"
-replace_once(
-    territory_attachment,
-    '  @NonNls public static final String MAX_AIR_BATTLE_ROUNDS = "maxAirBattleRounds";\n',
-    '  @NonNls public static final String MAX_AIR_BATTLE_ROUNDS = "maxAirBattleRounds";\n'
-    '  @NonNls public static final String STACK_CAPACITY = "stackCapacity";\n',
-)
-replace_once(
-    territory_attachment,
-    '  private @Nullable Integer maxAirBattleRounds = null;\n',
-    '  private @Nullable Integer maxAirBattleRounds = null;\n'
-    '  private @Nullable Integer stackCapacity = null;\n',
-)
-replace_once(
-    territory_attachment,
-    '  private static int validateBattleRounds(final Integer value, final String propertyName) {\n',
-    '''  private void setStackCapacity(final String value) {
+replace_once(territory_attachment, '  @NonNls public static final String MAX_AIR_BATTLE_ROUNDS = "maxAirBattleRounds";\n', '  @NonNls public static final String MAX_AIR_BATTLE_ROUNDS = "maxAirBattleRounds";\n  @NonNls public static final String STACK_CAPACITY = "stackCapacity";\n')
+replace_once(territory_attachment, '  private @Nullable Integer maxAirBattleRounds = null;\n', '  private @Nullable Integer maxAirBattleRounds = null;\n  private @Nullable Integer stackCapacity = null;\n')
+replace_once(territory_attachment, '  private static int validateBattleRounds(final Integer value, final String propertyName) {\n', '''  private void setStackCapacity(final String value) {
     setStackCapacity(getInt(value));
   }
 
@@ -53,12 +40,8 @@ replace_once(
   }
 
   private static int validateBattleRounds(final Integer value, final String propertyName) {
-''',
-)
-replace_once(
-    territory_attachment,
-    '      case "movementCostModifier" ->\n',
-    '''      case STACK_CAPACITY ->
+''')
+replace_once(territory_attachment, '      case "movementCostModifier" ->\n', '''      case STACK_CAPACITY ->
           Optional.of(
               MutableProperty.of(
                   this::setStackCapacity,
@@ -66,20 +49,11 @@ replace_once(
                   this::getStackCapacityProperty,
                   this::resetStackCapacity));
       case "movementCostModifier" ->
-''',
-)
+''')
 
 unit_attachment = root / "game-app/game-core/src/main/java/games/strategy/triplea/attachments/UnitAttachment.java"
-replace_once(
-    unit_attachment,
-    '  private @Nullable Tuple<Integer, String> movementLimit = null;\n',
-    '  private @Nullable Tuple<Integer, String> movementLimit = null;\n'
-    '  @Getter private int stackCost = 1;\n',
-)
-replace_once(
-    unit_attachment,
-    '  public int getStackingLimitMax(final Tuple<Integer, String> stackingLimit) {\n',
-    '''  private void setStackCost(final String value) {
+replace_once(unit_attachment, '  private @Nullable Tuple<Integer, String> movementLimit = null;\n', '  private @Nullable Tuple<Integer, String> movementLimit = null;\n  @Getter private int stackCost = 1;\n')
+replace_once(unit_attachment, '  public int getStackingLimitMax(final Tuple<Integer, String> stackingLimit) {\n', '''  private void setStackCost(final String value) {
     setStackCost(getInt(value));
   }
 
@@ -98,12 +72,8 @@ replace_once(
   }
 
   public int getStackingLimitMax(final Tuple<Integer, String> stackingLimit) {
-''',
-)
-replace_once(
-    unit_attachment,
-    '      case ATTACK_STRENGTH ->\n',
-    '''      case "stackCost" ->
+''')
+replace_once(unit_attachment, '      case ATTACK_STRENGTH ->\n', '''      case "stackCost" ->
           Optional.of(
               MutableProperty.of(
                   this::setStackCost,
@@ -111,56 +81,17 @@ replace_once(
                   this::getStackCost,
                   this::resetStackCost));
       case ATTACK_STRENGTH ->
-''',
-)
+''')
 
 stack_filter = root / "game-app/game-core/src/main/java/games/strategy/triplea/delegate/move/validation/UnitStackingLimitFilter.java"
-replace_once(
-    stack_filter,
-    'import games.strategy.triplea.delegate.Matches;\n',
-    'import games.strategy.triplea.delegate.Matches;\n'
-    'import games.strategy.triplea.delegate.StackCapacityResolver;\n',
-)
-replace_once(
-    stack_filter,
-    '    final var unitsAllowedSoFar = new ArrayList<>(existingUnitsToBePlaced);\n'
-    '    final var forbiddenTypes = TerritoryEffectHelper.getUnitTypesForUnitsNotAllowedIntoTerritory(t);\n'
-    '    for (final Unit unit : units) {\n',
-    '    final var unitsAllowedSoFar = new ArrayList<>(existingUnitsToBePlaced);\n'
-    '    final var forbiddenTypes = TerritoryEffectHelper.getUnitTypesForUnitsNotAllowedIntoTerritory(t);\n'
-    '    final var unitsWithinCapacity =\n'
-    '        StackCapacityResolver.filterUnitsToFit(units, owner, t, existingUnitsToBePlaced);\n'
-    '    for (final Unit unit : unitsWithinCapacity) {\n',
-)
+replace_once(stack_filter, 'import games.strategy.triplea.delegate.Matches;\n', 'import games.strategy.triplea.delegate.Matches;\nimport games.strategy.triplea.delegate.StackCapacityResolver;\n')
+replace_once(stack_filter, '    final var unitsAllowedSoFar = new ArrayList<>(existingUnitsToBePlaced);\n    final var forbiddenTypes = TerritoryEffectHelper.getUnitTypesForUnitsNotAllowedIntoTerritory(t);\n    for (final Unit unit : units) {\n', '    final var unitsAllowedSoFar = new ArrayList<>(existingUnitsToBePlaced);\n    final var forbiddenTypes = TerritoryEffectHelper.getUnitTypesForUnitsNotAllowedIntoTerritory(t);\n    final var unitsWithinCapacity =\n        StackCapacityResolver.filterUnitsToFit(units, owner, t, existingUnitsToBePlaced);\n    for (final Unit unit : unitsWithinCapacity) {\n')
 
 retreater = root / "game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/steps/retreat/RetreaterGeneral.java"
-replace_once(
-    retreater,
-    'import games.strategy.triplea.delegate.Matches;\n',
-    'import games.strategy.triplea.delegate.Matches;\n'
-    'import games.strategy.triplea.delegate.StackCapacityResolver;\n',
-)
-replace_once(
-    retreater,
-    '    final Collection<Territory> allRetreatTerritories =\n'
-    '        CollectionUtils.getMatches(\n'
-    '            battleState.getAttackerRetreatTerritories(),\n'
-    '            Matches.territoryEffectsAllowUnits(groundedRetreatUnits));\n',
-    '    final Collection<Territory> allRetreatTerritories =\n'
-    '        CollectionUtils.getMatches(\n'
-    '            battleState.getAttackerRetreatTerritories(),\n'
-    '            Matches.territoryEffectsAllowUnits(groundedRetreatUnits)\n'
-    '                .and(\n'
-    '                    territory ->\n'
-    '                        StackCapacityResolver.canFit(\n'
-    '                            groundedRetreatUnits,\n'
-    '                            battleState.getPlayer(OFFENSE),\n'
-    '                            territory,\n'
-    '                            List.of())));\n',
-)
+replace_once(retreater, 'import games.strategy.triplea.delegate.Matches;\n', 'import games.strategy.triplea.delegate.Matches;\nimport games.strategy.triplea.delegate.StackCapacityResolver;\n')
+replace_once(retreater, '    final Collection<Territory> allRetreatTerritories =\n        CollectionUtils.getMatches(\n            battleState.getAttackerRetreatTerritories(),\n            Matches.territoryEffectsAllowUnits(groundedRetreatUnits));\n', '    final Collection<Territory> allRetreatTerritories =\n        CollectionUtils.getMatches(\n            battleState.getAttackerRetreatTerritories(),\n            Matches.territoryEffectsAllowUnits(groundedRetreatUnits)\n                .and(\n                    territory ->\n                        StackCapacityResolver.canFit(\n                            groundedRetreatUnits,\n                            battleState.getPlayer(OFFENSE),\n                            territory,\n                            List.of())));\n')
 
-resolver = root / "game-app/game-core/src/main/java/games/strategy/triplea/delegate/StackCapacityResolver.java"
-resolver.write_text('''package games.strategy.triplea.delegate;
+(root / "game-app/game-core/src/main/java/games/strategy/triplea/delegate/StackCapacityResolver.java").write_text('''package games.strategy.triplea.delegate;
 
 import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.Territory;
@@ -176,7 +107,6 @@ import java.util.OptionalInt;
 public final class StackCapacityResolver {
   private StackCapacityResolver() {}
 
-  /** Returns the shortest finite capacity, unlimited, or empty when no effect configures capacity. */
   public static OptionalInt resolveCapacity(final Collection<TerritoryEffect> effects) {
     boolean configured = false;
     int finiteCapacity = Integer.MAX_VALUE;
@@ -204,39 +134,19 @@ public final class StackCapacityResolver {
     return units.stream().mapToInt(StackCapacityResolver::getStackCost).sum();
   }
 
-  public static boolean canFit(
-      final Collection<Unit> enteringUnits,
-      final GamePlayer owner,
-      final Territory territory,
-      final Collection<Unit> pendingUnits) {
-    return filterUnitsToFit(enteringUnits, owner, territory, pendingUnits).size()
-        == enteringUnits.size();
+  public static boolean canFit(final Collection<Unit> enteringUnits, final GamePlayer owner, final Territory territory, final Collection<Unit> pendingUnits) {
+    return filterUnitsToFit(enteringUnits, owner, territory, pendingUnits).size() == enteringUnits.size();
   }
 
-  public static List<Unit> filterUnitsToFit(
-      final Collection<Unit> candidates,
-      final GamePlayer owner,
-      final Territory territory,
-      final Collection<Unit> pendingUnits) {
-    return filterUnitsToFit(
-        candidates,
-        owner,
-        TerritoryEffectHelper.getEffects(territory),
-        alliedUnits(owner, territory.getUnits()),
-        pendingUnits);
+  public static List<Unit> filterUnitsToFit(final Collection<Unit> candidates, final GamePlayer owner, final Territory territory, final Collection<Unit> pendingUnits) {
+    return filterUnitsToFit(candidates, owner, TerritoryEffectHelper.getEffects(territory), alliedUnits(owner, territory.getUnits()), pendingUnits);
   }
 
-  static List<Unit> filterUnitsToFit(
-      final Collection<Unit> candidates,
-      final GamePlayer owner,
-      final Collection<TerritoryEffect> effects,
-      final Collection<Unit> existingUnits,
-      final Collection<Unit> pendingUnits) {
+  static List<Unit> filterUnitsToFit(final Collection<Unit> candidates, final GamePlayer owner, final Collection<TerritoryEffect> effects, final Collection<Unit> existingUnits, final Collection<Unit> pendingUnits) {
     final OptionalInt capacity = resolveCapacity(effects);
     if (capacity.isEmpty() || capacity.getAsInt() < 0) {
       return new ArrayList<>(candidates);
     }
-
     int occupied = getOccupiedCapacity(existingUnits) + getOccupiedCapacity(pendingUnits);
     final List<Unit> accepted = new ArrayList<>();
     for (final Unit candidate : candidates) {
@@ -249,22 +159,16 @@ public final class StackCapacityResolver {
     return accepted;
   }
 
-  private static List<Unit> alliedUnits(
-      final GamePlayer owner, final Collection<Unit> territoryUnits) {
-    return territoryUnits.stream()
-        .filter(
-            unit ->
-                owner.equals(unit.getOwner())
-                    || owner.getData().getRelationshipTracker().isAllied(owner, unit.getOwner()))
-        .toList();
+  private static List<Unit> alliedUnits(final GamePlayer owner, final Collection<Unit> territoryUnits) {
+    return territoryUnits.stream().filter(unit -> owner.equals(unit.getOwner()) || owner.getData().getRelationshipTracker().isAllied(owner, unit.getOwner())).toList();
   }
 }
 ''')
 
-test = root / "game-app/game-core/src/test/java/games/strategy/triplea/delegate/StackCapacityResolverTest.java"
-test.write_text('''package games.strategy.triplea.delegate;
+(root / "game-app/game-core/src/test/java/games/strategy/triplea/delegate/StackCapacityResolverTest.java").write_text('''package games.strategy.triplea.delegate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -273,14 +177,17 @@ import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.TerritoryEffect;
 import games.strategy.engine.data.Unit;
+import games.strategy.engine.data.UnitType;
 import games.strategy.triplea.Constants;
 import games.strategy.triplea.attachments.TerritoryEffectAttachment;
 import games.strategy.triplea.attachments.UnitAttachment;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 class StackCapacityResolverTest {
   private final GameData gameData = new GameData();
+  private final AtomicInteger names = new AtomicInteger();
 
   @Test
   void shortestFiniteCapacityWinsAcrossEffects() {
@@ -300,11 +207,8 @@ class StackCapacityResolverTest {
   @Test
   void missingCapacityRemainsUnconfigured() {
     final TerritoryEffect effect = new TerritoryEffect("plain", gameData);
-    effect.addAttachment(
-        Constants.TERRITORYEFFECT_ATTACHMENT_NAME,
-        new TerritoryEffectAttachment(
-            Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData));
-    assertEquals(false, StackCapacityResolver.resolveCapacity(List.of(effect)).isPresent());
+    effect.addAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, new TerritoryEffectAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData));
+    assertFalse(StackCapacityResolver.resolveCapacity(List.of(effect)).isPresent());
   }
 
   @Test
@@ -313,11 +217,7 @@ class StackCapacityResolverTest {
     final Unit first = unit(owner, 2);
     final Unit second = unit(owner, 1);
     final Unit third = unit(owner, 2);
-
-    assertEquals(
-        List.of(first, second),
-        StackCapacityResolver.filterUnitsToFit(
-            List.of(first, second, third), owner, List.of(effect(3)), List.of(), List.of()));
+    assertEquals(List.of(first, second), StackCapacityResolver.filterUnitsToFit(List.of(first, second, third), owner, List.of(effect(3)), List.of(), List.of()));
   }
 
   @Test
@@ -326,11 +226,7 @@ class StackCapacityResolverTest {
     final Unit existing = unit(owner, 4);
     final Unit free = unit(owner, 0);
     final Unit costly = unit(owner, 1);
-
-    assertEquals(
-        List.of(free),
-        StackCapacityResolver.filterUnitsToFit(
-            List.of(free, costly), owner, List.of(effect(3)), List.of(existing), List.of()));
+    assertEquals(List.of(free), StackCapacityResolver.filterUnitsToFit(List.of(free, costly), owner, List.of(effect(3)), List.of(existing), List.of()));
   }
 
   @Test
@@ -338,32 +234,22 @@ class StackCapacityResolverTest {
     final GamePlayer owner = mock(GamePlayer.class);
     final Unit pending = unit(owner, 2);
     final Unit candidate = unit(owner, 2);
-
-    assertEquals(
-        List.of(),
-        StackCapacityResolver.filterUnitsToFit(
-            List.of(candidate), owner, List.of(effect(3)), List.of(), List.of(pending)));
+    assertEquals(List.of(), StackCapacityResolver.filterUnitsToFit(List.of(candidate), owner, List.of(effect(3)), List.of(), List.of(pending)));
   }
 
   @Test
   void invalidAttachmentValuesAreRejected() {
     final TerritoryEffect effect = new TerritoryEffect("invalid", gameData);
-    final TerritoryEffectAttachment attachment =
-        new TerritoryEffectAttachment(
-            Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData);
+    final TerritoryEffectAttachment attachment = new TerritoryEffectAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData);
     assertThrows(IllegalArgumentException.class, () -> attachment.setStackCapacity(-2));
-
-    final UnitAttachment unitAttachment = mock(UnitAttachment.class);
-    when(unitAttachment.setStackCost(-1)).thenCallRealMethod();
+    final UnitType type = new UnitType("invalid-cost", gameData);
+    final UnitAttachment unitAttachment = new UnitAttachment(Constants.UNIT_ATTACHMENT_NAME, type, gameData);
     assertThrows(IllegalArgumentException.class, () -> unitAttachment.setStackCost(-1));
   }
 
   private TerritoryEffect effect(final int capacity) {
-    final TerritoryEffect effect = new TerritoryEffect("effect-" + capacity + "-" + Math.random(), gameData);
-    final TerritoryEffectAttachment attachment =
-        new TerritoryEffectAttachment(
-                Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData)
-            .setStackCapacity(capacity);
+    final TerritoryEffect effect = new TerritoryEffect("effect-" + names.incrementAndGet(), gameData);
+    final TerritoryEffectAttachment attachment = new TerritoryEffectAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, effect, gameData).setStackCapacity(capacity);
     effect.addAttachment(Constants.TERRITORYEFFECT_ATTACHMENT_NAME, attachment);
     return effect;
   }
@@ -379,8 +265,7 @@ class StackCapacityResolverTest {
 }
 ''')
 
-doc = root / "docs/development/terrain-stack-capacity.md"
-doc.write_text('''# Terrain stack capacity
+(root / "docs/development/terrain-stack-capacity.md").write_text('''# Terrain stack capacity
 
 Small Front terrain can limit the amount of one allied force that may occupy a territory.
 
@@ -402,13 +287,5 @@ The common resolver is applied before legacy movement, attacking, and placement 
 ''')
 
 roadmap = root / "docs/development/small-front-roadmap.md"
-replace_once(
-    roadmap,
-    '## 6. Territory stack capacity\n\n- `stackCapacity` on territory effects\n',
-    '## 6. Territory stack capacity\n\nStatus: complete in PR #7.\n\n- `stackCapacity` on territory effects\n',
-)
-replace_once(
-    roadmap,
-    '## 7. Combat and redeployment movement\n\n- separate combat and after-combat movement values\n',
-    '## 7. Combat and redeployment movement\n\nStatus: next.\n\n- separate combat and after-combat movement values\n',
-)
+replace_once(roadmap, '## 6. Territory stack capacity\n\n- `stackCapacity` on territory effects\n', '## 6. Territory stack capacity\n\nStatus: complete in PR #7.\n\n- `stackCapacity` on territory effects\n')
+replace_once(roadmap, '## 7. Combat and redeployment movement\n\n- separate combat and after-combat movement values\n', '## 7. Combat and redeployment movement\n\nStatus: next.\n\n- separate combat and after-combat movement values\n')
