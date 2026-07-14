@@ -32,7 +32,7 @@ public final class MovementAllowanceResolver {
   }
 
   private static MovementPhase resolveCurrentPhase(final GameData data) {
-    if (data.getSequence().getStep() == null) {
+    if (data.getSequence().size() == 0) {
       return MovementPhase.OTHER;
     }
     if (GameStepPropertiesHelper.isCombatMove(data, true)) {
