@@ -40,10 +40,7 @@ public final class SupplyNetworkResolver {
   }
 
   public static boolean canMove(
-      final Unit unit,
-      final Territory start,
-      final GamePlayer player,
-      final GameState data) {
+      final Unit unit, final Territory start, final GamePlayer player, final GameState data) {
     return !isEnabled(data)
         || start.isWater()
         || !requiresSupply(unit)
@@ -82,8 +79,7 @@ public final class SupplyNetworkResolver {
     return supplied;
   }
 
-  public static List<Territory> getSupplySources(
-      final GamePlayer player, final GameState data) {
+  public static List<Territory> getSupplySources(final GamePlayer player, final GameState data) {
     return sortedTerritories(data.getMap().getTerritories()).stream()
         .filter(territory -> isFriendlyLand(territory, player, data))
         .filter(
@@ -94,8 +90,7 @@ public final class SupplyNetworkResolver {
         .toList();
   }
 
-  public static List<Territory> getRoadNeighbors(
-      final Territory territory, final GameState data) {
+  public static List<Territory> getRoadNeighbors(final Territory territory, final GameState data) {
     final Set<Territory> neighbors = new TreeSet<>(TERRITORY_ORDER);
     SupplyTerritoryAttachment.get(territory)
         .ifPresent(attachment -> neighbors.addAll(attachment.getRoadConnections()));
