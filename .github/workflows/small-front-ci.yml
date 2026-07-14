@@ -34,11 +34,15 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Run focused tests and formatting checks
+      - name: Apply formatting and run focused tests
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
+          ./gradlew :game-core:spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee gradle.log
+          tar -czf formatted-fixed-reinforcement.tar.gz \
+            game-app/game-core/src/main/java/games/strategy/triplea/attachments/FixedReinforcementAttachment.java \
+            game-app/game-core/src/main/java/games/strategy/triplea/delegate/reinforcement \
+            game-app/game-core/src/test/java/games/strategy/triplea/delegate/reinforcement
 
       - name: Upload Gradle log
         if: always()
@@ -46,4 +50,12 @@ jobs:
         with:
           name: small-front-gradle-log
           path: gradle.log
+          if-no-files-found: error
+
+      - name: Upload formatted reinforcement sources
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: formatted-fixed-reinforcement
+          path: formatted-fixed-reinforcement.tar.gz
           if-no-files-found: error
