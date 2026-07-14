@@ -42,8 +42,8 @@ Calculating task graph as no cached configuration is available for tasks: spotle
 > Task :build-logic:triplea-java-library:generateScriptPluginAdapters
 > Task :build-logic:triplea-base-project:generateScriptPluginAdapters
 > Task :build-logic:triplea-java-library:pluginDescriptors
-> Task :build-logic:triplea-java-library:processResources
 > Task :build-logic:triplea-base-project:pluginDescriptors
+> Task :build-logic:triplea-java-library:processResources
 > Task :build-logic:triplea-base-project:processResources
 > Task :build-logic:triplea-test-conventions:generateExternalPluginSpecBuilders
 > Task :build-logic:triplea-test-conventions:extractPrecompiledScriptPluginPlugins
@@ -82,9 +82,8 @@ Calculating task graph as no cached configuration is available for tasks: spotle
 > Task :build-logic:triplea-published-library:compileJava NO-SOURCE
 > Task :build-logic:triplea-published-library:classes
 > Task :build-logic:triplea-published-library:jar
-> Task :game-core:processResources
 > Task :spotlessInternalRegisterDependencies
-> Task :game-core:processTestFixturesResources
+> Task :game-core:processResources
 > Task :ai:spotlessAllFiles
 > Task :ai:spotlessAllFilesApply
 > Task :domain-data:spotlessAllFiles
@@ -104,10 +103,10 @@ Calculating task graph as no cached configuration is available for tasks: spotle
 > Task :ai:spotlessApply
 > Task :game-headed:spotlessAllFiles
 > Task :game-headed:spotlessAllFilesApply
+> Task :java-extras:compileJava
 > Task :lobby-client-data:compileJava
 > Task :game-headless:spotlessAllFiles
 > Task :game-headless:spotlessAllFilesApply
-> Task :java-extras:compileJava
 > Task :game-relay-server:spotlessAllFiles
 > Task :game-relay-server:spotlessAllFilesApply
 > Task :game-relay-server:spotlessJava
@@ -180,27 +179,25 @@ Note: Recompile with -Xlint:deprecation for details.
 
 > Task :xml-reader:compileJava
 > Task :websocket-server:compileJava
-> Task :game-core:spotlessJava
 > Task :lobby-client:compileJava
 > Task :game-relay-server:compileJava
-> Task :game-headed:spotlessJava
-> Task :game-headed:spotlessJavaApply
-> Task :game-headed:spotlessApply
+> Task :game-core:spotlessJava
+> Task :swing-lib:compileJava
+
+> Task :map-data:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/game-app/map-data/src/main/java/org/triplea/map/description/file/MapDescriptionYamlGenerator.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :game-core:processTestFixturesResources
 > Task :domain-data:processResources NO-SOURCE
 > Task :domain-data:classes
 > Task :domain-data:jar
 > Task :feign-common:processResources NO-SOURCE
 > Task :feign-common:classes
 > Task :feign-common:jar
-
-> Task :test-common:compileJava
-Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/test-common/src/main/java/org/triplea/test/common/JsonUtil.java uses or overrides a deprecated API.
-Note: Recompile with -Xlint:deprecation for details.
-
-> Task :map-data:compileJava
-Note: /home/runner/work/triplea-rebased/triplea-rebased/game-app/map-data/src/main/java/org/triplea/map/description/file/MapDescriptionYamlGenerator.java uses or overrides a deprecated API.
-Note: Recompile with -Xlint:deprecation for details.
-
+> Task :game-headed:spotlessJava
+> Task :game-headed:spotlessJavaApply
+> Task :game-headed:spotlessApply
 > Task :game-core:processTestResources
 > Task :game-relay-server:processResources NO-SOURCE
 > Task :game-relay-server:classes
@@ -210,10 +207,14 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :java-extras:jar
 > Task :lobby-client:processResources NO-SOURCE
 > Task :lobby-client:classes
+
+> Task :test-common:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/test-common/src/main/java/org/triplea/test/common/JsonUtil.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :lobby-client:jar
 > Task :lobby-client-data:processResources NO-SOURCE
 > Task :lobby-client-data:classes
-> Task :swing-lib:compileJava
-> Task :lobby-client:jar
 > Task :lobby-client-data:jar
 > Task :map-data:processResources NO-SOURCE
 > Task :map-data:classes
@@ -249,9 +250,9 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :game-core:jar
 > Task :game-core:compileTestFixturesJava
 > Task :game-core:testFixturesClasses
-> Task :game-core:testFixturesJar
 > Task :ai:compileJava
 > Task :ai:classes
+> Task :game-core:testFixturesJar
 > Task :ai:jar
 > Task :game-headless:compileJava
 > Task :game-headless:classes
@@ -268,51 +269,67 @@ Note: Recompile with -Xlint:unchecked for details.
 > Task :game-headless:test
 > Task :game-core:test
 
+CombatDomainParticipantsTest > separatedRuleRemovesEnemyAircraftFromGroundDefense() FAILED
+    java.lang.IllegalStateException: No attachment named 'unitAttachment' of type 'class games.strategy.triplea.attachments.UnitAttachment' for object named 'null'
+        at games.strategy.engine.data.DefaultAttachment.lambda$getAttachment$0(DefaultAttachment.java:96)
+        at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+        at games.strategy.engine.data.DefaultAttachment.getAttachment(DefaultAttachment.java:93)
+        at games.strategy.triplea.attachments.UnitAttachment.get(UnitAttachment.java:364)
+        at games.strategy.engine.data.UnitType.getUnitAttachment(UnitType.java:21)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.unit(CombatDomainParticipantsTest.java:125)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.separatedRuleRemovesEnemyAircraftFromGroundDefense(CombatDomainParticipantsTest.java:71)
+
 CombatDomainParticipantsTest > infrastructureAloneDoesNotCreateGroundCombat() FAILED
-    java.lang.NullPointerException: Cannot invoke "games.strategy.engine.data.UnitType.getUnitAttachment()" because "ut" is null
-        at games.strategy.triplea.delegate.Matches.lambda$unitTypeIsInfrastructure$0(Matches.java:432)
-        at games.strategy.triplea.delegate.Matches.lambda$unitIsInfrastructure$0(Matches.java:436)
-        at java.base/java.util.function.Predicate.lambda$negate$0(Predicate.java:80)
-        at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90)
-        at java.base/java.util.AbstractList$RandomAccessSpliterator.tryAdvance(AbstractList.java:708)
-        at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:147)
-        at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:588)
-        at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:574)
-        at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-        at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:230)
-        at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:196)
-        at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-        at java.base/java.util.stream.ReferencePipeline.anyMatch(ReferencePipeline.java:668)
-        at games.strategy.triplea.delegate.battle.CombatDomainParticipants.hasGroundCombatDefenders(CombatDomainParticipants.java:50)
-        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.infrastructureAloneDoesNotCreateGroundCombat(CombatDomainParticipantsTest.java:88)
+    java.lang.IllegalStateException: No attachment named 'unitAttachment' of type 'class games.strategy.triplea.attachments.UnitAttachment' for object named 'null'
+        at games.strategy.engine.data.DefaultAttachment.lambda$getAttachment$0(DefaultAttachment.java:96)
+        at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+        at games.strategy.engine.data.DefaultAttachment.getAttachment(DefaultAttachment.java:93)
+        at games.strategy.triplea.attachments.UnitAttachment.get(UnitAttachment.java:364)
+        at games.strategy.engine.data.UnitType.getUnitAttachment(UnitType.java:21)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.unit(CombatDomainParticipantsTest.java:125)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.infrastructureAloneDoesNotCreateGroundCombat(CombatDomainParticipantsTest.java:84)
+
+CombatDomainParticipantsTest > legacyRuleKeepsAircraftInTheNormalBattle() FAILED
+    java.lang.IllegalStateException: No attachment named 'unitAttachment' of type 'class games.strategy.triplea.attachments.UnitAttachment' for object named 'null'
+        at games.strategy.engine.data.DefaultAttachment.lambda$getAttachment$0(DefaultAttachment.java:96)
+        at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+        at games.strategy.engine.data.DefaultAttachment.getAttachment(DefaultAttachment.java:93)
+        at games.strategy.triplea.attachments.UnitAttachment.get(UnitAttachment.java:364)
+        at games.strategy.engine.data.UnitType.getUnitAttachment(UnitType.java:21)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.unit(CombatDomainParticipantsTest.java:125)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.legacyRuleKeepsAircraftInTheNormalBattle(CombatDomainParticipantsTest.java:40)
 
 CombatDomainParticipantsTest > nonAirCombatUnitPreventsNonFightingGroundCapture() FAILED
-    java.lang.NullPointerException: Cannot invoke "games.strategy.engine.data.UnitType.getUnitAttachment()" because "ut" is null
-        at games.strategy.triplea.delegate.Matches.lambda$unitTypeIsInfrastructure$0(Matches.java:432)
-        at games.strategy.triplea.delegate.Matches.lambda$unitIsInfrastructure$0(Matches.java:436)
-        at java.base/java.util.function.Predicate.lambda$negate$0(Predicate.java:80)
-        at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90)
-        at java.base/java.util.AbstractList$RandomAccessSpliterator.tryAdvance(AbstractList.java:708)
-        at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:147)
-        at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:588)
-        at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:574)
-        at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-        at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:230)
-        at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:196)
-        at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-        at java.base/java.util.stream.ReferencePipeline.anyMatch(ReferencePipeline.java:668)
-        at games.strategy.triplea.delegate.battle.CombatDomainParticipants.hasGroundCombatDefenders(CombatDomainParticipants.java:50)
-        at games.strategy.triplea.delegate.battle.CombatDomainParticipants.lambda$territoryIsEmptyOfGroundCombatUnits$0(CombatDomainParticipants.java:58)
-        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.nonAirCombatUnitPreventsNonFightingGroundCapture(CombatDomainParticipantsTest.java:105)
+    java.lang.IllegalStateException: No attachment named 'unitAttachment' of type 'class games.strategy.triplea.attachments.UnitAttachment' for object named 'null'
+        at games.strategy.engine.data.DefaultAttachment.lambda$getAttachment$0(DefaultAttachment.java:96)
+        at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+        at games.strategy.engine.data.DefaultAttachment.getAttachment(DefaultAttachment.java:93)
+        at games.strategy.triplea.attachments.UnitAttachment.get(UnitAttachment.java:364)
+        at games.strategy.engine.data.UnitType.getUnitAttachment(UnitType.java:21)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.unit(CombatDomainParticipantsTest.java:125)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.nonAirCombatUnitPreventsNonFightingGroundCapture(CombatDomainParticipantsTest.java:101)
 
-2530 tests completed, 2 failed
+CombatDomainParticipantsTest > separatedRuleSplitsAirAndGroundAttackers() FAILED
+    java.lang.IllegalStateException: No attachment named 'unitAttachment' of type 'class games.strategy.triplea.attachments.UnitAttachment' for object named 'null'
+        at games.strategy.engine.data.DefaultAttachment.lambda$getAttachment$0(DefaultAttachment.java:96)
+        at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+        at games.strategy.engine.data.DefaultAttachment.getAttachment(DefaultAttachment.java:93)
+        at games.strategy.triplea.attachments.UnitAttachment.get(UnitAttachment.java:364)
+        at games.strategy.engine.data.UnitType.getUnitAttachment(UnitType.java:21)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.unit(CombatDomainParticipantsTest.java:125)
+        at games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest.separatedRuleSplitsAirAndGroundAttackers(CombatDomainParticipantsTest.java:54)
+
+2530 tests completed, 5 failed
 
 > Task :game-core:test FAILED
 Failed tests for game-core:
 games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest::infrastructureAloneDoesNotCreateGroundCombat()
+games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest::legacyRuleKeepsAircraftInTheNormalBattle()
 games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest::nonAirCombatUnitPreventsNonFightingGroundCapture()
+games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest::separatedRuleRemovesEnemyAircraftFromGroundDefense()
+games.strategy.triplea.delegate.battle.CombatDomainParticipantsTest::separatedRuleSplitsAirAndGroundAttackers()
 
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/test-1784008936530.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/test-1784009455177.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/triplea-rebased/triplea-rebased/build/reports/problems/problems-report.html
 
@@ -471,7 +488,7 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	... 30 more
 
 
-BUILD FAILED in 4m 40s
+BUILD FAILED in 4m 53s
 154 actionable tasks: 152 executed, 2 from cache
 Configuration cache entry stored.
 ```
