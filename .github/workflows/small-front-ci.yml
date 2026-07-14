@@ -41,6 +41,17 @@ jobs:
         shell: bash
         run: |
           set +e
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('docs/development/small-front-roadmap.md')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace(
+              '## 9. Separate air and ground combat\n\nStatus: next.\n\n',
+              '## 9. Separate air and ground combat\n\n',
+              1,
+          )
+          path.write_text(text, encoding='utf-8')
+          PY
           python tools/apply_separate_air_ground_combat.py > /tmp/apply.log 2>&1
           apply_status=$?
           test_status=0
@@ -64,6 +75,7 @@ jobs:
           git fetch origin variant-dev
           git show origin/variant-dev:.github/workflows/small-front-ci.yml > .github/workflows/small-front-ci.yml
           rm tools/apply_separate_air_ground_combat.py
+          rm -f docs/development/validation/separate-air-ground.log.md
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
