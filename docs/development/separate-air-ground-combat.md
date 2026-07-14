@@ -31,3 +31,7 @@ Aircraft never create an empty ground battle and never trigger territory takeove
 With the property disabled, existing pre-battle interception behavior is unchanged: surviving aircraft may continue into the normal battle according to current TripleA rules.
 
 The implementation reuses `AirBattle`, `BattleTracker` dependencies, `WAS_IN_AIR_BATTLE`, existing retreat/destruction logic, and terrain-specific air round limits.
+
+## Validation
+
+The implementation branch is validated with Spotless, the complete `game-core` and `game-headless` test suites, Small Front CI, and repository-wide Verify.
