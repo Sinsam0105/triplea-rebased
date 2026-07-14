@@ -40,8 +40,7 @@ class SupplyObservationFactoryTest {
     tracker.increment(unit);
     tracker.completeRound(player, 1);
 
-    final SupplyObservation observation =
-        SupplyObservationFactory.create(data, player, tracker);
+    final SupplyObservation observation = SupplyObservationFactory.create(data, player, tracker);
 
     assertThat(observation.schemaVersion()).isEqualTo(1);
     assertThat(observation.lastProcessedRound()).isEqualTo(1);
