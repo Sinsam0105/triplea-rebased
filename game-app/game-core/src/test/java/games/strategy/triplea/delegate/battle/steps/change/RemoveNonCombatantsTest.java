@@ -16,6 +16,7 @@ import games.strategy.engine.data.UnitType;
 import games.strategy.engine.data.properties.GameProperties;
 import games.strategy.engine.delegate.IDelegateBridge;
 import games.strategy.engine.display.IDisplay;
+import games.strategy.triplea.Constants;
 import games.strategy.triplea.attachments.UnitAttachment;
 import games.strategy.triplea.delegate.ExecutionStack;
 import games.strategy.triplea.delegate.battle.AirGroundBattlePolicy;
@@ -125,8 +126,9 @@ class RemoveNonCombatantsTest {
     final GameData gameData = mock(GameData.class);
     final GameProperties gameProperties = mock(GameProperties.class);
     final PlayerList playerList = mock(PlayerList.class);
-    final UnitType unitType = mock(UnitType.class);
+    final UnitType unitType = new UnitType("aircraft", gameData);
     final UnitAttachment unitAttachment = mock(UnitAttachment.class);
+    unitType.addAttachment(Constants.UNIT_ATTACHMENT_NAME, unitAttachment);
 
     when(gameData.getPlayerList()).thenReturn(playerList);
     when(playerList.getNullPlayer()).thenReturn(attacker);
@@ -136,7 +138,6 @@ class RemoveNonCombatantsTest {
     when(gameData.getProperties()).thenReturn(gameProperties);
     when(gameProperties.get(AirGroundBattlePolicy.SEPARATE_AIR_AND_GROUND_COMBAT, false))
         .thenReturn(true);
-    when(unitType.getUnitAttachment()).thenReturn(unitAttachment);
     when(unitAttachment.isAir()).thenReturn(true);
     when(battleState.filterUnits(
             BattleState.UnitBattleFilter.ACTIVE,
