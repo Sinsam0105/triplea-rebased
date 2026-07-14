@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import games.strategy.engine.data.Change;
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
+import games.strategy.engine.data.MutableProperty;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.properties.GameProperties;
 import games.strategy.engine.delegate.IDelegateBridge;
@@ -117,6 +118,7 @@ class RemoveNonCombatantsTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void marksAircraftAsHandledByAirDomainBeforeGroundCombat() {
     final RemoveNonCombatants removeNonCombatants =
         new RemoveNonCombatants(battleState, battleActions);
@@ -124,6 +126,7 @@ class RemoveNonCombatantsTest {
     final GameProperties gameProperties = mock(GameProperties.class);
     final Unit aircraft = mock(Unit.class);
     final UnitAttachment unitAttachment = mock(UnitAttachment.class);
+    final MutableProperty<Boolean> wasInAirBattle = mock(MutableProperty.class);
 
     when(delegateBridge.getData()).thenReturn(gameData);
     when(gameData.getProperties()).thenReturn(gameProperties);
@@ -131,6 +134,9 @@ class RemoveNonCombatantsTest {
         .thenReturn(true);
     when(aircraft.getUnitAttachment()).thenReturn(unitAttachment);
     when(unitAttachment.isAir()).thenReturn(true);
+    when(aircraft.getPropertyOrThrow(Unit.PropertyName.WAS_IN_AIR_BATTLE.toString()))
+        .thenReturn(wasInAirBattle);
+    when(wasInAirBattle.getValue()).thenReturn(false);
     when(battleState.filterUnits(
             BattleState.UnitBattleFilter.ACTIVE,
             BattleState.Side.OFFENSE,
