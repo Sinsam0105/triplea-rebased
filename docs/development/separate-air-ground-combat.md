@@ -42,15 +42,17 @@ When separated combat is enabled:
 - the existing non-combatant removal step then removes those aircraft from the normal battle roster
 - the legacy behavior is unchanged when the property is disabled
 
-The implementation reuses `Unit.PropertyName.WAS_IN_AIR_BATTLE`, so existing battle filtering, UI notifications, save serialization, and dependent-battle handling remain authoritative.
+The implementation reuses `Unit.PropertyName.WAS_IN_AIR_BATTLE`, so existing battle filtering, UI notifications, save serialization, and dependent-battle handling remain authoritative. Surviving aircraft remain in the territory after the air-domain result but cannot fire again in the ground battle. Existing air-battle retreat and withdrawal handling remains responsible for aircraft that leave the territory.
 
 ## Ownership boundary
 
-The ground-domain roster change does not by itself introduce air control. Territory ownership remains a ground concept. The remaining milestone work must ensure that:
+The ground-domain roster change does not introduce air control. Territory ownership remains a ground concept:
 
-- air-only forces cannot create an ownership-changing empty or ground battle
-- enemy aircraft alone do not prevent an eligible ground force from resolving ground ownership
-- only a surviving eligible non-air attacker may capture territory
+- an air-only attacking force has no eligible ground combatant and cannot capture territory
+- defending aircraft are removed from the ground roster, so they do not block an eligible ground force from resolving ownership
+- the existing normal-battle victory path changes ownership only when a surviving non-air attacker remains
+
+Air control is intentionally deferred to milestone 10 and will be exposed without overloading `Territory.owner`.
 
 ## Round limits
 
@@ -60,13 +62,12 @@ The existing `BattleRoundResolver` remains authoritative:
 - ground-domain battles use `maxGroundBattleRounds`
 - global properties remain compatibility fallbacks
 
-## Delivery sequence
+## Completed delivery
 
-This milestone is implemented in reviewable slices:
+Milestone 9 now includes:
 
-1. explicit domain model and deterministic policy — complete
-2. ground-roster separation and dependency integration — complete
-3. air-battle survivor handoff and withdrawal rules — next
-4. ownership and regression coverage — pending
-
-Air control is intentionally deferred to milestone 10. Its result will be exposed without overloading `Territory.owner`.
+1. explicit combat domains and deterministic raid → air → ground ordering
+2. opt-in compatibility policy for existing maps
+3. aircraft removal from both normal-battle rosters through the existing `WAS_IN_AIR_BATTLE` path
+4. survivor, withdrawal, and ownership behavior delegated to established TripleA engine paths
+5. policy, battle-step, full game-core, game-headless, and formatting regression checks
