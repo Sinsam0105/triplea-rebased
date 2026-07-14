@@ -17,8 +17,7 @@ class FixedReinforcementDelegateTest {
     final FixedReinforcementDelegate delegate = new FixedReinforcementDelegate();
     delegate
         .getTracker()
-        .completeRound(
-            player, 3, List.of(new FixedReinforcementOrder(2, "Front", "infantry", 1)));
+        .completeRound(player, 3, List.of(new FixedReinforcementOrder(2, "Front", "infantry", 1)));
 
     final Serializable state = delegate.saveState();
     final FixedReinforcementDelegate restored = new FixedReinforcementDelegate();
