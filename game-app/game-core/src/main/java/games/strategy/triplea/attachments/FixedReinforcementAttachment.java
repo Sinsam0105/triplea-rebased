@@ -5,6 +5,7 @@ import games.strategy.engine.data.Attachable;
 import games.strategy.engine.data.DefaultAttachment;
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
+import games.strategy.engine.data.GameState;
 import games.strategy.engine.data.MutableProperty;
 import games.strategy.engine.data.gameparser.GameParseException;
 import games.strategy.triplea.delegate.reinforcement.FixedReinforcementRule;
@@ -77,6 +78,9 @@ public final class FixedReinforcementAttachment extends DefaultAttachment {
   private void resetReinforcement() {
     reinforcements.clear();
   }
+
+  @Override
+  public void validate(final GameState data) {}
 
   @Override
   public Optional<MutableProperty<?>> getPropertyOrEmpty(@NonNls final String propertyName) {
