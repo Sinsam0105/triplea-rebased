@@ -15,8 +15,7 @@ import java.util.TreeMap;
 public final class VisibilityObservationFactory {
   private VisibilityObservationFactory() {}
 
-  public static VisibilityObservation create(
-      final GameState data, final GamePlayer viewer) {
+  public static VisibilityObservation create(final GameState data, final GamePlayer viewer) {
     final Set<Territory> visible = VisibilityService.getVisibleTerritories(viewer, data);
     final List<Territory> territories = new ArrayList<>(data.getMap().getTerritories());
     territories.sort(Comparator.comparing(Territory::getName));
@@ -47,8 +46,7 @@ public final class VisibilityObservationFactory {
 
   private static List<VisibilityObservation.UnitGroup> groupUnits(final Territory territory) {
     final Map<UnitKey, Integer> counts =
-        new TreeMap<>(
-            Comparator.comparing(UnitKey::owner).thenComparing(UnitKey::unitType));
+        new TreeMap<>(Comparator.comparing(UnitKey::owner).thenComparing(UnitKey::unitType));
     for (final Unit unit : territory.getUnitCollection().getUnits()) {
       counts.merge(
           new UnitKey(unit.getOwner().getName(), unit.getType().getName()), 1, Integer::sum);
