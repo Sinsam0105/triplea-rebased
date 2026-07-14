@@ -94,6 +94,42 @@ public record BattleObservation(
         BattleDecisionObservation.none());
   }
 
+  public BattleObservation(
+      final int schemaVersion,
+      final long seed,
+      final String battleId,
+      final String territory,
+      final int round,
+      final int maxRounds,
+      final boolean over,
+      final boolean amphibious,
+      final boolean headless,
+      final String offensePlayer,
+      final String defensePlayer,
+      final List<UnitGroupObservation> offense,
+      final List<UnitGroupObservation> defense,
+      final List<String> attackerRetreatTerritories,
+      final BattleDecisionObservation decision) {
+    this(
+        schemaVersion,
+        seed,
+        battleId,
+        territory,
+        round,
+        maxRounds,
+        over,
+        amphibious,
+        headless,
+        offensePlayer,
+        defensePlayer,
+        offense,
+        defense,
+        attackerRetreatTerritories,
+        "",
+        0,
+        decision);
+  }
+
   public BattleObservation {
     Objects.requireNonNull(battleId);
     Objects.requireNonNull(territory);
