@@ -148,6 +148,27 @@ class MainOffenseCombatValue implements CombatValue {
     AvailableSupports supportFromFriends;
     AvailableSupports supportFromEnemies;
 
+    MainOffenseStrength(
+        final int gameDiceSides,
+        final Collection<TerritoryEffect> territoryEffects,
+        final AvailableSupports supportFromFriends,
+        final AvailableSupports supportFromEnemies) {
+      this(gameDiceSides, territoryEffects, 0, supportFromFriends, supportFromEnemies);
+    }
+
+    MainOffenseStrength(
+        final int gameDiceSides,
+        final Collection<TerritoryEffect> territoryEffects,
+        final int groundStrengthModifier,
+        final AvailableSupports supportFromFriends,
+        final AvailableSupports supportFromEnemies) {
+      this.gameDiceSides = gameDiceSides;
+      this.territoryEffects = territoryEffects;
+      this.groundStrengthModifier = groundStrengthModifier;
+      this.supportFromFriends = supportFromFriends;
+      this.supportFromEnemies = supportFromEnemies;
+    }
+
     @Override
     public StrengthValue getStrength(final Unit unit) {
       final UnitAttachment ua = unit.getUnitAttachment();
