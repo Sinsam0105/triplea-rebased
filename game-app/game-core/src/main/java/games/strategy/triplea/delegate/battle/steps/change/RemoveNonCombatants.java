@@ -5,10 +5,10 @@ import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.changefactory.ChangeFactory;
 import games.strategy.engine.delegate.IDelegateBridge;
 import games.strategy.triplea.delegate.ExecutionStack;
-import games.strategy.triplea.delegate.Matches;
 import games.strategy.triplea.delegate.battle.AirGroundBattlePolicy;
 import games.strategy.triplea.delegate.battle.BattleActions;
 import games.strategy.triplea.delegate.battle.BattleState;
+import games.strategy.triplea.delegate.battle.IBattle.BattleDomain;
 import games.strategy.triplea.delegate.battle.steps.BattleStep;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -54,14 +54,13 @@ public class RemoveNonCombatants implements BattleStep {
       return;
     }
 
-    final CompositeChange change = new CompositeChange();
-    battleState
-        .filterUnits(
+    final Collection<Unit> activeUnits =
+        battleState.filterUnits(
             BattleState.UnitBattleFilter.ACTIVE,
             BattleState.Side.OFFENSE,
-            BattleState.Side.DEFENSE)
-        .stream()
-        .filter(Matches.unitIsAir())
+            BattleState.Side.DEFENSE);
+    final CompositeChange change = new CompositeChange();
+    AirGroundBattlePolicy.unitsForDomain(activeUnits, BattleDomain.AIR)
         .forEach(
             unit ->
                 change.add(
