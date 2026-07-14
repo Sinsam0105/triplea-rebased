@@ -68,8 +68,7 @@ public class RemoveNonCombatants implements BattleStep {
       return;
     }
 
-    final GamePlayer controller =
-        resolveController(offenseAircraft, defenseAircraft);
+    final GamePlayer controller = resolveController(offenseAircraft, defenseAircraft);
     final Change change =
         AirControlTracker.changeControl(battleState.getBattleSite(), controller, gameData);
     if (change.isEmpty()) {
