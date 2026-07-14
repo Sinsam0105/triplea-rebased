@@ -70,7 +70,8 @@ jobs:
               'import games.strategy.engine.data.GamePlayer;\n',
               'import games.strategy.engine.data.GameData;\n'
               'import games.strategy.engine.data.GamePlayer;\n'
-              'import games.strategy.engine.data.RelationshipTracker;\n',
+              'import games.strategy.engine.data.RelationshipTracker;\n'
+              'import games.strategy.engine.data.UnitType;\n',
               1,
           )
           text = text.replace(
@@ -93,6 +94,20 @@ jobs:
               '    when(attacker.getData()).thenReturn(playerData);\n'
               '    when(playerData.getRelationshipTracker()).thenReturn(relationships);\n'
               '    when(relationships.isAtWar(attacker, defender)).thenReturn(true);\n',
+              1,
+          )
+          text = text.replace(
+              '    final Unit unit = mock(Unit.class);\n'
+              '    final UnitAttachment attachment = mock(UnitAttachment.class);\n'
+              '    when(unit.getOwner()).thenReturn(owner);\n'
+              '    when(unit.getUnitAttachment()).thenReturn(attachment);\n',
+              '    final Unit unit = mock(Unit.class);\n'
+              '    final UnitType type = mock(UnitType.class);\n'
+              '    final UnitAttachment attachment = mock(UnitAttachment.class);\n'
+              '    when(unit.getOwner()).thenReturn(owner);\n'
+              '    when(unit.getType()).thenReturn(type);\n'
+              '    when(unit.getUnitAttachment()).thenReturn(attachment);\n'
+              '    when(type.getUnitAttachment()).thenReturn(attachment);\n',
               1,
           )
           path.write_text(text, encoding='utf-8')
