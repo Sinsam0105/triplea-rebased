@@ -56,6 +56,41 @@ jobs:
           apply_status=$?
           test_status=0
           if [[ $apply_status -eq 0 ]]; then
+            python - <<'PY'
+            from pathlib import Path
+            path = Path('game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/CombatDomainParticipantsTest.java')
+            text = path.read_text(encoding='utf-8')
+            text = text.replace(
+                'import games.strategy.engine.data.GamePlayer;\n',
+                'import games.strategy.engine.data.GameData;\n'
+                'import games.strategy.engine.data.GamePlayer;\n'
+                'import games.strategy.engine.data.RelationshipTracker;\n',
+                1,
+            )
+            text = text.replace(
+                '  private final GameState data = mock(GameState.class);\n'
+                '  private final GameProperties properties = mock(GameProperties.class);\n'
+                '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
+                '  private final GamePlayer defender = mock(GamePlayer.class);\n',
+                '  private final GameState data = mock(GameState.class);\n'
+                '  private final GameProperties properties = mock(GameProperties.class);\n'
+                '  private final GameData playerData = mock(GameData.class);\n'
+                '  private final RelationshipTracker relationships = mock(RelationshipTracker.class);\n'
+                '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
+                '  private final GamePlayer defender = mock(GamePlayer.class);\n',
+                1,
+            )
+            text = text.replace(
+                '    when(data.getProperties()).thenReturn(properties);\n'
+                '    when(attacker.isAtWar(defender)).thenReturn(true);\n',
+                '    when(data.getProperties()).thenReturn(properties);\n'
+                '    when(attacker.getData()).thenReturn(playerData);\n'
+                '    when(playerData.getRelationshipTracker()).thenReturn(relationships);\n'
+                '    when(relationships.isAtWar(attacker, defender)).thenReturn(true);\n',
+                1,
+            )
+            path.write_text(text, encoding='utf-8')
+            PY
             set -o pipefail
             ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee /tmp/gradle.log
             test_status=$?
