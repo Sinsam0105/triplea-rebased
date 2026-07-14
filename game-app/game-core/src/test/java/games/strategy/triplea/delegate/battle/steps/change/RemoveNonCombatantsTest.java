@@ -7,11 +7,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.Unit;
+import games.strategy.engine.data.properties.GameProperties;
 import games.strategy.engine.delegate.IDelegateBridge;
 import games.strategy.engine.display.IDisplay;
+import games.strategy.triplea.attachments.UnitAttachment;
 import games.strategy.triplea.delegate.ExecutionStack;
+import games.strategy.triplea.delegate.battle.AirGroundBattlePolicy;
 import games.strategy.triplea.delegate.battle.BattleActions;
 import games.strategy.triplea.delegate.battle.BattleState;
 import java.util.Collection;
@@ -109,5 +113,33 @@ class RemoveNonCombatantsTest {
     verify(display)
         .changedUnitsNotification(
             any(), eq(defender), eq(defenseNonCombatants), eq(null), eq(null));
+  }
+
+  @Test
+  void marksAircraftAsHandledByAirDomainBeforeGroundCombat() {
+    final RemoveNonCombatants removeNonCombatants =
+        new RemoveNonCombatants(battleState, battleActions);
+    final GameData gameData = mock(GameData.class);
+    final GameProperties gameProperties = mock(GameProperties.class);
+    final Unit aircraft = mock(Unit.class);
+    final UnitAttachment unitAttachment = mock(UnitAttachment.class);
+
+    when(delegateBridge.getData()).thenReturn(gameData);
+    when(gameData.getProperties()).thenReturn(gameProperties);
+    when(gameProperties.get(AirGroundBattlePolicy.SEPARATE_AIR_AND_GROUND_COMBAT, false))
+        .thenReturn(true);
+    when(aircraft.getUnitAttachment()).thenReturn(unitAttachment);
+    when(unitAttachment.isAir()).thenReturn(true);
+    when(battleState.filterUnits(
+            BattleState.UnitBattleFilter.ACTIVE,
+            BattleState.Side.OFFENSE,
+            BattleState.Side.DEFENSE))
+        .thenReturn(List.of(aircraft));
+    when(battleState.removeNonCombatants(BattleState.Side.OFFENSE)).thenReturn(List.of());
+    when(battleState.removeNonCombatants(BattleState.Side.DEFENSE)).thenReturn(List.of());
+
+    removeNonCombatants.execute(executionStack, delegateBridge);
+
+    verify(delegateBridge).addChange(any());
   }
 }
