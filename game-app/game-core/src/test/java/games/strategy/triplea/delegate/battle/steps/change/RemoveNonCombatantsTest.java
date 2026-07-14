@@ -2,7 +2,6 @@ package games.strategy.triplea.delegate.battle.steps.change;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -11,8 +10,8 @@ import static org.mockito.Mockito.when;
 import games.strategy.engine.data.Change;
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
-import games.strategy.engine.data.MutableProperty;
 import games.strategy.engine.data.Unit;
+import games.strategy.engine.data.UnitType;
 import games.strategy.engine.data.properties.GameProperties;
 import games.strategy.engine.delegate.IDelegateBridge;
 import games.strategy.engine.display.IDisplay;
@@ -119,26 +118,21 @@ class RemoveNonCombatantsTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   void marksAircraftAsHandledByAirDomainBeforeGroundCombat() {
     final RemoveNonCombatants removeNonCombatants =
         new RemoveNonCombatants(battleState, battleActions);
     final GameData gameData = mock(GameData.class);
     final GameProperties gameProperties = mock(GameProperties.class);
-    final Unit aircraft = mock(Unit.class);
+    final UnitType unitType = mock(UnitType.class);
     final UnitAttachment unitAttachment = mock(UnitAttachment.class);
-    final MutableProperty<Boolean> wasInAirBattle = mock(MutableProperty.class);
+    final Unit aircraft = new Unit(unitType, attacker, gameData);
 
     when(delegateBridge.getData()).thenReturn(gameData);
     when(gameData.getProperties()).thenReturn(gameProperties);
     when(gameProperties.get(AirGroundBattlePolicy.SEPARATE_AIR_AND_GROUND_COMBAT, false))
         .thenReturn(true);
-    when(aircraft.getUnitAttachment()).thenReturn(unitAttachment);
+    when(unitType.getUnitAttachment()).thenReturn(unitAttachment);
     when(unitAttachment.isAir()).thenReturn(true);
-    doReturn(wasInAirBattle)
-        .when(aircraft)
-        .getPropertyOrThrow(Unit.PropertyName.WAS_IN_AIR_BATTLE.toString());
-    when(wasInAirBattle.getValue()).thenReturn(false);
     when(battleState.filterUnits(
             BattleState.UnitBattleFilter.ACTIVE,
             BattleState.Side.OFFENSE,
