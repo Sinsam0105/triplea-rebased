@@ -65,19 +65,37 @@ jobs:
         run: ./gradlew :game-core:spotlessApply
 
       - name: Commit formatted UI sources
+        continue-on-error: true
         run: |
-          if git diff --quiet; then
-            echo 'No UI source changes to commit'
-          else
+          set +e
+          {
+            echo '=== status before commit ==='
+            git status --short
             git config user.name github-actions[bot]
             git config user.email 41898282+github-actions[bot]@users.noreply.github.com
             git add \
               game-app/game-core/src/main/java/games/strategy/triplea/ui/panels/map/MapPanel.java \
               game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/TileManager.java \
               game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/SmallMapImageManager.java
+            echo '=== staged diff ==='
+            git diff --cached --stat
             git commit -m 'Apply fog-of-war UI masking'
-            git push origin HEAD:agent/milestone-12-fog-of-war
-          fi
+            commit_status=$?
+            echo "commit_status=$commit_status"
+            if [ "$commit_status" -eq 0 ]; then
+              git push --verbose origin HEAD:agent/milestone-12-fog-of-war
+              echo "push_status=$?"
+            fi
+          } 2>&1 | tee ui-commit.log
+          exit 0
+
+      - name: Upload UI commit diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fog-ui-commit-diagnostics
+          path: ui-commit.log
+          if-no-files-found: error
 
       - name: Run focused tests and formatting checks
         shell: bash
