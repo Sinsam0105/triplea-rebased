@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/milestone-10-air-control
+  pull_request:
+    branches:
+      - variant-dev
 
 permissions:
   contents: read
