@@ -1,5 +1,6 @@
 name: Apply Fixed Reinforcement System
 
+# The workflow is committed before this trigger update so the push event can execute it.
 on:
   push:
     branches:
