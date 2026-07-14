@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-        with:
-          ref: agent/milestone-12-fog-of-war
 
       - name: Set up Java 25
         uses: actions/setup-java@v5
@@ -35,28 +33,6 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
-
-      - name: Format new fog-of-war sources
-        run: ./gradlew :game-core:spotlessApply
-
-      - name: Archive formatted fog-of-war sources
-        run: |
-          zip fog-formatted-sources.zip \
-            game-app/game-core/src/main/java/games/strategy/triplea/delegate/visibility/VisibilityObservationFactory.java \
-            game-app/game-core/src/main/java/games/strategy/triplea/delegate/visibility/VisibilityService.java \
-            game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/drawable/FogOfWarDrawable.java \
-            game-app/game-core/src/main/java/games/strategy/triplea/ui/visibility/LocalPlayerVisibility.java \
-            game-app/game-core/src/test/java/games/strategy/triplea/delegate/visibility/VisibilityServiceTest.java
-          git diff --binary > fog-formatted.patch
-
-      - name: Upload formatted fog-of-war sources
-        uses: actions/upload-artifact@v4
-        with:
-          name: fog-formatted-sources
-          path: |
-            fog-formatted-sources.zip
-            fog-formatted.patch
-          if-no-files-found: error
 
       - name: Run focused tests and formatting checks
         shell: bash
