@@ -11,8 +11,7 @@ import java.util.List;
 
 /** Common domain partitioning and scheduling policy for separated air and ground combat. */
 public final class AirGroundBattlePolicy {
-  public static final String SEPARATE_AIR_AND_GROUND_COMBAT =
-      "Separate Air And Ground Combat";
+  public static final String SEPARATE_AIR_AND_GROUND_COMBAT = "Separate Air And Ground Combat";
 
   private AirGroundBattlePolicy() {}
 
@@ -21,8 +20,7 @@ public final class AirGroundBattlePolicy {
         && gameState.getProperties().get(SEPARATE_AIR_AND_GROUND_COMBAT, false);
   }
 
-  public static List<Unit> unitsForDomain(
-      final Collection<Unit> units, final BattleDomain domain) {
+  public static List<Unit> unitsForDomain(final Collection<Unit> units, final BattleDomain domain) {
     return switch (domain) {
       case AIR -> units.stream().filter(Matches.unitIsAir()).toList();
       case GROUND -> units.stream().filter(Matches.unitIsNotAir()).toList();
