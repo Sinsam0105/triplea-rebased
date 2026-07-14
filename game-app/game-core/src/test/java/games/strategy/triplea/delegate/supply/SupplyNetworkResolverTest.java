@@ -40,8 +40,7 @@ class SupplyNetworkResolverTest {
   @Test
   void reachesFriendlyTerritoriesThroughOneSidedRoadDeclarations() {
     assertThat(SupplyNetworkResolver.getSupplySources(blue, data)).containsExactly(depot);
-    assertThat(SupplyNetworkResolver.getRoadNeighbors(road, data))
-        .containsExactly(depot, front);
+    assertThat(SupplyNetworkResolver.getRoadNeighbors(road, data)).containsExactly(depot, front);
     assertThat(SupplyNetworkResolver.getSuppliedTerritories(blue, data))
         .containsExactly(depot, road, front);
     assertThat(SupplyNetworkResolver.isSupplied(front, blue, data)).isTrue();
