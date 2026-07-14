@@ -34,6 +34,39 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Apply fog-of-war UI patch in CI workspace
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          workflow = Path('.github/workflows/apply-fog-of-war-ui.yml').read_text().splitlines()
+          start = workflow.index('          from pathlib import Path')
+          end = workflow.index('      - name: Format patched sources')
+          script = '\n'.join(line[10:] for line in workflow[start:end])
+          exec(compile(script, 'fog-ui-patch', 'exec'))
+          PY
+
+      - name: Format patched sources
+        run: ./gradlew :game-core:spotlessApply
+
+      - name: Archive patched UI sources
+        run: |
+          zip fog-ui-patched-sources.zip \
+            game-app/game-core/src/main/java/games/strategy/triplea/ui/panels/map/MapPanel.java \
+            game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/TileManager.java \
+            game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/SmallMapImageManager.java
+          git diff --binary > fog-ui-formatted.patch
+
+      - name: Upload patched UI sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: fog-ui-patched-sources
+          path: |
+            fog-ui-patched-sources.zip
+            fog-ui-formatted.patch
+          if-no-files-found: error
+
       - name: Run focused tests and formatting checks
         shell: bash
         run: |
