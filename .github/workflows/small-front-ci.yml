@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: small-front-ci-${{ github.ref }}
@@ -26,7 +26,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: agent/milestone-12-fog-of-war
-          fetch-depth: 0
 
       - name: Set up Java 25
         uses: actions/setup-java@v5
@@ -37,64 +36,26 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Apply fog-of-war UI patch in CI workspace
-        run: |
-          if grep -q 'LocalPlayerVisibility' game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/TileManager.java; then
-            echo 'Fog-of-war UI patch already applied'
-          else
-            python - <<'PY'
-          from pathlib import Path
-
-          path = Path('tools/apply_fog_ui_patch.py')
-          source = path.read_text()
-          source = source.replace(
-              "    if old not in text:\n"
-              "        raise RuntimeError(f\"Expected source block not found in {path}: {old[:120]!r}\")\n"
-              "    file.write_text(text.replace(old, new, 1))\n",
-              "    if old not in text:\n"
-              "        if new in text:\n"
-              "            return\n"
-              "        raise RuntimeError(f\"Expected source block not found in {path}: {old[:120]!r}\")\n"
-              "    file.write_text(text.replace(old, new, 1))\n",
-          )
-          exec(compile(source, str(path), 'exec'))
-          PY
-          fi
-
-      - name: Format patched sources
+      - name: Format new fog-of-war sources
         run: ./gradlew :game-core:spotlessApply
 
-      - name: Commit formatted UI sources
-        continue-on-error: true
+      - name: Archive formatted fog-of-war sources
         run: |
-          set +e
-          {
-            echo '=== status before commit ==='
-            git status --short
-            git config user.name github-actions[bot]
-            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-            git add \
-              game-app/game-core/src/main/java/games/strategy/triplea/ui/panels/map/MapPanel.java \
-              game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/TileManager.java \
-              game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/SmallMapImageManager.java
-            echo '=== staged diff ==='
-            git diff --cached --stat
-            git commit -m 'Apply fog-of-war UI masking'
-            commit_status=$?
-            echo "commit_status=$commit_status"
-            if [ "$commit_status" -eq 0 ]; then
-              git push --verbose origin HEAD:agent/milestone-12-fog-of-war
-              echo "push_status=$?"
-            fi
-          } 2>&1 | tee ui-commit.log
-          exit 0
+          zip fog-formatted-sources.zip \
+            game-app/game-core/src/main/java/games/strategy/triplea/delegate/visibility/VisibilityObservationFactory.java \
+            game-app/game-core/src/main/java/games/strategy/triplea/delegate/visibility/VisibilityService.java \
+            game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/drawable/FogOfWarDrawable.java \
+            game-app/game-core/src/main/java/games/strategy/triplea/ui/visibility/LocalPlayerVisibility.java \
+            game-app/game-core/src/test/java/games/strategy/triplea/delegate/visibility/VisibilityServiceTest.java
+          git diff --binary > fog-formatted.patch
 
-      - name: Upload UI commit diagnostics
-        if: always()
+      - name: Upload formatted fog-of-war sources
         uses: actions/upload-artifact@v4
         with:
-          name: fog-ui-commit-diagnostics
-          path: ui-commit.log
+          name: fog-formatted-sources
+          path: |
+            fog-formatted-sources.zip
+            fog-formatted.patch
           if-no-files-found: error
 
       - name: Run focused tests and formatting checks
