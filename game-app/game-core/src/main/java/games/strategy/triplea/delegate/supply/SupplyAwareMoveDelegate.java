@@ -27,9 +27,7 @@ public final class SupplyAwareMoveDelegate extends MoveDelegate {
               move.getUnits(), move.getRoute().getStart(), movingPlayer, data);
       if (!outOfSupply.isEmpty()) {
         return Optional.of(
-            OUT_OF_SUPPLY_UNITS_CANNOT_MOVE
-                + ": "
-                + MyFormatter.unitsToTextNoOwner(outOfSupply));
+            OUT_OF_SUPPLY_UNITS_CANNOT_MOVE + ": " + MyFormatter.unitsToTextNoOwner(outOfSupply));
       }
     }
     return super.performMove(move);
