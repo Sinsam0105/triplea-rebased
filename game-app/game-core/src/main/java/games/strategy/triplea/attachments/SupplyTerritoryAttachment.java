@@ -93,14 +93,16 @@ public final class SupplyTerritoryAttachment extends DefaultAttachment {
   @Override
   public void validate(final GameState data) throws GameParseException {
     if (!(getAttachedTo() instanceof Territory territory)) {
-      throw new GameParseException("Supply attachment must be attached to a territory" + thisErrorMsg());
+      throw new GameParseException(
+          "Supply attachment must be attached to a territory" + thisErrorMsg());
     }
     if (territory.isWater() && (supplySource || !roadConnections.isEmpty())) {
       throw new GameParseException("Supply sources and roads must be on land" + thisErrorMsg());
     }
     for (final Territory connected : roadConnections) {
       if (connected.equals(territory)) {
-        throw new GameParseException("A road may not connect a territory to itself" + thisErrorMsg());
+        throw new GameParseException(
+            "A road may not connect a territory to itself" + thisErrorMsg());
       }
       if (connected.isWater()) {
         throw new GameParseException("Road connections must end on land" + thisErrorMsg());
