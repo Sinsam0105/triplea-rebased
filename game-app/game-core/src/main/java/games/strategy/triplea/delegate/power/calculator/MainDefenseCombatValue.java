@@ -21,8 +21,8 @@ import org.triplea.java.collections.IntegerMap;
 /**
  * Calculates defense strength and roll for non-AA dice
  *
- * <p>This takes into account territory effects, friendly support, enemy support, and ground-strength
- * modifiers.
+ * <p>This takes into account territory effects, friendly support, enemy support, and
+ * ground-strength modifiers.
  */
 @Builder
 @Value
@@ -158,12 +158,7 @@ class MainDefenseCombatValue implements CombatValue {
         final AvailableSupports supportFromFriends,
         final AvailableSupports supportFromEnemies) {
       this(
-          gameSequence,
-          gameDiceSides,
-          territoryEffects,
-          0,
-          supportFromFriends,
-          supportFromEnemies);
+          gameSequence, gameDiceSides, territoryEffects, 0, supportFromFriends, supportFromEnemies);
     }
 
     MainDefenseStrength(
