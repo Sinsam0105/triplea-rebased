@@ -1,5 +1,6 @@
 package games.strategy.triplea.delegate.reinforcement;
 
+import games.strategy.engine.message.IRemote;
 import games.strategy.triplea.delegate.BaseTripleADelegate;
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,6 +13,11 @@ public final class FixedReinforcementDelegate extends BaseTripleADelegate {
   public void start() {
     super.start();
     FixedReinforcementService.apply(bridge, player, tracker);
+  }
+
+  @Override
+  public Class<IRemote> getRemoteType() {
+    return IRemote.class;
   }
 
   @Override
@@ -39,8 +45,7 @@ public final class FixedReinforcementDelegate extends BaseTripleADelegate {
   public void loadState(final Serializable state) {
     final State saved = (State) state;
     super.loadState(saved.superState);
-    tracker =
-        saved.tracker == null ? new FixedReinforcementTracker() : saved.tracker;
+    tracker = saved.tracker == null ? new FixedReinforcementTracker() : saved.tracker;
   }
 
   private static final class State implements Serializable {
