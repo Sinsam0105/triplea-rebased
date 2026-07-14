@@ -108,7 +108,7 @@ Exit condition: every current unit-entry path enforces the same terrain capacity
 
 ## 7. Combat and redeployment movement
 
-Status: next.
+Status: in progress.
 
 - separate combat and after-combat movement values
 - `MovementAllowanceResolver`
