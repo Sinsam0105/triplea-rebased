@@ -4,6 +4,7 @@ import games.strategy.engine.data.GameSequence;
 import games.strategy.engine.data.TerritoryEffect;
 import games.strategy.engine.data.Unit;
 import games.strategy.triplea.attachments.UnitAttachment;
+import games.strategy.triplea.delegate.Matches;
 import games.strategy.triplea.delegate.TerritoryEffectHelper;
 import games.strategy.triplea.delegate.battle.BattleState;
 import java.util.Collection;
@@ -19,8 +20,8 @@ import org.triplea.java.collections.IntegerMap;
 /**
  * Calculates offense strength and roll for non-AA dice
  *
- * <p>This takes into account marine, bombarding, territory effects, friendly support, and enemy
- * support
+ * <p>This takes into account marine, bombarding, territory effects, friendly support, enemy support,
+ * and ground-strength modifiers.
  */
 @Builder
 @Value
@@ -39,6 +40,9 @@ class MainOffenseCombatValue implements CombatValue {
   @Nonnull AvailableSupports rollSupportFromEnemies;
 
   @Nonnull Collection<TerritoryEffect> territoryEffects;
+
+  int offenseGroundStrengthModifier;
+  int defenseGroundStrengthModifier;
 
   @Getter(onMethod_ = @Override)
   @Nonnull
@@ -60,6 +64,7 @@ class MainOffenseCombatValue implements CombatValue {
     return new MainOffenseStrength(
         gameDiceSides,
         territoryEffects,
+        offenseGroundStrengthModifier,
         strengthSupportFromFriends.copy(),
         strengthSupportFromEnemies.copy());
   }
@@ -92,6 +97,8 @@ class MainOffenseCombatValue implements CombatValue {
         .friendUnits(List.of())
         .enemyUnits(List.of())
         .territoryEffects(territoryEffects)
+        .offenseGroundStrengthModifier(offenseGroundStrengthModifier)
+        .defenseGroundStrengthModifier(defenseGroundStrengthModifier)
         .build();
   }
 
@@ -108,6 +115,8 @@ class MainOffenseCombatValue implements CombatValue {
         .friendUnits(enemyUnits)
         .enemyUnits(friendUnits)
         .territoryEffects(territoryEffects)
+        .offenseGroundStrengthModifier(offenseGroundStrengthModifier)
+        .defenseGroundStrengthModifier(defenseGroundStrengthModifier)
         .build();
   }
 
@@ -135,6 +144,7 @@ class MainOffenseCombatValue implements CombatValue {
 
     int gameDiceSides;
     @Nonnull Collection<TerritoryEffect> territoryEffects;
+    int groundStrengthModifier;
     AvailableSupports supportFromFriends;
     AvailableSupports supportFromEnemies;
 
@@ -144,6 +154,9 @@ class MainOffenseCombatValue implements CombatValue {
       int strength = ua.getAttack(unit.getOwner());
       if (ua.getIsMarine() != 0 && unit.getWasAmphibious()) {
         strength += ua.getIsMarine();
+      }
+      if (Matches.unitIsLand().test(unit)) {
+        strength += groundStrengthModifier;
       }
 
       return StrengthValue.of(gameDiceSides, strength)
