@@ -26,8 +26,7 @@ class GroundStrengthModifierTest {
     assertThat(strength.getStrength(sea).getValue()).isEqualTo(2);
   }
 
-  private static Unit unit(
-      final GamePlayer player, final boolean air, final boolean sea) {
+  private static Unit unit(final GamePlayer player, final boolean air, final boolean sea) {
     final Unit unit = mock(Unit.class);
     final UnitAttachment attachment = mock(UnitAttachment.class);
     when(unit.getOwner()).thenReturn(player);
