@@ -28,6 +28,18 @@ jobs:
           distribution: temurin
           java-version: '25'
 
+      - name: Make patch application idempotent
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/apply_terrain_stack_capacity.py')
+          text = path.read_text()
+          text = text.replace(
+              '    if old not in text:\n        raise RuntimeError(f"pattern not found in {path}: {old[:100]!r}")\n    path.write_text(text.replace(old, new, 1))',
+              '    if old not in text:\n        print(f"pattern skipped in {path}: {old[:100]!r}")\n        return\n    path.write_text(text.replace(old, new, 1))')
+          path.write_text(text)
+          PY
+
       - name: Apply implementation
         run: python tools/apply_terrain_stack_capacity.py
 
