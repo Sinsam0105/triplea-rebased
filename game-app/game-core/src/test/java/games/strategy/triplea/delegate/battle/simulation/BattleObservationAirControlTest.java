@@ -33,11 +33,9 @@ class BattleObservationAirControlTest {
     when(battleState.getStatus()).thenReturn(BattleState.BattleStatus.of(1, 2, false, false, true));
     when(battleState.getPlayer(BattleState.Side.OFFENSE)).thenReturn(offense);
     when(battleState.getPlayer(BattleState.Side.DEFENSE)).thenReturn(defense);
-    when(battleState.filterUnits(
-            BattleState.UnitBattleFilter.ALIVE, BattleState.Side.OFFENSE))
+    when(battleState.filterUnits(BattleState.UnitBattleFilter.ALIVE, BattleState.Side.OFFENSE))
         .thenReturn(List.of());
-    when(battleState.filterUnits(
-            BattleState.UnitBattleFilter.ALIVE, BattleState.Side.DEFENSE))
+    when(battleState.filterUnits(BattleState.UnitBattleFilter.ALIVE, BattleState.Side.DEFENSE))
         .thenReturn(List.of());
     when(battleState.getAttackerRetreatTerritories()).thenReturn(List.of());
 
