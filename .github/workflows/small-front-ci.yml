@@ -42,7 +42,23 @@ jobs:
           if grep -q 'LocalPlayerVisibility' game-app/game-core/src/main/java/games/strategy/triplea/ui/screen/TileManager.java; then
             echo 'Fog-of-war UI patch already applied'
           else
-            python tools/apply_fog_ui_patch.py
+            python - <<'PY'
+          from pathlib import Path
+
+          path = Path('tools/apply_fog_ui_patch.py')
+          source = path.read_text()
+          source = source.replace(
+              "    if old not in text:\n"
+              "        raise RuntimeError(f\"Expected source block not found in {path}: {old[:120]!r}\")\n"
+              "    file.write_text(text.replace(old, new, 1))\n",
+              "    if old not in text:\n"
+              "        if new in text:\n"
+              "            return\n"
+              "        raise RuntimeError(f\"Expected source block not found in {path}: {old[:120]!r}\")\n"
+              "    file.write_text(text.replace(old, new, 1))\n",
+          )
+          exec(compile(source, str(path), 'exec'))
+          PY
           fi
 
       - name: Format patched sources
