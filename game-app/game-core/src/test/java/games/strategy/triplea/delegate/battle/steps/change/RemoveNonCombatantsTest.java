@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import games.strategy.engine.data.Change;
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.Unit;
@@ -140,6 +141,6 @@ class RemoveNonCombatantsTest {
 
     removeNonCombatants.execute(executionStack, delegateBridge);
 
-    verify(delegateBridge).addChange(any());
+    verify(delegateBridge).addChange(any(Change.class));
   }
 }
