@@ -349,23 +349,29 @@ public class BattleTracker implements Serializable {
       // say they were in combat
       markWasInCombat(units, bridge, changeTracker);
     } else {
-      // create both an air battle and a normal battle
+      final boolean separateAirAndGround = CombatDomainParticipants.separatesAirAndGround(data);
+      final Collection<Unit> airBattleUnits = CombatDomainParticipants.airBattleAttackers(units);
       if (!airBattleCompleted
-          && Properties.getBattlesMayBePreceededByAirBattles(data.getProperties())
+          && (separateAirAndGround
+              || Properties.getBattlesMayBePreceededByAirBattles(data.getProperties()))
           && AirBattle.territoryCouldPossiblyHaveAirBattleDefenders(
               route.getEnd(), gamePlayer, data, false)) {
-        addAirBattle(
-            route,
-            CollectionUtils.getMatches(units, AirBattle.attackingGroundSeaBattleEscorts()),
-            gamePlayer,
-            data,
-            BattleType.AIR_BATTLE);
+        addAirBattle(route, airBattleUnits, gamePlayer, data, BattleType.AIR_BATTLE);
       }
-      final Change change = addMustFightBattleChange(route, units, gamePlayer, data);
-      addChange(bridge, changeTracker, change);
-      if (units.stream().anyMatch(Matches.unitIsLand().or(Matches.unitIsSea()))) {
-        addEmptyBattle(
-            route, units, gamePlayer, bridge, changeTracker, unitsNotUnloadedTilEndOfRoute);
+      final Collection<Unit> groundBattleUnits =
+          CombatDomainParticipants.groundBattleAttackers(units, data);
+      if (!groundBattleUnits.isEmpty()) {
+        final Change change = addMustFightBattleChange(route, groundBattleUnits, gamePlayer, data);
+        addChange(bridge, changeTracker, change);
+        if (groundBattleUnits.stream().anyMatch(Matches.unitIsLand().or(Matches.unitIsSea()))) {
+          addEmptyBattle(
+              route,
+              groundBattleUnits,
+              gamePlayer,
+              bridge,
+              changeTracker,
+              unitsNotUnloadedTilEndOfRoute);
+        }
       }
     }
   }
@@ -456,7 +462,8 @@ public class BattleTracker implements Serializable {
         Matches.isTerritoryNotUnownedWaterAndCanBeTakenOverBy(gamePlayer)
             .or(Matches.isTerritoryEnemyAndNotUnownedWaterOrImpassableOrRestricted(gamePlayer));
     final Predicate<Territory> conquerable =
-        Matches.territoryIsEmptyOfCombatUnits(gamePlayer).and(passableLandAndNotRestricted);
+        CombatDomainParticipants.territoryIsEmptyOfGroundCombatUnits(gamePlayer, data)
+            .and(passableLandAndNotRestricted);
     final Collection<Territory> conqueredTerritories = new ArrayList<>();
     if (canConquerMiddleSteps) {
       conqueredTerritories.addAll(route.getMatches(conquerable));
@@ -509,10 +516,15 @@ public class BattleTracker implements Serializable {
       if (precede == null) {
         precede = getPendingBombingBattle(route.getEnd());
       }
+      final IBattle airBattle =
+          CombatDomainParticipants.separatesAirAndGround(data)
+              ? getPendingBattle(route.getEnd(), BattleType.AIR_BATTLE)
+              : null;
       // if we have a preceding battle, then we must use a non-fighting-battle
       // if we have scrambling on, and this is an amphibious attack,
       // we may wish to scramble to kill the transports, so must use non-fighting-battle also
       if (precede != null
+          || airBattle != null
           || (scramblingEnabled && route.isSeaUnload() && route.hasExactlyOneStep())) {
         IBattle nonFight = getPendingBattle(route.getEnd(), BattleType.NORMAL);
         if (nonFight == null) {
@@ -526,6 +538,9 @@ public class BattleTracker implements Serializable {
         addChange(bridge, changeTracker, change);
         if (precede != null) {
           addDependency(nonFight, precede);
+        }
+        if (airBattle != null && airBattle != precede) {
+          addDependency(nonFight, airBattle);
         }
       } else {
         if (Matches.isTerritoryEnemy(gamePlayer).test(route.getEnd())) {
@@ -1095,6 +1110,10 @@ public class BattleTracker implements Serializable {
       site = route.getStart();
     }
     // this will be taken care of by the non fighting battle
+    if (CombatDomainParticipants.separatesAirAndGround(data)
+        && !CombatDomainParticipants.hasGroundCombatDefenders(site, gamePlayer, data)) {
+      return ChangeFactory.EMPTY_CHANGE;
+    }
     if (!Matches.territoryHasEnemyUnits(gamePlayer).test(site)) {
       return ChangeFactory.EMPTY_CHANGE;
     }

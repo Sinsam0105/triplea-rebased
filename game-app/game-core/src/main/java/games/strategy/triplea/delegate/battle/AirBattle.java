@@ -336,7 +336,7 @@ public class AirBattle extends AbstractBattle {
 
   private void makeBattle(final IDelegateBridge bridge) {
     // record who was in this battle first, so that they do not take part in any ground battles
-    if (isBombingRun) {
+    if (isBombingRun || Properties.getSeparateAirAndGroundCombat(gameData.getProperties())) {
       recordUnitsWereInAirBattle(attackingUnits, bridge);
       recordUnitsWereInAirBattle(defendingUnits, bridge);
     }

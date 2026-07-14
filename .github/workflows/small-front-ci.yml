@@ -1,31 +1,29 @@
 name: Small Front CI
 
 on:
+  pull_request:
+    branches:
+      - variant-dev
   push:
     branches:
-      - agent/separate-air-ground-combat
+      - variant-dev
+      - 'agent/**'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: separate-air-ground-apply-${{ github.ref }}
+  group: small-front-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  apply:
-    if: >-
-      github.ref == 'refs/heads/agent/separate-air-ground-combat' &&
-      !contains(github.event.head_commit.message, '[skip separate-apply]')
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 30
     steps:
-      - name: Check out implementation branch
+      - name: Check out repository
         uses: actions/checkout@v7
-        with:
-          ref: agent/separate-air-ground-combat
-          fetch-depth: 0
 
       - name: Set up Java 25
         uses: actions/setup-java@v5
@@ -36,143 +34,16 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Apply implementation
-        id: apply
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY' > /tmp/apply.log 2>&1
-          from pathlib import Path
-          path = Path('docs/development/small-front-roadmap.md')
-          text = path.read_text(encoding='utf-8')
-          text = text.replace(
-              '## 9. Separate air and ground combat\n\nStatus: next.\n\n',
-              '## 9. Separate air and ground combat\n\n',
-              1,
-          )
-          path.write_text(text, encoding='utf-8')
-          PY
-          python tools/apply_separate_air_ground_combat.py >> /tmp/apply.log 2>&1
-
-      - name: Repair generated fixtures and infrastructure predicate
-        id: patch
-        if: steps.apply.outcome == 'success'
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY' > /tmp/patch.log 2>&1
-          from pathlib import Path
-
-          source = Path('game-app/game-core/src/main/java/games/strategy/triplea/delegate/battle/CombatDomainParticipants.java')
-          source_text = source.read_text(encoding='utf-8')
-          source_text = source_text.replace(
-              '    return groundBattleDefenders(territory, attacker, data).stream()\n'
-              '        .anyMatch(Matches.unitIsInfrastructure().negate());\n',
-              '    return groundBattleDefenders(territory, attacker, data).stream()\n'
-              '        .anyMatch(unit -> !unit.getUnitAttachment().isInfrastructure());\n',
-              1,
-          )
-          source.write_text(source_text, encoding='utf-8')
-
-          path = Path('game-app/game-core/src/test/java/games/strategy/triplea/delegate/battle/CombatDomainParticipantsTest.java')
-          text = path.read_text(encoding='utf-8')
-          text = text.replace(
-              'import games.strategy.engine.data.GamePlayer;\n',
-              'import games.strategy.engine.data.GameData;\n'
-              'import games.strategy.engine.data.GamePlayer;\n'
-              'import games.strategy.engine.data.RelationshipTracker;\n',
-              1,
-          )
-          text = text.replace(
-              '  private final GameState data = mock(GameState.class);\n'
-              '  private final GameProperties properties = mock(GameProperties.class);\n'
-              '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
-              '  private final GamePlayer defender = mock(GamePlayer.class);\n',
-              '  private final GameState data = mock(GameState.class);\n'
-              '  private final GameProperties properties = mock(GameProperties.class);\n'
-              '  private final GameData playerData = mock(GameData.class);\n'
-              '  private final RelationshipTracker relationships = mock(RelationshipTracker.class);\n'
-              '  private final GamePlayer attacker = mock(GamePlayer.class);\n'
-              '  private final GamePlayer defender = mock(GamePlayer.class);\n',
-              1,
-          )
-          text = text.replace(
-              '    when(data.getProperties()).thenReturn(properties);\n'
-              '    when(attacker.isAtWar(defender)).thenReturn(true);\n',
-              '    when(data.getProperties()).thenReturn(properties);\n'
-              '    when(attacker.getData()).thenReturn(playerData);\n'
-              '    when(playerData.getRelationshipTracker()).thenReturn(relationships);\n'
-              '    when(relationships.isAtWar(attacker, defender)).thenReturn(true);\n',
-              1,
-          )
-          path.write_text(text, encoding='utf-8')
-          PY
-
-      - name: Format and test
-        id: test
-        if: steps.apply.outcome == 'success' && steps.patch.outcome == 'success'
-        continue-on-error: true
+      - name: Run focused tests and formatting checks
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee /tmp/gradle.log
+          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
 
-      - name: Commit validated implementation
-        if: >-
-          steps.apply.outcome == 'success' &&
-          steps.patch.outcome == 'success' &&
-          steps.test.outcome == 'success'
-        shell: bash
-        run: |
-          git fetch origin variant-dev
-          git show origin/variant-dev:.github/workflows/small-front-ci.yml > .github/workflows/small-front-ci.yml
-          rm tools/apply_separate_air_ground_combat.py
-          rm -f docs/development/validation/separate-air-ground.log.md
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "[skip separate-apply] Separate air and ground combat"
-          git push origin HEAD:agent/separate-air-ground-combat
-
-      - name: Commit validation diagnostics
-        if: >-
-          always() &&
-          (steps.apply.outcome != 'success' ||
-           steps.patch.outcome != 'success' ||
-           steps.test.outcome != 'success')
-        shell: bash
-        run: |
-          cp /tmp/apply.log /tmp/apply-saved.log 2>/dev/null || true
-          cp /tmp/patch.log /tmp/patch-saved.log 2>/dev/null || true
-          cp /tmp/gradle.log /tmp/gradle-saved.log 2>/dev/null || true
-          git reset --hard "$GITHUB_SHA"
-          mkdir -p docs/development/validation
-          {
-            echo '# Separate air and ground combat validation failure'
-            echo
-            echo "apply outcome: ${{ steps.apply.outcome }}"
-            echo "patch outcome: ${{ steps.patch.outcome }}"
-            echo "test outcome: ${{ steps.test.outcome }}"
-            echo
-            echo '## Apply log'
-            echo '```text'
-            cat /tmp/apply-saved.log 2>/dev/null || true
-            echo '```'
-            echo
-            echo '## Patch log'
-            echo '```text'
-            cat /tmp/patch-saved.log 2>/dev/null || true
-            echo '```'
-            echo
-            echo '## Gradle log'
-            echo '```text'
-            tail -n 500 /tmp/gradle-saved.log 2>/dev/null || true
-            echo '```'
-          } > docs/development/validation/separate-air-ground.log.md
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/development/validation/separate-air-ground.log.md
-          git commit -m "[skip separate-apply] Record separate combat validation failure"
-          git push origin HEAD:agent/separate-air-ground-combat
+      - name: Upload Gradle log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: small-front-gradle-log
+          path: gradle.log
+          if-no-files-found: error

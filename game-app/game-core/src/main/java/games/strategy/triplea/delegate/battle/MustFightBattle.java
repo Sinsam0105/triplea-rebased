@@ -156,13 +156,15 @@ public class MustFightBattle extends DependentBattle
       final GameData data,
       final BattleTracker battleTracker) {
     super(battleSite, attacker, battleTracker, data);
-    defendingUnits.addAll(this.battleSite.getMatches(Matches.enemyUnit(attacker)));
+    defendingUnits.addAll(
+        CombatDomainParticipants.groundBattleDefenders(this.battleSite, attacker, data));
     maxRounds = BattleRoundResolver.resolveGroundBattleRounds(battleSite, territoryEffects, data);
   }
 
   void resetDefendingUnits(final GamePlayer attacker) {
     defendingUnits.clear();
-    defendingUnits.addAll(battleSite.getMatches(Matches.enemyUnit(attacker)));
+    defendingUnits.addAll(
+        CombatDomainParticipants.groundBattleDefenders(battleSite, attacker, gameData));
   }
 
   /** Used for head-less battles. */
@@ -172,8 +174,16 @@ public class MustFightBattle extends DependentBattle
       final Collection<Unit> bombarding,
       final GamePlayer defender,
       final Collection<TerritoryEffect> territoryEffects) {
-    defendingUnits = new ArrayList<>(defending);
-    attackingUnits = new ArrayList<>(attacking);
+    defendingUnits =
+        new ArrayList<>(
+            CombatDomainParticipants.separatesAirAndGround(gameData)
+                ? defending.stream().filter(Matches.unitIsNotAir()).toList()
+                : defending);
+    attackingUnits =
+        new ArrayList<>(
+            CombatDomainParticipants.separatesAirAndGround(gameData)
+                ? attacking.stream().filter(Matches.unitIsNotAir()).toList()
+                : attacking);
     bombardingUnits = new ArrayList<>(bombarding);
     this.defender = defender;
     this.territoryEffects = territoryEffects;
@@ -188,12 +198,14 @@ public class MustFightBattle extends DependentBattle
   public Change addAttackChange(
       final Route route, final Collection<Unit> units, final Map<Unit, Set<Unit>> targets) {
     final CompositeChange change = new CompositeChange();
+    final Collection<Unit> domainUnits =
+        CombatDomainParticipants.groundBattleAttackers(units, gameData);
     // Filter out allied units if WW2V2
     final Predicate<Unit> ownedBy = Matches.unitIsOwnedBy(attacker);
     final Collection<Unit> attackingUnits =
         Properties.getWW2V2(gameData.getProperties())
-            ? CollectionUtils.getMatches(units, ownedBy)
-            : units;
+            ? CollectionUtils.getMatches(domainUnits, ownedBy)
+            : domainUnits;
     final Territory attackingFrom = route.getTerritoryBeforeEnd();
     this.attackingUnits.addAll(attackingUnits);
     attackingFromMap.computeIfAbsent(attackingFrom, k -> new ArrayList<>()).addAll(attackingUnits);

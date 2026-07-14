@@ -547,6 +547,10 @@ public final class Properties implements Constants {
     return properties.get(SUBMARINES_DEFENDING_MAY_SUBMERGE_OR_RETREAT, false);
   }
 
+  public static boolean getSeparateAirAndGroundCombat(final GameProperties properties) {
+    return properties.get(SEPARATE_AIR_AND_GROUND_COMBAT, false);
+  }
+
   public static int getAirBattleRounds(final GameProperties properties) {
     return properties.get(AIR_BATTLE_ROUNDS, 1);
   }

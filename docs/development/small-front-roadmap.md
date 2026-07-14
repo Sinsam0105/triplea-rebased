@@ -139,13 +139,16 @@ Exit condition: the map plays as a narrow-front reinforcement game without IC in
 
 ## 9. Separate air and ground combat
 
-Status: next.
+Status: in progress in PR #11.
 
-- distinct air-battle and ground-battle scheduling
-- dependency ordering: air battle before ground battle
-- aircraft cannot capture ground territory
-- aircraft withdrawal and destruction rules
-- separate air and ground round limits
+- optional `Separate Air And Ground Combat` game property with legacy fallback
+- air-capable attackers assigned to `AIR_BATTLE`
+- all aircraft excluded from the dependent normal battle
+- enemy aircraft ignored when determining whether ground combat is required
+- non-fighting ground capture waits for the air battle dependency
+- surviving, grounded, and withdrawn aircraft marked as having completed air combat
+- aircraft-only forces cannot create or capture a ground battle
+- existing scramble, retreat, casualty, destruction, and terrain round-limit rules retained
 
 Exit condition: air units resolve combat independently and never change ground ownership directly.
 

@@ -180,6 +180,7 @@ public interface Constants {
   String SUBMARINES_DEFENDING_MAY_SUBMERGE_OR_RETREAT =
       "Submarines Defending May Submerge Or Retreat";
   String SUPER_SUB_DEFENSE_BONUS = "Super Sub Defence Bonus";
+  String SEPARATE_AIR_AND_GROUND_COMBAT = "Separate Air And Ground Combat";
   String AIR_BATTLE_ROUNDS = "Air Battle Rounds";
   String SEA_BATTLE_ROUNDS = "Sea Battle Rounds";
   String LAND_BATTLE_ROUNDS = "Land Battle Rounds";
