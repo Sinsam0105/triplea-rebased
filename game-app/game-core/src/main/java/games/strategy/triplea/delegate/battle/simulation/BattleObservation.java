@@ -19,9 +19,11 @@ public record BattleObservation(
     List<UnitGroupObservation> offense,
     List<UnitGroupObservation> defense,
     List<String> attackerRetreatTerritories,
+    String airControlPlayer,
+    int offenseGroundAttackBonus,
     BattleDecisionObservation decision) {
 
-  public static final int CURRENT_SCHEMA_VERSION = 3;
+  public static final int CURRENT_SCHEMA_VERSION = 4;
 
   public BattleObservation(
       final int schemaVersion,
@@ -52,6 +54,8 @@ public record BattleObservation(
         offense,
         defense,
         attackerRetreatTerritories,
+        "",
+        0,
         BattleDecisionObservation.none());
   }
 
@@ -85,6 +89,8 @@ public record BattleObservation(
         offense,
         defense,
         attackerRetreatTerritories,
+        "",
+        0,
         BattleDecisionObservation.none());
   }
 
@@ -96,6 +102,7 @@ public record BattleObservation(
     offense = List.copyOf(offense);
     defense = List.copyOf(defense);
     attackerRetreatTerritories = List.copyOf(attackerRetreatTerritories);
+    Objects.requireNonNull(airControlPlayer);
     Objects.requireNonNull(decision);
   }
 }
