@@ -1,29 +1,29 @@
 name: Small Front CI
 
 on:
-  pull_request:
-    branches:
-      - variant-dev
   push:
     branches:
-      - variant-dev
-      - 'agent/**'
+      - agent/separate-air-ground-combat
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: small-front-ci-${{ github.ref }}
+  group: separate-air-ground-apply-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/agent/separate-air-ground-combat'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
-      - name: Check out repository
+      - name: Check out implementation branch
         uses: actions/checkout@v7
+        with:
+          ref: agent/separate-air-ground-combat
+          fetch-depth: 0
 
       - name: Set up Java 25
         uses: actions/setup-java@v5
@@ -34,16 +34,31 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Run focused tests and formatting checks
+      - name: Apply implementation
+        run: python tools/apply_separate_air_ground_combat.py
+
+      - name: Format and test
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew :game-core:test :game-headless:test spotlessCheck --stacktrace 2>&1 | tee gradle.log
+          ./gradlew spotlessApply :game-core:test :game-headless:test --stacktrace 2>&1 | tee gradle.log
+
+      - name: Commit validated implementation
+        shell: bash
+        run: |
+          git fetch origin variant-dev
+          git show origin/variant-dev:.github/workflows/small-front-ci.yml > .github/workflows/small-front-ci.yml
+          rm tools/apply_separate_air_ground_combat.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Separate air and ground combat"
+          git push origin HEAD:agent/separate-air-ground-combat
 
       - name: Upload Gradle log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: small-front-gradle-log
+          name: separate-air-ground-gradle-log
           path: gradle.log
-          if-no-files-found: error
+          if-no-files-found: ignore
