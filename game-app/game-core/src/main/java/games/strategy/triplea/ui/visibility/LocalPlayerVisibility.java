@@ -13,8 +13,7 @@ import java.util.Set;
 public final class LocalPlayerVisibility {
   private LocalPlayerVisibility() {}
 
-  public static List<GamePlayer> getViewers(
-      final UiContext uiContext, final GameState data) {
+  public static List<GamePlayer> getViewers(final UiContext uiContext, final GameState data) {
     if (uiContext.getLocalPlayers() == null) {
       return List.of();
     }
@@ -27,8 +26,7 @@ public final class LocalPlayerVisibility {
         .toList();
   }
 
-  public static boolean isMaskingEnabled(
-      final UiContext uiContext, final GameState data) {
+  public static boolean isMaskingEnabled(final UiContext uiContext, final GameState data) {
     return VisibilityService.isEnabled(data) && !getViewers(uiContext, data).isEmpty();
   }
 
