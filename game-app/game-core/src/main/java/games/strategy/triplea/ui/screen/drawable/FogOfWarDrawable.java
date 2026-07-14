@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 /** Covers a hidden territory while preserving its public shape and name. */
 @AllArgsConstructor
 public final class FogOfWarDrawable extends TerritoryDrawable {
-  private static final Color FOG_COLOR = new Color(24, 28, 32, 232);
+  private static final Color FOG_COLOR = new Color(24, 28, 32);
 
   private final Territory territory;
 
