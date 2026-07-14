@@ -20,10 +20,7 @@ public record FixedReinforcementObservation(
   public record Entry(int round, String territory, String unitType, int quantity) {
     static Entry from(final FixedReinforcementOrder order) {
       return new Entry(
-          order.scheduledRound(),
-          order.territoryName(),
-          order.unitTypeName(),
-          order.quantity());
+          order.scheduledRound(), order.territoryName(), order.unitTypeName(), order.quantity());
     }
 
     static Entry from(final FixedReinforcementRule rule) {
