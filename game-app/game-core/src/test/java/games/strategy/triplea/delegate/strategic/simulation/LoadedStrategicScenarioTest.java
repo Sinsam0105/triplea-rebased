@@ -56,12 +56,7 @@ class LoadedStrategicScenarioTest {
     data.getSequence()
         .addStep(
             new GameStep(
-                "BlueCombatMove",
-                "Combat Move",
-                blue,
-                combatMove,
-                data,
-                moveProperties(true)));
+                "BlueCombatMove", "Combat Move", blue, combatMove, data, moveProperties(true)));
     data.getSequence()
         .addStep(new GameStep("BlueBattle", "Battle", blue, battle, data, new Properties()));
     data.getSequence()
