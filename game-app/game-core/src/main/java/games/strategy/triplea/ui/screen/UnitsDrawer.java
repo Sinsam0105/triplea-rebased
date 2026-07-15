@@ -271,10 +271,7 @@ public class UnitsDrawer extends AbstractDrawable {
     final String label = "O" + isolationTurns + "/" + SupplyNetworkResolver.getRemovalTurns(data);
     final int x = placementPoint.x - bounds.x + 1;
     final int y =
-        placementPoint.y
-            - bounds.y
-            + uiContext.getUnitImageFactory().getUnitImageHeight()
-            - 15;
+        placementPoint.y - bounds.y + uiContext.getUnitImageFactory().getUnitImageHeight() - 15;
     final int width = Math.max(28, label.length() * 7);
     final Color previousColor = graphics.getColor();
     final Font previousFont = graphics.getFont();
