@@ -49,13 +49,11 @@ class BattleSimulationServerTest {
     assertEquals("schema", response.type());
     final Map<?, ?> data = (Map<?, ?>) response.data();
     assertEquals(BattleEpisodeLog.CURRENT_LOG_SCHEMA_VERSION, data.get("episodeLogSchemaVersion"));
-    assertEquals(
-        StrategicObservation.CURRENT_SCHEMA_VERSION, data.get("strategicSchemaVersion"));
+    assertEquals(StrategicObservation.CURRENT_SCHEMA_VERSION, data.get("strategicSchemaVersion"));
     final List<?> commands = (List<?>) data.get("commands");
     assertTrue(commands.containsAll(List.of("episodeLog", "replay", "batch")));
     assertTrue(
-        commands.containsAll(
-            List.of("strategicReset", "strategicLegalActions", "strategicStep")));
+        commands.containsAll(List.of("strategicReset", "strategicLegalActions", "strategicStep")));
   }
 
   @Test
