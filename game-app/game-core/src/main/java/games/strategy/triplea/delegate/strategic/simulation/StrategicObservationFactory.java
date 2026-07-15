@@ -1,7 +1,7 @@
 package games.strategy.triplea.delegate.strategic.simulation;
 
+import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
-import games.strategy.engine.data.GameState;
 import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.Unit;
 import games.strategy.triplea.attachments.SupplyTerritoryAttachment;
@@ -39,7 +39,7 @@ public final class StrategicObservationFactory {
   private StrategicObservationFactory() {}
 
   public static StrategicObservation create(
-      final GameState data,
+      final GameData data,
       final GamePlayer player,
       final long seed,
       final StrategicPhase phase,
@@ -96,7 +96,9 @@ public final class StrategicObservationFactory {
                 ? StrategicDecisionDomain.BATTLE
                 : StrategicDecisionDomain.STRATEGIC;
     final String sequenceStep =
-        Optional.ofNullable(data.getSequence().getStep().getName()).orElse("");
+        data.getSequence().size() == 0
+            ? ""
+            : Optional.ofNullable(data.getSequence().getStep().getName()).orElse("");
     return new StrategicObservation(
         StrategicObservation.CURRENT_SCHEMA_VERSION,
         seed,
@@ -112,7 +114,7 @@ public final class StrategicObservationFactory {
         phase == StrategicPhase.COMPLETE);
   }
 
-  static List<IBattle> pendingBattles(final GameState data) {
+  static List<IBattle> pendingBattles(final GameData data) {
     return data.getDelegates().stream()
         .filter(BattleDelegate.class::isInstance)
         .map(BattleDelegate.class::cast)
@@ -128,7 +130,7 @@ public final class StrategicObservationFactory {
         .orElse(List.of());
   }
 
-  private static FixedReinforcementTracker reinforcementTracker(final GameState data) {
+  private static FixedReinforcementTracker reinforcementTracker(final GameData data) {
     return data.getDelegates().stream()
         .filter(FixedReinforcementDelegate.class::isInstance)
         .map(FixedReinforcementDelegate.class::cast)
