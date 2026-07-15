@@ -34,6 +34,27 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Format strategic sources
+        run: ./gradlew :game-core:spotlessApply :game-headless:spotlessApply
+
+      - name: Archive formatted sources
+        shell: bash
+        run: |
+          mapfile -t changed < <(git diff --name-only -- '*.java')
+          printf '%s\n' "${changed[@]}" > strategic-formatted-files.txt
+          zip strategic-formatted-sources.zip "${changed[@]}"
+          git diff --binary > strategic-formatted.patch
+
+      - name: Upload formatted sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: strategic-formatted-sources
+          path: |
+            strategic-formatted-sources.zip
+            strategic-formatted-files.txt
+            strategic-formatted.patch
+          if-no-files-found: error
+
       - name: Run focused tests and formatting checks
         shell: bash
         run: |
