@@ -137,9 +137,7 @@ public final class BattleSimulationServer {
                 value ->
                     Response.success(
                         "strategicObservation",
-                        Map.of(
-                            "observation",
-                            value.reset(GSON.fromJson(data, StrategicResetRequest.class)))));
+                        Map.of("observation", value.reset(parseStrategicResetRequest(data)))));
         case "strategicLegalActions" ->
             withStrategicEnvironment(
                 strategicEnvironment,
@@ -155,6 +153,18 @@ public final class BattleSimulationServer {
     } catch (final RuntimeException e) {
       return Response.error(e.getClass().getSimpleName() + ": " + e.getMessage());
     }
+  }
+
+  private static StrategicResetRequest parseStrategicResetRequest(final JsonObject data) {
+    final int maxActions =
+        data.has("maxActions")
+            ? data.get("maxActions").getAsInt()
+            : StrategicResetRequest.DEFAULT_MAX_ACTIONS;
+    return new StrategicResetRequest(
+        data.get("scenarioPath").getAsString(),
+        data.get("seed").getAsLong(),
+        data.get("player").getAsString(),
+        maxActions);
   }
 
   private static Response withBattleEnvironment(
