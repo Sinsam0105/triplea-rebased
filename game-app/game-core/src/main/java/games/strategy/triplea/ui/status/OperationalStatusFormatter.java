@@ -126,9 +126,7 @@ public final class OperationalStatusFormatter {
         .filter(
             unit ->
                 unit.isOwnedBy(perspective)
-                    || data
-                        .getRelationshipTracker()
-                        .isAllied(perspective, unit.getOwner()))
+                    || data.getRelationshipTracker().isAllied(perspective, unit.getOwner()))
         .toList();
   }
 
