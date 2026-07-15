@@ -67,10 +67,7 @@ public final class StrategicObservationFactory {
                       .map(SupplyTerritoryAttachment::getSupplySource)
                       .orElse(false),
               territoryVisible && airControlStatus == AirControlTracker.Status.CONTROLLED
-                  ? airControl
-                      .getController(territory, data)
-                      .map(GamePlayer::getName)
-                      .orElse(null)
+                  ? airControl.getController(territory, data).map(GamePlayer::getName).orElse(null)
                   : null,
               territoryVisible ? airControlStatus.name() : null,
               territoryVisible && airControlStatus != AirControlTracker.Status.UNCONTROLLED
