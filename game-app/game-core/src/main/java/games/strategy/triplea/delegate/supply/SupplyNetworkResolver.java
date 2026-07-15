@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -35,16 +36,35 @@ public final class SupplyNetworkResolver {
         1, data.getProperties().get(OUT_OF_SUPPLY_REMOVAL_TURNS, DEFAULT_REMOVAL_TURNS));
   }
 
+  public static Optional<SupplyTracker> getTracker(final GameState data) {
+    return data.getDelegates().stream()
+        .filter(SupplyDelegate.class::isInstance)
+        .map(SupplyDelegate.class::cast)
+        .map(SupplyDelegate::getTracker)
+        .findFirst();
+  }
+
+  public static int getOutOfSupplyTurns(final Unit unit, final GameState data) {
+    return getTracker(data).map(tracker -> tracker.getOutOfSupplyTurns(unit)).orElse(0);
+  }
+
+  public static int getTurnsUntilRemoval(final Unit unit, final GameState data) {
+    final int isolationTurns = getOutOfSupplyTurns(unit, data);
+    return isolationTurns == 0 ? 0 : Math.max(0, getRemovalTurns(data) - isolationTurns);
+  }
+
   public static boolean requiresSupply(final Unit unit) {
     return Matches.unitIsLand().test(unit);
   }
 
   public static boolean canMove(
       final Unit unit, final Territory start, final GamePlayer player, final GameState data) {
-    return !isEnabled(data)
-        || start.isWater()
-        || !requiresSupply(unit)
-        || isSupplied(start, player, data);
+    if (!isEnabled(data) || start.isWater() || !requiresSupply(unit)) {
+      return true;
+    }
+    return getTracker(data)
+        .map(tracker -> tracker.getOutOfSupplyTurns(unit) == 0)
+        .orElseGet(() -> isSupplied(start, player, data));
   }
 
   public static boolean isSupplied(
@@ -115,12 +135,10 @@ public final class SupplyNetworkResolver {
       final Territory territory,
       final GamePlayer player,
       final GameState data) {
-    if (isSupplied(territory, player, data)) {
-      return List.of();
-    }
     return units.stream()
         .filter(unit -> unit.isOwnedBy(player))
         .filter(SupplyNetworkResolver::requiresSupply)
+        .filter(unit -> !canMove(unit, territory, player, data))
         .sorted(Comparator.comparing(unit -> unit.getId().toString()))
         .toList();
   }
