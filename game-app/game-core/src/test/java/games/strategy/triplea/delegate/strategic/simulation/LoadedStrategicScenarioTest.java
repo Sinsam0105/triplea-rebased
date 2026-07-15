@@ -14,7 +14,6 @@ import games.strategy.triplea.attachments.UnitAttachment;
 import games.strategy.triplea.delegate.MoveDelegate;
 import games.strategy.triplea.delegate.battle.BattleDelegate;
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.junit.jupiter.api.Test;
@@ -62,8 +61,7 @@ class LoadedStrategicScenarioTest {
                 data,
                 properties(GameStep.PropertyKeys.COMBAT_MOVE, "true")));
     data.getSequence()
-        .addStep(
-            new GameStep("BlueBattle", "Battle", blue, battle, data, new Properties()));
+        .addStep(new GameStep("BlueBattle", "Battle", blue, battle, data, new Properties()));
     data.getSequence()
         .addStep(
             new GameStep(
