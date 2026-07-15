@@ -149,8 +149,7 @@ public final class BattleSimulationServer {
                 strategicEnvironment,
                 value ->
                     Response.success(
-                        "strategicStep",
-                        value.step(GSON.fromJson(data, StrategicAction.class))));
+                        "strategicStep", value.step(GSON.fromJson(data, StrategicAction.class))));
         default -> Response.error("unknown command: " + command);
       };
     } catch (final RuntimeException e) {
