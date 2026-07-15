@@ -1,0 +1,107 @@
+name: Temporary Windows Small Front Build
+
+on:
+  push:
+    branches:
+      - temp-windows-build
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-2025
+    timeout-minutes: 90
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build portable engine
+        shell: pwsh
+        run: .\gradlew.bat :game-headed:portableInstaller --no-daemon --stacktrace
+
+      - name: Create self-contained Windows app image
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = $PWD.Path
+          $output = Join-Path $root 'windows-build-output'
+          $portable = Join-Path $output 'portable'
+          $appImages = Join-Path $output 'app-image'
+          New-Item -ItemType Directory -Force -Path $portable, $appImages | Out-Null
+
+          $portableZip = Get-ChildItem 'game-app/game-headed/build/distributions' -Filter '*.zip' | Select-Object -First 1
+          if (-not $portableZip) { throw 'portableInstaller ZIP was not created' }
+          Expand-Archive -Path $portableZip.FullName -DestinationPath $portable -Force
+
+          $mainJar = Get-ChildItem (Join-Path $portable 'bin') -Filter '*.jar' | Select-Object -First 1
+          if (-not $mainJar) { throw 'Headed game JAR was not found in the portable package' }
+
+          $jpackage = Join-Path $env:JAVA_HOME 'bin/jpackage.exe'
+          & $jpackage `
+            --type app-image `
+            --name 'TripleA-SmallFront' `
+            --input (Join-Path $portable 'bin') `
+            --main-jar $mainJar.Name `
+            --main-class 'org.triplea.game.client.HeadedGameRunner' `
+            --dest $appImages `
+            --vendor 'Small Front Prototype' `
+            --description 'TripleA custom engine with Small Front operational rules'
+          if ($LASTEXITCODE -ne 0) { throw "jpackage failed with exit code $LASTEXITCODE" }
+
+          $appRoot = Join-Path $appImages 'TripleA-SmallFront'
+          if (Test-Path (Join-Path $portable 'assets')) {
+            Copy-Item (Join-Path $portable 'assets') (Join-Path $appRoot 'assets') -Recurse -Force
+          }
+          if (Test-Path (Join-Path $portable 'dice_servers')) {
+            Copy-Item (Join-Path $portable 'dice_servers') (Join-Path $appRoot 'dice_servers') -Recurse -Force
+          }
+          if (Test-Path (Join-Path $portable '.triplea-root')) {
+            Copy-Item (Join-Path $portable '.triplea-root') (Join-Path $appRoot '.triplea-root') -Force
+          }
+
+          @'
+          TripleA Small Front custom engine
+
+          1. Extract the entire ZIP.
+          2. Run TripleA-SmallFront.exe.
+          3. Install the separate small_front_ardennes map folder into your TripleA downloadedMaps directory.
+
+          This build is an experimental prototype and is not an official TripleA release.
+          '@ | Set-Content (Join-Path $appRoot 'README-SMALL-FRONT.txt') -Encoding UTF8
+
+          $selfContainedZip = Join-Path $output 'TripleA-SmallFront-Windows-x64.zip'
+          Compress-Archive -Path $appRoot -DestinationPath $selfContainedZip -CompressionLevel Optimal -Force
+          Copy-Item $portableZip.FullName (Join-Path $output 'TripleA-SmallFront-portable-java-required.zip') -Force
+
+          Get-FileHash $selfContainedZip -Algorithm SHA256 |
+            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLowerInvariant(), (Split-Path $_.Path -Leaf) } |
+            Set-Content (Join-Path $output 'SHA256SUMS.txt') -Encoding ASCII
+
+          Get-ChildItem $output -Recurse | Select-Object FullName, Length
+
+      - name: Upload Windows engine package
+        uses: actions/upload-artifact@v4
+        with:
+          name: TripleA-SmallFront-Windows-x64
+          path: |
+            windows-build-output/TripleA-SmallFront-Windows-x64.zip
+            windows-build-output/TripleA-SmallFront-portable-java-required.zip
+            windows-build-output/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 7
