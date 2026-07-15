@@ -110,9 +110,7 @@ public final class AirControlTracker implements Serializable {
                         entry ->
                             result.put(
                                 territory.getName(),
-                                entry.contested()
-                                    ? Status.CONTESTED.name()
-                                    : entry.playerName())));
+                                entry.contested() ? Status.CONTESTED.name() : entry.playerName())));
     return Map.copyOf(result);
   }
 
