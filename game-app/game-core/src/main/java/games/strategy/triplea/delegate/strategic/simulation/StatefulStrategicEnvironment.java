@@ -68,13 +68,13 @@ public final class StatefulStrategicEnvironment implements StrategicEnvironment 
     info.put("stepId", Long.toString(stepId));
     info.put("actionType", action.type());
     info.put("decisionDomain", observation.decisionDomain().name());
-    return new StrategicStepResult(
-        observation, 0, terminated, scenarioStep.truncated(), info);
+    return new StrategicStepResult(observation, 0, terminated, scenarioStep.truncated(), info);
   }
 
   private StrategicScenario requireScenario() {
     if (activeScenario == null) {
-      throw new IllegalStateException("reset must be called before using the strategic environment");
+      throw new IllegalStateException(
+          "reset must be called before using the strategic environment");
     }
     return activeScenario;
   }

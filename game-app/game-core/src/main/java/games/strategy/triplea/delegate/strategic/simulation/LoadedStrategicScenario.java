@@ -51,7 +51,8 @@ public final class LoadedStrategicScenario implements StrategicScenario {
   private final GamePlayer player;
   private final long seed;
   private final int maxActions;
-  private final BattleDecisionController movementDecisionController = new BattleDecisionController();
+  private final BattleDecisionController movementDecisionController =
+      new BattleDecisionController();
   private final SimulationDelegateBridge bridge;
   private final Set<UUID> reinforcementUnitIds = new LinkedHashSet<>();
 
@@ -99,7 +100,8 @@ public final class LoadedStrategicScenario implements StrategicScenario {
       case "allocate_reinforcement" -> allocateReinforcement(action);
       case "move", "air_assignment" -> executeMove(action);
       case "battle_decision" -> executeBattleDecision(action);
-      default -> throw new IllegalArgumentException("unsupported strategic action: " + action.type());
+      default ->
+          throw new IllegalArgumentException("unsupported strategic action: " + action.type());
     };
   }
 
@@ -110,7 +112,8 @@ public final class LoadedStrategicScenario implements StrategicScenario {
     final Set<UUID> after = ownedUnitIds();
     after.removeAll(before);
     reinforcementUnitIds.addAll(after);
-    findStep(step -> step.getDelegate() instanceof SupplyDelegate).ifPresent(this::runAutomaticStep);
+    findStep(step -> step.getDelegate() instanceof SupplyDelegate)
+        .ifPresent(this::runAutomaticStep);
     if (reinforcementUnitIds.isEmpty()) {
       enterCombatMove();
     } else {
@@ -379,7 +382,8 @@ public final class LoadedStrategicScenario implements StrategicScenario {
         }
       }
     }
-    groups.values()
+    groups
+        .values()
         .forEach(units -> units.sort(Comparator.comparing(unit -> unit.getId().toString())));
     return groups;
   }

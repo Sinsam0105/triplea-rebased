@@ -92,8 +92,7 @@ class SavedGameStrategicScenarioLoaderTest {
     switch (battle.decision().type()) {
       case SELECT_CASUALTIES -> {
         parameters.put("battleActionType", "select_casualties");
-        parameters.put(
-            "killedUnitIds", String.join(",", battle.decision().defaultKilledUnitIds()));
+        parameters.put("killedUnitIds", String.join(",", battle.decision().defaultKilledUnitIds()));
         parameters.put(
             "damagedUnitIds", String.join(",", battle.decision().defaultDamagedUnitIds()));
       }
@@ -115,7 +114,8 @@ class SavedGameStrategicScenarioLoaderTest {
     gameData.getPlayerList().addPlayerId(defender);
     gameData.getRelationshipTracker().setSelfRelations();
     gameData.getRelationshipTracker().setNullPlayerRelations();
-    gameData.getRelationshipTracker()
+    gameData
+        .getRelationshipTracker()
         .setRelationship(
             attacker, defender, gameData.getRelationshipTypeList().getDefaultWarRelationship());
 
@@ -137,15 +137,11 @@ class SavedGameStrategicScenarioLoaderTest {
     final BattleDelegate battleDelegate = new BattleDelegate();
     battleDelegate.initialize("battle", "Battle");
     gameData.addDelegate(battleDelegate);
-    gameData.getSequence()
+    gameData
+        .getSequence()
         .addStep(
             new GameStep(
-                "attackerBattle",
-                "Battle",
-                attacker,
-                battleDelegate,
-                gameData,
-                new Properties()));
+                "attackerBattle", "Battle", attacker, battleDelegate, gameData, new Properties()));
 
     final BattleTracker battleTracker = battleDelegate.getBattleTracker();
     final MustFightBattle battle = new MustFightBattle(front, attacker, gameData, battleTracker);
@@ -193,7 +189,8 @@ class SavedGameStrategicScenarioLoaderTest {
     final Field pendingBattlesField = BattleTracker.class.getDeclaredField("pendingBattles");
     pendingBattlesField.setAccessible(true);
     ((Set<IBattle>) pendingBattlesField.get(battleTracker)).add(battle);
-    battleTracker.getBattleRecords()
+    battleTracker
+        .getBattleRecords()
         .addBattle(
             battle.getAttacker(),
             battle.getBattleId(),

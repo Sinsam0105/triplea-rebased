@@ -33,12 +33,10 @@ class StatefulStrategicEnvironmentTest {
     assertEquals(17, initial.seed());
     assertEquals(
         List.of(
-            new StrategicAction("a", Map.of("z", "2")),
-            new StrategicAction("b", Map.of("a", "1"))),
+            new StrategicAction("a", Map.of("z", "2")), new StrategicAction("b", Map.of("a", "1"))),
         environment.legalActions());
 
-    final StrategicStepResult result =
-        environment.step(new StrategicAction("a", Map.of("z", "2")));
+    final StrategicStepResult result = environment.step(new StrategicAction("a", Map.of("z", "2")));
 
     assertTrue(result.terminated());
     assertEquals("1", result.info().get("episodeId"));

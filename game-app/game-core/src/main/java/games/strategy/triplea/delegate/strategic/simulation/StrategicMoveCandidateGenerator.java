@@ -57,11 +57,12 @@ public final class StrategicMoveCandidateGenerator {
     }
     actions.add(new StrategicAction("end_phase", Map.of("phase", phase.name())));
     final List<StrategicAction> distinct =
-        new ArrayList<>(new LinkedHashSet<>(actions)).stream()
-            .sorted(
-                Comparator.comparing(StrategicAction::type)
-                    .thenComparing(action -> action.parameters().toString()))
-            .toList();
+        new ArrayList<>(new LinkedHashSet<>(actions))
+            .stream()
+                .sorted(
+                    Comparator.comparing(StrategicAction::type)
+                        .thenComparing(action -> action.parameters().toString()))
+                .toList();
     if (distinct.size() > maxActions) {
       throw new StrategicActionSpaceOverflow(distinct.size(), maxActions);
     }
@@ -97,15 +98,18 @@ public final class StrategicMoveCandidateGenerator {
       final Territory origin,
       final List<Unit> units,
       final List<StrategicAction> actions) {
-    if (units.stream().anyMatch(unit -> !SupplyNetworkResolver.canMove(unit, origin, player, data))) {
+    if (units.stream()
+        .anyMatch(unit -> !SupplyNetworkResolver.canMove(unit, origin, player, data))) {
       return;
     }
-    for (final Territory destination : data.getMap().getNeighbors(origin).stream()
-        .filter(neighbor -> !visible.contains(neighbor))
-        .sorted(TERRITORY_ORDER)
-        .toList()) {
+    for (final Territory destination :
+        data.getMap().getNeighbors(origin).stream()
+            .filter(neighbor -> !visible.contains(neighbor))
+            .sorted(TERRITORY_ORDER)
+            .toList()) {
       final Route route = new Route(origin, destination);
-      if (units.stream().allMatch(unit -> route.getMovementCost(unit).compareTo(unit.getMovementLeft()) <= 0)) {
+      if (units.stream()
+          .allMatch(unit -> route.getMovementCost(unit).compareTo(unit.getMovementLeft()) <= 0)) {
         actions.add(moveAction(phase, units, route, true));
       }
     }
@@ -118,7 +122,8 @@ public final class StrategicMoveCandidateGenerator {
       final Territory origin,
       final List<Unit> units,
       final Route route) {
-    if (units.stream().anyMatch(unit -> !SupplyNetworkResolver.canMove(unit, origin, player, data))) {
+    if (units.stream()
+        .anyMatch(unit -> !SupplyNetworkResolver.canMove(unit, origin, player, data))) {
       return false;
     }
     final MoveValidationResult result =

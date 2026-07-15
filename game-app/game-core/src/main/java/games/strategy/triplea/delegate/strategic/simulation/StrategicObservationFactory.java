@@ -57,18 +57,13 @@ public final class StrategicObservationFactory {
               territory.isWater(),
               territoryVisible,
               territoryVisible ? territory.getOwner().getName() : null,
-              territoryVisible
-                  ? SupplyNetworkResolver.isSupplied(territory, player, data)
-                  : null,
+              territoryVisible ? SupplyNetworkResolver.isSupplied(territory, player, data) : null,
               territoryVisible
                   && SupplyTerritoryAttachment.get(territory)
                       .map(SupplyTerritoryAttachment::getSupplySource)
                       .orElse(false),
               territoryVisible
-                  ? airControl
-                      .getController(territory, data)
-                      .map(GamePlayer::getName)
-                      .orElse(null)
+                  ? airControl.getController(territory, data).map(GamePlayer::getName).orElse(null)
                   : null,
               data.getMap().getNeighbors(territory).stream()
                   .map(Territory::getName)
