@@ -36,8 +36,7 @@ class OperationalStatusFormatterTest {
     data.getProperties().set(AirControlTracker.AIR_CONTROL_ENABLED, true);
     data.performChange(AirControlTracker.changeContested(depot, data));
 
-    final String tooltip =
-        OperationalStatusFormatter.territoryTooltip(depot, data, List.of(blue));
+    final String tooltip = OperationalStatusFormatter.territoryTooltip(depot, data, List.of(blue));
 
     assertThat(tooltip)
         .contains("Supply source: yes")
