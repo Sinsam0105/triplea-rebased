@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.annotation.Nullable;
 
 /** Resolves road-based supply reachability for a player. */
 public final class SupplyNetworkResolver {
@@ -63,12 +64,21 @@ public final class SupplyNetworkResolver {
 
   public static boolean canMove(
       final Unit unit, final Territory start, final GamePlayer player, final GameState data) {
+    return canMove(unit, start, player, data, getTracker(data).orElse(null));
+  }
+
+  static boolean canMove(
+      final Unit unit,
+      final Territory start,
+      final GamePlayer player,
+      final GameState data,
+      final @Nullable SupplyTracker tracker) {
     if (!isEnabled(data) || start.isWater() || !requiresSupply(unit)) {
       return true;
     }
-    return getTracker(data)
-        .map(tracker -> tracker.getOutOfSupplyTurns(unit) == 0)
-        .orElseGet(() -> isSupplied(start, player, data));
+    return tracker == null
+        ? isSupplied(start, player, data)
+        : tracker.getOutOfSupplyTurns(unit) == 0;
   }
 
   public static boolean isSupplied(
