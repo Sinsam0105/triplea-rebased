@@ -92,10 +92,7 @@ public final class SupplyRouteDrawable extends AbstractDrawable {
     graphics.setColor(color);
     graphics.setStroke(stroke);
     graphics.drawLine(
-        fromPoint.x - bounds.x,
-        fromPoint.y - bounds.y,
-        toPoint.x - bounds.x,
-        toPoint.y - bounds.y);
+        fromPoint.x - bounds.x, fromPoint.y - bounds.y, toPoint.x - bounds.x, toPoint.y - bounds.y);
     graphics.setStroke(previousStroke);
     graphics.setColor(previousColor);
   }
