@@ -1,5 +1,6 @@
 package games.strategy.triplea.delegate.supply;
 
+import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.GameState;
 import games.strategy.engine.data.Territory;
@@ -37,7 +38,10 @@ public final class SupplyNetworkResolver {
   }
 
   public static Optional<SupplyTracker> getTracker(final GameState data) {
-    return data.getDelegates().stream()
+    if (!(data instanceof GameData gameData)) {
+      return Optional.empty();
+    }
+    return gameData.getDelegates().stream()
         .filter(SupplyDelegate.class::isInstance)
         .map(SupplyDelegate.class::cast)
         .map(SupplyDelegate::getTracker)
