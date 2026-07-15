@@ -19,11 +19,13 @@ import games.strategy.triplea.delegate.battle.BattleTracker;
 import games.strategy.triplea.delegate.battle.IBattle;
 import games.strategy.triplea.delegate.battle.MustFightBattle;
 import games.strategy.triplea.delegate.battle.simulation.BattleDecisionType;
+import games.strategy.triplea.delegate.battle.simulation.BattleObservation;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -52,9 +54,9 @@ class SavedGameStrategicScenarioLoaderTest {
         .isNotEmpty()
         .allMatch(action -> action.type().equals("battle_decision"));
 
-    StrategicStepResult result = environment.step(environment.legalActions().getFirst());
+    StrategicStepResult result = environment.step(executableBattleAction(initial));
     while (!result.terminated()) {
-      result = environment.step(environment.legalActions().getFirst());
+      result = environment.step(executableBattleAction(result.observation()));
     }
 
     assertThat(result.observation().phase()).isEqualTo(StrategicPhase.COMPLETE);
@@ -77,6 +79,28 @@ class SavedGameStrategicScenarioLoaderTest {
                     .load(new StrategicResetRequest(saveGame.toString(), 1, "Missing")));
 
     assertThat(error.getMessage()).contains("attacker", "defender");
+  }
+
+  private static StrategicAction executableBattleAction(final StrategicObservation observation) {
+    final BattleObservation battle = observation.battle();
+    if (battle == null) {
+      throw new IllegalStateException("expected an active battle observation");
+    }
+    final Map<String, String> parameters = new java.util.TreeMap<>();
+    parameters.put("battleId", battle.battleId());
+    parameters.put("territory", battle.territory());
+    switch (battle.decision().type()) {
+      case SELECT_CASUALTIES -> {
+        parameters.put("battleActionType", "select_casualties");
+        parameters.put(
+            "killedUnitIds", String.join(",", battle.decision().defaultKilledUnitIds()));
+        parameters.put(
+            "damagedUnitIds", String.join(",", battle.decision().defaultDamagedUnitIds()));
+      }
+      case RETREAT, SUBMERGE -> parameters.put("battleActionType", "continue");
+      case NONE -> throw new IllegalStateException("battle has no pending decision");
+    }
+    return new StrategicAction("battle_decision", parameters);
   }
 
   private Fixture createFixture() throws Exception {
