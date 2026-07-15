@@ -61,7 +61,7 @@ class LoadedStrategicScenarioTest {
                 blue,
                 combatMove,
                 data,
-                properties(GameStep.PropertyKeys.COMBAT_MOVE, "true")));
+                moveProperties(true)));
     data.getSequence()
         .addStep(new GameStep("BlueBattle", "Battle", blue, battle, data, new Properties()));
     data.getSequence()
@@ -72,7 +72,7 @@ class LoadedStrategicScenarioTest {
                 blue,
                 redeployment,
                 data,
-                properties(GameStep.PropertyKeys.NON_COMBAT_MOVE, "true")));
+                moveProperties(false)));
 
     final LoadedStrategicScenario scenario = new LoadedStrategicScenario(data, blue, 5, 32);
 
@@ -111,9 +111,12 @@ class LoadedStrategicScenarioTest {
     return territory;
   }
 
-  private static Properties properties(final String key, final String value) {
+  private static Properties moveProperties(final boolean combatMove) {
     final Properties properties = new Properties();
-    properties.setProperty(key, value);
+    properties.setProperty(GameStep.PropertyKeys.COMBAT_MOVE, Boolean.toString(combatMove));
+    if (!combatMove) {
+      properties.setProperty(GameStep.PropertyKeys.NON_COMBAT_MOVE, "true");
+    }
     return properties;
   }
 
