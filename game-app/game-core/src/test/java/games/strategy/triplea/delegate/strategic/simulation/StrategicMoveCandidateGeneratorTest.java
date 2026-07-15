@@ -9,6 +9,7 @@ import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
 import games.strategy.triplea.Constants;
+import games.strategy.triplea.attachments.TerritoryAttachment;
 import games.strategy.triplea.attachments.UnitAttachment;
 import games.strategy.triplea.delegate.supply.SupplyNetworkResolver;
 import games.strategy.triplea.delegate.visibility.VisibilityService;
@@ -74,6 +75,12 @@ class StrategicMoveCandidateGeneratorTest {
     final Territory unknown = new Territory("Unknown", data);
     home.setOwner(blue);
     unknown.setOwner(red);
+    home.addAttachment(
+        Constants.TERRITORY_ATTACHMENT_NAME,
+        new TerritoryAttachment(Constants.TERRITORY_ATTACHMENT_NAME, home, data));
+    unknown.addAttachment(
+        Constants.TERRITORY_ATTACHMENT_NAME,
+        new TerritoryAttachment(Constants.TERRITORY_ATTACHMENT_NAME, unknown, data));
     data.getMap().addTerritory(home);
     data.getMap().addTerritory(unknown);
     data.getMap().addConnection(home, unknown);
