@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import games.strategy.engine.data.GameData;
 import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.GameStep;
+import games.strategy.engine.data.Resource;
 import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
@@ -22,6 +23,7 @@ class LoadedStrategicScenarioTest {
   @Test
   void performsNormalMoveAndAdvancesThroughCompleteTurnPhases() throws Exception {
     final GameData data = new GameData();
+    data.getResourceList().addResource(new Resource(Constants.PUS, data));
     final GamePlayer blue = new GamePlayer("Blue", data);
     data.getPlayerList().addPlayerId(blue);
     data.getRelationshipTracker().setSelfRelations();
