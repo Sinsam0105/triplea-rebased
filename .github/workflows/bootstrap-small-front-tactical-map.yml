@@ -30,10 +30,12 @@ jobs:
       - name: Generate scenario and map package
         run: |
           python -m pip install --disable-pip-version-check pillow
+          sed -i 's/UnitAttachment.get(data.getUnitTypeList().getUnitTypeOrThrow(name))/UnitAttachment.get(data.getUnitTypeList().getUnitTypeOrThrow(name), "unitAttachment")/' tools/generate_small_front_meuse_map.py
           python tools/generate_small_front_meuse_map.py
       - name: Format and verify scenario
         run: |
           set -o pipefail
+          rm -f bootstrap-gradle.log
           ./gradlew spotlessApply
           ./gradlew :smoke-testing:test --tests games.strategy.engine.data.SmallFrontMeuseScenarioTest --tests games.strategy.engine.data.SmallFrontAiGameTest 2>&1 | tee bootstrap-gradle.log
       - name: Capture failure log
@@ -55,6 +57,7 @@ jobs:
           git add game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml
           git add tools/generate_small_front_meuse_map.py
           git add -f maps/small_front_meuse maps/small_front_meuse.zip
+          git rm -f bootstrap-gradle.log
           git rm .github/workflows/bootstrap-small-front-tactical-map.yml
           git commit -m "Add battalion-scale Meuse rules and tactical map"
           git push origin HEAD:agent/small-front-battalion-tactical-map
