@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - agent/small-front-battalion-tactical-map
+  pull_request:
+    branches:
+      - small-front-scoring
+    paths:
+      - .github/workflows/fix-small-front-rulebook.yml
 
 permissions:
   contents: write
