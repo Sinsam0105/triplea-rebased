@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - agent/small-front-battalion-tactical-map
-  pull_request:
-    branches:
-      - small-front-scoring
-    paths:
-      - .github/workflows/diagnose-small-front-verify.yml
 
 permissions:
   contents: write
@@ -32,7 +27,7 @@ jobs:
         run: |
           set -o pipefail
           rm -f verify-failure.log
-          ./verify --exclude-task spotlessApply 2>&1 | tee verify-failure.log
+          ./verify --exclude-task spotlessApply 2>&1 | tail -n 250 | tee verify-failure.log
       - name: Capture verification failure
         if: failure()
         run: |
