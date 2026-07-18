@@ -71,13 +71,14 @@ public final class StackCapacityResolver {
       final GamePlayer owner,
       final Territory territory,
       final Collection<Unit> pendingUnits) {
+    final String gameName = owner.getData() == null ? "" : owner.getData().getGameName();
     return filterUnitsToFit(
         candidates,
         owner,
         TerritoryEffectHelper.getEffects(territory),
         alliedUnits(owner, territory.getUnits()),
         pendingUnits,
-        owner.getData().getGameName());
+        gameName);
   }
 
   static List<Unit> filterUnitsToFit(
