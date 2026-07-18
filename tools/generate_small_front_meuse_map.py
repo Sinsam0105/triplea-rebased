@@ -243,7 +243,7 @@ class SmallFrontMeuseScenarioTest {
   }
 
   private static UnitAttachment unit(final GameData data, final String name) {
-    return UnitAttachment.get(data.getUnitTypeList().getUnitTypeOrThrow(name));
+    return UnitAttachment.get(data.getUnitTypeList().getUnitTypeOrThrow(name), "unitAttachment");
   }
 
   private static int capacity(final GameData data, final String name) {

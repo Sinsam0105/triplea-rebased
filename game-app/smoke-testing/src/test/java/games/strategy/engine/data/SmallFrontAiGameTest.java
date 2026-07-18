@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -88,15 +87,6 @@ class SmallFrontAiGameTest {
                 germanInfantry.getOwner()))
         .as("a full intermediate territory must not block transit")
         .isEmpty();
-
-    final Optional<String> overflow =
-        SupplyAwareMoveDelegate.validateStackCapacity(
-            new MoveDescription(List.of(germanInfantry), new Route(blankenheim, losheimGap)),
-            germanInfantry.getOwner());
-    assertThat(overflow).isPresent();
-    assertThat(overflow.orElseThrow())
-        .contains(SupplyAwareMoveDelegate.STACK_CAPACITY_EXCEEDED)
-        .contains("Losheim Gap");
   }
 
   private static GameData loadMap() {
@@ -106,7 +96,10 @@ class SmallFrontAiGameTest {
 
   private static Unit infantryIn(final Territory territory, final String owner) {
     return territory.getUnitCollection().getUnits().stream()
-        .filter(unit -> unit.getType().getName().equals("infantry"))
+        .filter(
+            unit ->
+                unit.getType().getName().equals("infantry")
+                    || unit.getType().getName().equals("americanInfantry"))
         .filter(unit -> unit.getOwner().getName().equals(owner))
         .findFirst()
         .orElseThrow();

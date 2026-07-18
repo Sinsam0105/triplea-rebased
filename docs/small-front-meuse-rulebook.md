@@ -1,5 +1,7 @@
 # Small Front: Meuse Corridor 룰북
 
+> 기본 편제 단위는 **대대(Battalion, NATO `II`)**이다.
+
 이 문서는 `Small Front: Meuse Corridor` 시나리오의 플레이어용 규칙을 정리한다. 규칙 충돌이 있을 경우 현재 시나리오 XML과 엔진 구현이 최종 기준이다.
 
 ## 1. 시나리오 개요
@@ -75,19 +77,17 @@
 
 ## 4. 부대 능력치
 
-| 부대 | 공격 | 방어 | 전투 이동 | 재배치 이동 | 스택 비용 | 특수 규칙 |
-|---|---:|---:|---:|---:|---:|---|
-| infantry | 1 | 2 | 1 | 1 | 1 | 포병 지원 가능 |
-| artillery | 2 | 2 | 1 | 1 | 1 | 보병 지원 |
-| armour | 2 | 3 | 2 | 3 | 2 | 전격 가능 |
-| mechanized | 2 | 2 | 2 | 3 | 2 | 기계화 보병 |
-| fighter | 3 | 3 | 4 | 4 | 0 | 공중전·요격·호위 가능 |
+| 부대 | 편제 | 공격 | 방어 | 전투 이동 | 재배치 | 전선 폭 | 특수 규칙 |
+|---|---|---:|---:|---:|---:|---:|---|
+| infantry | 독일 보병대대 | 1 | 2 | 1 | 1 | 1 | 포병 지원 대상 |
+| americanInfantry | 미군 차량화 보병대대 | 1 | 2 | 1 | **2** | 1 | 포병 지원 대상 |
+| artillery | 견인포병대대 | **0** | 2 | 1 | 1 | 1 | 공격 시 지상 대대 1개 지원 |
+| selfPropelledArtillery | 자주포대대 | **0** | 2 | 2 | 3 | 1 | 기계화 이동, 지상 대대 1개 지원 |
+| armour | 기갑대대 | 2 | 3 | 2 | 3 | 2 | 전격, 포병 지원 대상 |
+| mechanized | 기계화보병대대 | 2 | 2 | 2 | 3 | **1** | 포병 지원 대상 |
+| fighter | 전투항공대 | 3 | 3 | 4 | 4 | 0 | 공중전·요격·호위 |
 
-전투 판정은 6면체 주사위를 사용한다. 일반 TripleA 전투 규칙에 따라 각 부대는 자신의 공격 또는 방어 수치 이하를 굴리면 명중한다.
-
-### 포병 지원
-
-일반 TripleA 포병 지원 규칙이 적용된다. 포병은 함께 공격하는 지원 가능한 보병의 공격력을 향상시킨다.
+견인포병과 자주포는 자체 공격 명중 능력이 없다. 공격에 참가한 포병 대대 1개당 같은 전투의 지상 대대 1개에 공격력 +1을 부여한다. 보병, 기갑, 기계화, 포병 계열을 모두 지원할 수 있으며 방어에는 적용하지 않는다.
 
 ## 5. 지형
 
@@ -187,7 +187,8 @@
 
 전투 이동에서는 적 지역으로 진입해 전투를 만들 수 있다.
 
-- infantry, artillery: 1
+- 독일 보병·견인포병: 1
+- 미군 보병: 2
 - armour, mechanized: 2
 - fighter: 4
 - armour는 조건을 충족하면 전격 이동 가능
@@ -198,8 +199,9 @@
 
 전투 후 생존 병력을 정비하고 후방·예비대를 재배치한다.
 
-- infantry, artillery: 1
-- armour, mechanized: 3
+- 독일 보병·견인포병: 1
+- 미군 보병: 2
+- armour, mechanized, selfPropelledArtillery: 3
 - fighter: 4
 
 전투 이동에서 움직인 비공군 부대는 같은 턴의 재배치 단계에서 다시 이동할 수 없다. 공군은 전투 이동에서 사용하고 남은 이동력을 재배치에 사용할 수 있다.
@@ -268,7 +270,7 @@
 |---:|---|---|
 | 1 | Prum | armour 2 |
 | 1 | Bitburg | mechanized 1 |
-| 2 | Prum | artillery 1 |
+| 2 | Prum | selfPropelledArtillery 1 |
 | 2 | Blankenheim | armour 1 |
 | 3 | Bitburg | infantry 2 |
 | 3 | Prum | mechanized 1 |
@@ -279,14 +281,14 @@
 
 | 라운드 | 목적지 | 부대 |
 |---:|---|---|
-| 2 | Marche | infantry 2 |
+| 2 | Marche | americanInfantry 2 |
 | 3 | Namur | armour 1 |
 | 3 | Ciney | fighter 1 |
-| 4 | Namur | infantry 2 |
-| 4 | Dinant | artillery 1 |
+| 4 | Namur | americanInfantry 2 |
+| 4 | Dinant | selfPropelledArtillery 1 |
 | 5 | Namur | armour 2 |
-| 6 | Huy | infantry 2 |
-| 6 | Givet | infantry 2 |
+| 6 | Huy | americanInfantry 2 |
+| 6 | Givet | americanInfantry 2 |
 | 7 | Namur | armour 1 |
 
 ## 12. 초기 배치
@@ -307,23 +309,16 @@
 
 | 지역 | 초기 부대 |
 |---|---|
-| St. Vith | infantry 3, artillery 1 |
-| Houffalize | infantry 2 |
-| Wiltz | infantry 1 |
-| Bastogne | infantry 3, artillery 1 |
-| Martelange | infantry 1 |
-| Vielsalm | infantry 1 |
-| La Roche | infantry 1 |
-| Erezee | infantry 1 |
-| Hotton | infantry 1 |
-| Nassogne | infantry 1 |
-| Libramont | infantry 1 |
-| Marche | infantry 2, armour 1 |
-| Neufchateau | infantry 1 |
-| Saint-Hubert | infantry 1 |
-| Ciney | infantry 1, fighter 1 |
-| Namur | infantry 2 |
-| Dinant | infantry 1 |
+| St. Vith | americanInfantry 2, artillery 1 |
+| Houffalize | americanInfantry 1 |
+| Wiltz | americanInfantry 1 |
+| Bastogne | americanInfantry 2, artillery 1 |
+| Martelange, Vielsalm, La Roche, Erezee, Hotton | americanInfantry 1씩 |
+| Nassogne, Libramont, Marche, Neufchateau, Saint-Hubert | americanInfantry 1씩 |
+| Ciney | fighter 1 |
+| Namur, Dinant | americanInfantry 1씩 |
+
+미군 초기 보병은 24개 대대에서 18개 대대로 25% 감축한다.
 
 ## 13. 전략 요약
 
@@ -355,3 +350,11 @@
 | 지상전 라운드 | Open 4 / Town 3 / Forest 2 |
 | 공중전 라운드 | Open 2 / Town 1 / Forest 1 |
 | 공중 통제 지상 공격 보너스 | +1 |
+
+## 15. 0.2 편제 및 지도 변경
+
+- 미군 초기 보병은 24개 대대에서 18개 대대로 25% 감축한다.
+- 미군 보병만 재배치 이동력이 2이다.
+- 기계화보병 전선 폭은 1이다.
+- 신규 자주포대대는 전투 이동 2, 재배치 3이다.
+- 지도는 녹색 전술도, 도로·하천·초기 전선, NATO 대대 표식을 사용한다.
