@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - agent/small-front-battalion-tactical-map
+  pull_request:
+    branches:
+      - small-front-scoring
+    paths:
+      - tools/generate_small_front_meuse_map.py
+      - .github/workflows/bootstrap-small-front-tactical-map.yml
 
 permissions:
   contents: write
