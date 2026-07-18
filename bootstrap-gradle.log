@@ -1,0 +1,183 @@
+Calculating task graph as no cached configuration is available for tasks: :smoke-testing:test --tests games.strategy.engine.data.SmallFrontMeuseScenarioTest --tests games.strategy.engine.data.SmallFrontAiGameTest
+> Task :build-logic:failure-summary-plugin:compileJava UP-TO-DATE
+> Task :build-logic:failure-summary-plugin:pluginDescriptors UP-TO-DATE
+> Task :build-logic:failure-summary-plugin:processResources UP-TO-DATE
+> Task :build-logic:failure-summary-plugin:classes UP-TO-DATE
+> Task :build-logic:failure-summary-plugin:jar UP-TO-DATE
+> Task :build-logic:triplea-java-library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-base-project:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-java-library:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-base-project:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :build-logic:triplea-java-library:generateScriptPluginAdapters UP-TO-DATE
+> Task :build-logic:triplea-base-project:generateScriptPluginAdapters UP-TO-DATE
+> Task :build-logic:triplea-java-library:pluginDescriptors UP-TO-DATE
+> Task :build-logic:triplea-base-project:pluginDescriptors UP-TO-DATE
+> Task :build-logic:triplea-java-library:processResources UP-TO-DATE
+> Task :build-logic:triplea-base-project:processResources UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:compilePluginsBlocks UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:generateScriptPluginAdapters UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:compileKotlin UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:compileJava NO-SOURCE
+> Task :build-logic:triplea-test-conventions:pluginDescriptors UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:processResources UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:classes UP-TO-DATE
+> Task :build-logic:triplea-test-conventions:jar UP-TO-DATE
+> Task :build-logic:triplea-base-project:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :build-logic:triplea-base-project:compilePluginsBlocks UP-TO-DATE
+> Task :build-logic:triplea-base-project:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :build-logic:triplea-base-project:compileKotlin UP-TO-DATE
+> Task :build-logic:triplea-base-project:compileJava NO-SOURCE
+> Task :build-logic:triplea-base-project:classes UP-TO-DATE
+> Task :build-logic:triplea-base-project:jar UP-TO-DATE
+> Task :build-logic:triplea-java-library:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :build-logic:triplea-java-library:compilePluginsBlocks UP-TO-DATE
+> Task :build-logic:triplea-java-library:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :build-logic:triplea-java-library:compileKotlin UP-TO-DATE
+> Task :build-logic:triplea-java-library:compileJava NO-SOURCE
+> Task :build-logic:triplea-java-library:classes UP-TO-DATE
+> Task :build-logic:triplea-java-library:jar UP-TO-DATE
+> Task :build-logic:triplea-published-library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-published-library:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :build-logic:triplea-published-library:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :build-logic:triplea-published-library:compilePluginsBlocks UP-TO-DATE
+> Task :build-logic:triplea-published-library:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :build-logic:triplea-published-library:generateScriptPluginAdapters UP-TO-DATE
+> Task :build-logic:triplea-published-library:compileKotlin UP-TO-DATE
+> Task :build-logic:triplea-published-library:compileJava NO-SOURCE
+> Task :build-logic:triplea-published-library:pluginDescriptors UP-TO-DATE
+> Task :build-logic:triplea-published-library:processResources UP-TO-DATE
+> Task :build-logic:triplea-published-library:classes UP-TO-DATE
+> Task :build-logic:triplea-published-library:jar UP-TO-DATE
+> Task :domain-data:processResources NO-SOURCE
+> Task :ai:processResources NO-SOURCE
+> Task :feign-common:processResources NO-SOURCE
+> Task :game-headless:processResources
+> Task :game-relay-server:processResources NO-SOURCE
+> Task :game-core:processResources
+> Task :java-extras:processResources NO-SOURCE
+> Task :lobby-client-data:processResources NO-SOURCE
+> Task :lobby-client:processResources NO-SOURCE
+> Task :map-data:processResources NO-SOURCE
+> Task :smoke-testing:processResources NO-SOURCE
+> Task :smoke-testing:downloadSaveGames
+> Task :smoke-testing:processTestResources
+> Task :swing-lib:processResources NO-SOURCE
+> Task :test-common:processResources
+> Task :websocket-client:processResources NO-SOURCE
+> Task :websocket-server:processResources NO-SOURCE
+> Task :xml-reader:processResources NO-SOURCE
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by lombok.permit.Permit
+WARNING: Please consider reporting this to the maintainers of class lombok.permit.Permit
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by lombok.permit.Permit
+WARNING: Please consider reporting this to the maintainers of class lombok.permit.Permit
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by lombok.permit.Permit
+WARNING: Please consider reporting this to the maintainers of class lombok.permit.Permit
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+
+> Task :test-common:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/test-common/src/main/java/org/triplea/test/common/JsonUtil.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :test-common:classes
+> Task :java-extras:compileJava
+> Task :lobby-client-data:compileJava
+> Task :test-common:jar
+> Task :java-extras:classes
+> Task :websocket-client:compileJava
+> Task :java-extras:jar
+> Task :lobby-client-data:classes
+> Task :lobby-client-data:jar
+> Task :websocket-client:classes
+> Task :domain-data:compileJava
+> Task :websocket-client:jar
+> Task :domain-data:classes
+> Task :domain-data:jar
+> Task :xml-reader:compileJava
+> Task :xml-reader:classes
+> Task :xml-reader:jar
+
+> Task :feign-common:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/feign-common/src/main/java/org/triplea/http/client/HttpClient.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by lombok.permit.Permit
+WARNING: Please consider reporting this to the maintainers of class lombok.permit.Permit
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+
+> Task :websocket-server:compileJava
+> Task :lobby-client:compileJava
+> Task :feign-common:classes
+> Task :feign-common:jar
+> Task :lobby-client:classes
+> Task :lobby-client:jar
+> Task :websocket-server:classes
+> Task :websocket-server:jar
+> Task :game-relay-server:compileJava
+> Task :game-relay-server:classes
+> Task :game-relay-server:jar
+
+> Task :map-data:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/game-app/map-data/src/main/java/org/triplea/map/description/file/MapDescriptionYamlGenerator.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :map-data:classes
+> Task :map-data:jar
+> Task :swing-lib:compileJava
+> Task :swing-lib:classes
+> Task :swing-lib:jar
+
+> Task :game-core:compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :game-core:classes
+> Task :smoke-testing:compileJava NO-SOURCE
+> Task :smoke-testing:classes UP-TO-DATE
+> Task :game-core:jar
+> Task :ai:compileJava
+> Task :ai:classes
+> Task :ai:jar
+> Task :game-headless:compileJava
+> Task :game-headless:classes
+> Task :game-headless:jar
+
+> Task :smoke-testing:compileTestJava FAILED
+/home/runner/work/triplea-rebased/triplea-rebased/game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontMeuseScenarioTest.java:68: error: method get in class UnitAttachment cannot be applied to given types;
+    return UnitAttachment.get(data.getUnitTypeList().getUnitTypeOrThrow(name));
+                         ^
+  required: UnitType,String
+  found:    UnitType
+  reason: actual and formal argument lists differ in length
+1 error
+
+[Incubating] Problems report is available at: file:///home/runner/work/triplea-rebased/triplea-rebased/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':smoke-testing:compileTestJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  /home/runner/work/triplea-rebased/triplea-rebased/game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontMeuseScenarioTest.java:68: error: method get in class UnitAttachment cannot be applied to given types;
+      return UnitAttachment.get(data.getUnitTypeList().getUnitTypeOrThrow(name));
+                           ^
+    required: UnitType,String
+    found:    UnitType
+    reason: actual and formal argument lists differ in length
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 37s
+76 actionable tasks: 36 executed, 40 up-to-date
+Configuration cache entry stored.
