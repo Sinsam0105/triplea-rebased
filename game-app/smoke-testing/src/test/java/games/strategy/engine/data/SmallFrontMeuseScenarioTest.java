@@ -23,6 +23,7 @@ class SmallFrontMeuseScenarioTest {
     assertThat(capacity(data, "Open")).isEqualTo(7);
     assertThat(capacity(data, "Town")).isEqualTo(6);
     assertThat(capacity(data, "Forest")).isEqualTo(5);
+    assertThat(unit(data, "americanInfantry").getCombatMovement(americans)).isEqualTo(1);
     assertThat(unit(data, "americanInfantry").getRedeploymentMovement(americans)).isEqualTo(2);
     assertThat(unit(data, "infantry").getRedeploymentMovement(germans)).isEqualTo(1);
     assertThat(unit(data, "mechanized").getStackCost()).isEqualTo(1);
