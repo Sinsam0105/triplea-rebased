@@ -1,0 +1,424 @@
+Fetching distribution.
+Downloading https://services.gradle.org/distributions/gradle-9.6.1-all.zip
+......................10%.......................20%.......................30%.......................40%.......................50%.......................60%......................70%.......................80%.......................90%.......................100%
+
+Welcome to Gradle 9.6.1!
+
+Here are the highlights of this release:
+ - Improved Configuration Cache hit rates
+ - Additional CLI rendering options
+ - Important project hierarchy lookup deprecations
+
+For more details see https://docs.gradle.org/9.6.1/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+Calculating task graph as no cached configuration is available for tasks: spotlessApply check
+> Task :build-logic:failure-summary-plugin:compileJava
+> Task :build-logic:failure-summary-plugin:pluginDescriptors
+> Task :build-logic:failure-summary-plugin:processResources
+> Task :build-logic:failure-summary-plugin:classes
+> Task :build-logic:failure-summary-plugin:jar
+> Task :build-logic:triplea-base-project:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-java-library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-test-conventions:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-java-library:extractPrecompiledScriptPluginPlugins
+> Task :build-logic:triplea-base-project:extractPrecompiledScriptPluginPlugins
+> Task :build-logic:triplea-base-project:generateScriptPluginAdapters
+> Task :build-logic:triplea-java-library:generateScriptPluginAdapters
+> Task :build-logic:triplea-base-project:pluginDescriptors
+> Task :build-logic:triplea-java-library:pluginDescriptors
+> Task :build-logic:triplea-java-library:processResources
+> Task :build-logic:triplea-base-project:processResources
+> Task :build-logic:triplea-test-conventions:generateExternalPluginSpecBuilders
+> Task :build-logic:triplea-test-conventions:extractPrecompiledScriptPluginPlugins
+> Task :build-logic:triplea-test-conventions:generateScriptPluginAdapters
+> Task :build-logic:triplea-test-conventions:pluginDescriptors
+> Task :build-logic:triplea-test-conventions:processResources
+> Task :build-logic:triplea-test-conventions:compilePluginsBlocks
+> Task :build-logic:triplea-test-conventions:generatePrecompiledScriptPluginAccessors
+> Task :build-logic:triplea-test-conventions:compileKotlin
+> Task :build-logic:triplea-test-conventions:compileJava NO-SOURCE
+> Task :build-logic:triplea-test-conventions:classes
+> Task :build-logic:triplea-test-conventions:jar
+> Task :build-logic:triplea-base-project:generateExternalPluginSpecBuilders FROM-CACHE
+> Task :build-logic:triplea-base-project:compilePluginsBlocks
+> Task :build-logic:triplea-base-project:generatePrecompiledScriptPluginAccessors
+> Task :build-logic:triplea-base-project:compileKotlin
+> Task :build-logic:triplea-base-project:compileJava NO-SOURCE
+> Task :build-logic:triplea-base-project:classes
+> Task :build-logic:triplea-base-project:jar
+> Task :build-logic:triplea-java-library:generateExternalPluginSpecBuilders
+> Task :build-logic:triplea-java-library:compilePluginsBlocks
+> Task :build-logic:triplea-java-library:generatePrecompiledScriptPluginAccessors
+> Task :build-logic:triplea-java-library:compileKotlin
+> Task :build-logic:triplea-java-library:compileJava NO-SOURCE
+> Task :build-logic:triplea-java-library:classes
+> Task :build-logic:triplea-java-library:jar
+> Task :build-logic:triplea-published-library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:triplea-published-library:generateExternalPluginSpecBuilders FROM-CACHE
+> Task :build-logic:triplea-published-library:extractPrecompiledScriptPluginPlugins
+> Task :build-logic:triplea-published-library:generateScriptPluginAdapters
+> Task :build-logic:triplea-published-library:pluginDescriptors
+> Task :build-logic:triplea-published-library:processResources
+> Task :build-logic:triplea-published-library:compilePluginsBlocks
+> Task :build-logic:triplea-published-library:generatePrecompiledScriptPluginAccessors
+> Task :build-logic:triplea-published-library:compileKotlin
+> Task :build-logic:triplea-published-library:compileJava NO-SOURCE
+> Task :build-logic:triplea-published-library:classes
+> Task :build-logic:triplea-published-library:jar
+> Task :processResources NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :spotlessInternalRegisterDependencies
+> Task :ai:processResources NO-SOURCE
+> Task :ai:spotlessAllFiles
+> Task :ai:spotlessAllFilesCheck
+> Task :ai:processTestResources NO-SOURCE
+> Task :domain-data:processResources NO-SOURCE
+> Task :feign-common:processResources NO-SOURCE
+> Task :game-core:processResources
+> Task :game-core:processTestFixturesResources
+> Task :game-relay-server:processResources NO-SOURCE
+> Task :java-extras:processResources NO-SOURCE
+> Task :lobby-client:processResources NO-SOURCE
+> Task :lobby-client-data:processResources NO-SOURCE
+> Task :map-data:processResources NO-SOURCE
+> Task :swing-lib:processResources NO-SOURCE
+> Task :websocket-client:processResources NO-SOURCE
+> Task :websocket-server:processResources NO-SOURCE
+> Task :xml-reader:processResources NO-SOURCE
+> Task :domain-data:spotlessAllFiles
+> Task :domain-data:spotlessAllFilesCheck
+> Task :domain-data:spotlessJava
+> Task :domain-data:spotlessJavaCheck
+> Task :domain-data:spotlessCheck
+> Task :domain-data:processTestResources NO-SOURCE
+> Task :feign-common:spotlessAllFiles
+> Task :feign-common:spotlessAllFilesCheck
+> Task :feign-common:spotlessJava
+> Task :feign-common:spotlessJavaCheck
+> Task :feign-common:spotlessCheck
+
+> Task :test-common:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/test-common/src/main/java/org/triplea/test/common/JsonUtil.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :ai:spotlessJava
+> Task :ai:spotlessJavaCheck
+> Task :ai:spotlessCheck
+> Task :feign-common:processTestResources
+> Task :test-common:processResources
+> Task :game-core:spotlessAllFiles
+> Task :game-core:spotlessAllFilesCheck
+> Task :test-common:classes
+> Task :java-extras:compileJava
+> Task :test-common:jar
+> Task :lobby-client-data:compileJava
+> Task :xml-reader:compileJava
+> Task :domain-data:compileJava
+
+> Task :feign-common:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/feign-common/src/main/java/org/triplea/http/client/HttpClient.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :websocket-client:compileJava
+> Task :swing-lib:compileJava
+> Task :websocket-server:compileJava
+> Task :game-relay-server:compileJava
+> Task :domain-data:classes
+> Task :domain-data:jar
+> Task :feign-common:classes
+> Task :feign-common:jar
+> Task :game-relay-server:classes
+> Task :game-relay-server:jar
+> Task :java-extras:classes
+> Task :java-extras:jar
+> Task :lobby-client-data:classes
+> Task :lobby-client-data:jar
+> Task :swing-lib:classes
+> Task :swing-lib:jar
+> Task :websocket-client:classes
+> Task :websocket-client:jar
+> Task :websocket-server:classes
+> Task :websocket-server:jar
+> Task :xml-reader:classes
+> Task :xml-reader:jar
+> Task :lobby-client:compileJava
+> Task :lobby-client:classes
+> Task :lobby-client:jar
+
+> Task :map-data:compileJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/game-app/map-data/src/main/java/org/triplea/map/description/file/MapDescriptionYamlGenerator.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :domain-data:compileTestJava
+> Task :feign-common:compileTestJava
+> Task :map-data:classes
+> Task :domain-data:testClasses
+> Task :map-data:jar
+> Task :feign-common:testClasses
+> Task :feign-common:test
+> Task :feign-common:check
+> Task :game-core:spotlessJava
+> Task :domain-data:test
+> Task :domain-data:check
+> Task :game-core:processTestResources
+> Task :swing-lib-test-support:processResources NO-SOURCE
+> Task :game-headed:spotlessAllFiles
+> Task :game-headed:spotlessAllFilesCheck
+> Task :swing-lib-test-support:compileJava
+> Task :swing-lib-test-support:classes
+> Task :swing-lib-test-support:jar
+> Task :game-headed:downloadAssets
+> Task :game-headed:unzipAssets
+> Task :game-headed:processResources
+> Task :game-headed:processTestResources NO-SOURCE
+> Task :game-headless:spotlessAllFiles
+> Task :game-headless:spotlessAllFilesCheck
+> Task :game-headless:spotlessJava
+> Task :game-headless:spotlessJavaCheck
+> Task :game-headless:spotlessCheck
+> Task :game-headless:processResources
+> Task :game-headless:processTestResources NO-SOURCE
+> Task :game-relay-server:spotlessAllFiles
+> Task :game-relay-server:spotlessAllFilesCheck
+> Task :game-relay-server:spotlessJava
+> Task :game-relay-server:spotlessJavaCheck
+> Task :game-relay-server:spotlessCheck
+> Task :game-relay-server:compileTestJava
+> Task :game-relay-server:processTestResources
+> Task :game-relay-server:testClasses
+> Task :game-core:compileJava
+> Task :game-relay-server:test
+> Task :game-relay-server:check
+> Task :java-extras:spotlessAllFiles
+> Task :java-extras:spotlessAllFilesCheck
+
+> Task :game-core:compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :java-extras:spotlessJava
+> Task :game-core:compileTestFixturesJava
+> Task :game-core:classes
+> Task :game-core:jar
+> Task :game-core:testFixturesClasses
+> Task :ai:compileJava
+> Task :ai:classes
+> Task :ai:jar
+> Task :game-core:testFixturesJar
+> Task :ai:compileTestJava
+> Task :ai:testClasses
+> Task :game-headed:spotlessJava
+> Task :game-headed:spotlessJavaCheck
+> Task :game-headed:spotlessCheck
+> Task :ai:test
+> Task :ai:check
+> Task :game-headless:compileJava
+> Task :game-headless:classes
+> Task :game-headless:jar
+
+> Task :game-core:compileTestJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :game-headless:compileTestJava
+> Task :game-headless:testClasses
+> Task :game-core:testClasses
+
+> Task :game-headed:compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :game-headed:classes
+> Task :game-headed:compileTestJava
+> Task :game-headed:testClasses
+> Task :game-headless:test
+> Task :game-headless:check
+> Task :java-extras:spotlessJavaCheck
+> Task :java-extras:spotlessCheck
+
+> Task :java-extras:compileTestJava
+Note: /home/runner/work/triplea-rebased/triplea-rebased/lib/java-extras/src/test/java/org/triplea/java/UrlStreamsTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :java-extras:processTestResources
+> Task :java-extras:testClasses
+> Task :game-headed:test
+> Task :game-headed:check
+> Task :lobby-client:spotlessAllFiles
+> Task :lobby-client:spotlessAllFilesCheck
+> Task :lobby-client:spotlessJava
+> Task :lobby-client:spotlessJavaCheck
+> Task :lobby-client:spotlessCheck
+> Task :lobby-client:compileTestJava
+> Task :lobby-client:processTestResources
+> Task :lobby-client:testClasses
+> Task :java-extras:test
+> Task :java-extras:check
+> Task :lobby-client-data:spotlessAllFiles
+> Task :lobby-client-data:spotlessAllFilesCheck
+> Task :game-core:test
+> Task :lobby-client-data:spotlessJava
+> Task :lobby-client-data:spotlessJavaCheck
+> Task :lobby-client-data:spotlessCheck
+> Task :lobby-client-data:compileTestJava NO-SOURCE
+> Task :lobby-client-data:processTestResources NO-SOURCE
+> Task :lobby-client-data:testClasses UP-TO-DATE
+> Task :lobby-client-data:test NO-SOURCE
+> Task :lobby-client-data:check
+> Task :map-data:spotlessAllFiles
+> Task :map-data:spotlessAllFilesCheck
+> Task :lobby-client:test
+> Task :lobby-client:check
+
+> Task :map-data:compileTestJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :map-data:processTestResources
+> Task :map-data:testClasses
+> Task :map-data:spotlessJava
+> Task :map-data:spotlessJavaCheck
+> Task :map-data:spotlessCheck
+> Task :smoke-testing:spotlessAllFiles
+> Task :smoke-testing:spotlessAllFilesCheck
+> Task :smoke-testing:spotlessJava
+> Task :smoke-testing:spotlessJavaCheck
+> Task :smoke-testing:spotlessCheck
+> Task :smoke-testing:compileJava NO-SOURCE
+> Task :smoke-testing:processResources NO-SOURCE
+> Task :smoke-testing:classes UP-TO-DATE
+> Task :smoke-testing:compileTestJava
+> Task :smoke-testing:downloadSaveGames
+> Task :smoke-testing:processTestResources
+> Task :smoke-testing:testClasses
+> Task :map-data:test
+> Task :map-data:check
+> Task :swing-lib:spotlessAllFiles
+> Task :swing-lib:spotlessAllFilesCheck
+> Task :swing-lib:spotlessJava
+> Task :swing-lib:spotlessJavaCheck
+> Task :swing-lib:spotlessCheck
+> Task :swing-lib:compileTestJava
+> Task :swing-lib:processTestResources NO-SOURCE
+> Task :swing-lib:testClasses
+
+> Task :swing-lib:test
+
+JFrameBuilderTest > alwaysOnTop() SKIPPED
+
+JFrameBuilderTest > windowActivatedAction(Runnable) SKIPPED
+
+JFrameBuilderTest > windowClosedAction(Runnable) SKIPPED
+
+JFrameBuilderTest > addComponents() SKIPPED
+
+JFrameBuilderTest > title() SKIPPED
+
+JFrameBuilderTest > minSizeIsSetByDefault() SKIPPED
+
+JFrameBuilderTest > locationRelativeTo() SKIPPED
+
+JFrameBuilderTest > windowActivatedActionRaisingEventShouldNotThrowExceptionWhenActionNotSet() SKIPPED
+
+JFrameBuilderTest > minSize() SKIPPED
+
+JFrameBuilderTest > windowClosedActionRaisingEventShouldNotThrowExceptionWhenActionNotSet() SKIPPED
+
+> Task :smoke-testing:test
+> Task :swing-lib:check
+> Task :swing-lib-test-support:spotlessAllFiles
+> Task :swing-lib-test-support:spotlessAllFilesCheck
+> Task :swing-lib-test-support:spotlessJava
+> Task :swing-lib-test-support:spotlessJavaCheck
+> Task :swing-lib-test-support:spotlessCheck
+> Task :swing-lib-test-support:compileTestJava NO-SOURCE
+> Task :swing-lib-test-support:processTestResources NO-SOURCE
+> Task :swing-lib-test-support:testClasses UP-TO-DATE
+> Task :swing-lib-test-support:test NO-SOURCE
+> Task :swing-lib-test-support:check
+> Task :test-common:spotlessAllFiles
+> Task :test-common:spotlessAllFilesCheck
+> Task :test-common:spotlessJava
+> Task :test-common:spotlessJavaCheck
+> Task :test-common:spotlessCheck
+> Task :test-common:compileTestJava
+> Task :test-common:processTestResources
+> Task :test-common:testClasses
+> Task :test-common:test
+> Task :test-common:check
+> Task :websocket-client:spotlessAllFiles
+> Task :websocket-client:spotlessAllFilesCheck
+> Task :websocket-client:spotlessJava
+> Task :websocket-client:spotlessJavaCheck
+> Task :websocket-client:spotlessCheck
+> Task :websocket-client:compileTestJava
+> Task :websocket-client:processTestResources
+> Task :websocket-client:testClasses
+> Task :websocket-client:test
+> Task :websocket-client:check
+> Task :websocket-server:spotlessAllFiles
+> Task :websocket-server:spotlessAllFilesCheck
+> Task :websocket-server:spotlessJava
+> Task :websocket-server:spotlessJavaCheck
+> Task :websocket-server:spotlessCheck
+> Task :websocket-server:compileTestJava
+> Task :websocket-server:processTestResources
+> Task :websocket-server:testClasses
+
+> Task :game-core:test
+
+SupplyAwareMoveDelegateTest > rejectsLandUnitBeforeLegacyMovementValidationWhenSupplyIsCut() FAILED
+    java.lang.IllegalStateException: No territory attachment for: End(non-water) with name: territoryAttachment
+        at games.strategy.triplea.attachments.TerritoryAttachment.get(TerritoryAttachment.java:193)
+        at games.strategy.triplea.attachments.TerritoryAttachment.get(TerritoryAttachment.java:184)
+        at games.strategy.triplea.delegate.TerritoryEffectHelper.getEffects(TerritoryEffectHelper.java:23)
+        at games.strategy.triplea.delegate.StackCapacityResolver.filterUnitsToFit(StackCapacityResolver.java:78)
+        at games.strategy.triplea.delegate.supply.SupplyAwareMoveDelegate.validateStackCapacity(SupplyAwareMoveDelegate.java:52)
+        at games.strategy.triplea.delegate.supply.SupplyAwareMoveDelegate.performMove(SupplyAwareMoveDelegate.java:27)
+        at games.strategy.triplea.delegate.supply.SupplyAwareMoveDelegateTest.rejectsLandUnitBeforeLegacyMovementValidationWhenSupplyIsCut(SupplyAwareMoveDelegateTest.java:48)
+
+> Task :websocket-server:test
+> Task :websocket-server:check
+> Task :xml-reader:spotlessAllFiles
+> Task :xml-reader:spotlessAllFilesCheck
+> Task :xml-reader:spotlessJava
+> Task :xml-reader:spotlessJavaCheck
+> Task :xml-reader:spotlessCheck
+> Task :xml-reader:compileTestJava
+> Task :xml-reader:processTestResources
+> Task :xml-reader:testClasses
+> Task :xml-reader:test
+> Task :xml-reader:check
+
+> Task :game-core:test
+
+2599 tests completed, 1 failed
+
+> Task :game-core:test FAILED
+Failed tests for game-core:
+games.strategy.triplea.delegate.supply.SupplyAwareMoveDelegateTest::rejectsLandUnitBeforeLegacyMovementValidationWhenSupplyIsCut()
+
+
+[Incubating] Problems report is available at: file:///home/runner/work/triplea-rebased/triplea-rebased/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':game-core:test'.
+> There were failing tests. See the report at: file:///home/runner/work/triplea-rebased/triplea-rebased/game-app/game-core/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 5m 40s
+198 actionable tasks: 196 executed, 2 from cache
+Configuration cache entry stored.
