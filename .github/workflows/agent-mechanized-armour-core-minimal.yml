@@ -1,4 +1,4 @@
-name: Apply mechanized armour core minimal
+name: Apply mechanized armour patch to target branch
 
 on:
   push:
@@ -9,69 +9,45 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   patch:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
-          ref: agent/mechanized-armour-support
+          ref: agent/mechanized-armour-combined-arms
+          fetch-depth: 0
 
-      - name: Replace mechanized rules
+      - name: Execute target branch patch script
         shell: bash
         run: |
-          python - <<'PY'
+          python3 - <<'PYRUN'
           from pathlib import Path
 
-          anchor = '<attachment name="unitAttachment" attachTo="mechanized"'
-          attack_old = '<option name="attack" value="2"/>'
-          attack_new = '<option name="attack" value="1"/>'
-          support_name = "supportAttachmentMechanizedArmour"
-          support = '''
-              <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
-                <option name="unitType" value="armour"/>
-                <option name="faction" value="allied"/>
-                <option name="side" value="offence"/>
-                <option name="dice" value="strength"/>
-                <option name="bonus" value="1"/>
-                <option name="number" value="1"/>
-                <option name="bonusType" value="mechanizedArmour"/>
-              </attachment>'''
+          workflow_path = Path('.github/workflows/apply-mechanized-armour-support.yml')
+          workflow = workflow_path.read_text(encoding='utf-8')
+          start_marker = "          python3 - <<'PY'\n"
+          end_marker = "\n          PY\n"
+          if start_marker not in workflow or end_marker not in workflow:
+              raise RuntimeError('embedded patch script markers not found')
+          script = workflow.split(start_marker, 1)[1].split(end_marker, 1)[0]
+          script = '\n'.join(
+              line[10:] if line.startswith('          ') else line
+              for line in script.splitlines()
+          )
+          exec(compile(script, str(workflow_path), 'exec'), {'__name__': '__main__'})
+          PYRUN
 
-          paths = sorted(Path.cwd().rglob("Small_Front_Meuse.xml"))
-          paths.append(Path("tools/generate_small_front_meuse_map.py"))
-
-          for path in paths:
-              if not path.exists():
-                  continue
-              text = path.read_text(encoding="utf-8")
-              if anchor not in text:
-                  continue
-              start = text.index(anchor)
-              end = text.index("</attachment>", start) + len("</attachment>")
-              block = text[start:end]
-              if attack_new not in block:
-                  block = block.replace(attack_old, attack_new, 1)
-              replacement = block
-              if support_name not in text:
-                  replacement += support
-              path.write_text(text[:start] + replacement + text[end:], encoding="utf-8")
-              print(path)
-          PY
-
-          mkdir -p mechanized-patch/maps/small_front_meuse/map/games
-          mkdir -p mechanized-patch/game-app/smoke-testing/src/test/resources/map-xmls
-          mkdir -p mechanized-patch/tools
-          cp maps/small_front_meuse/map/games/Small_Front_Meuse.xml mechanized-patch/maps/small_front_meuse/map/games/
-          cp game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml mechanized-patch/game-app/smoke-testing/src/test/resources/map-xmls/
-          cp tools/generate_small_front_meuse_map.py mechanized-patch/tools/
-
-      - name: Upload patched files
-        uses: actions/upload-artifact@v4
-        with:
-          name: mechanized-armour-patch
-          path: mechanized-patch
-          if-no-files-found: error
+      - name: Commit target branch changes
+        shell: bash
+        run: |
+          rm -f .github/workflows/apply-mechanized-armour-support.yml
+          rm -f .github/agent-mechanized-armour-trigger
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add mechanized armour combined-arms support"
+          git push origin HEAD:agent/mechanized-armour-combined-arms
