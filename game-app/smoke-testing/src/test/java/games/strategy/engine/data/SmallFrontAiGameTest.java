@@ -135,8 +135,7 @@ class SmallFrontAiGameTest {
         UnitSupportAttachment.get(data.getUnitTypeList()).stream()
             .filter(
                 rule ->
-                    rule.getAttachedTo()
-                        == data.getUnitTypeList().getUnitTypeOrThrow("mechanized"))
+                    rule.getAttachedTo() == data.getUnitTypeList().getUnitTypeOrThrow("mechanized"))
             .filter(
                 rule ->
                     rule.getBonusType() != null
