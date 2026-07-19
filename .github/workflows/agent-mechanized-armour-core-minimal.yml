@@ -27,28 +27,11 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          old = '''    <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
-                <option name="movement" value="2"/>
-                <option name="combatMovement" value="2"/>
-                <option name="redeploymentMovement" value="3"/>
-                <option name="attack" value="2"/>
-                <option name="defense" value="2"/>
-                <option name="isInfantry" value="true"/>
-                <option name="artillerySupportable" value="true"/>
-                <option name="stackCost" value="1"/>
-                <option name="tuv" value="4"/>
-              </attachment>'''
-          new = '''    <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
-                <option name="movement" value="2"/>
-                <option name="combatMovement" value="2"/>
-                <option name="redeploymentMovement" value="3"/>
-                <option name="attack" value="1"/>
-                <option name="defense" value="2"/>
-                <option name="isInfantry" value="true"/>
-                <option name="artillerySupportable" value="true"/>
-                <option name="stackCost" value="1"/>
-                <option name="tuv" value="4"/>
-              </attachment>
+          anchor = '<attachment name="unitAttachment" attachTo="mechanized"'
+          attack_old = '<option name="attack" value="2"/>'
+          attack_new = '<option name="attack" value="1"/>'
+          support_name = "supportAttachmentMechanizedArmour"
+          support = '''
               <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
                 <option name="unitType" value="armour"/>
                 <option name="faction" value="allied"/>
@@ -64,15 +47,21 @@ jobs:
               Path("game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml"),
               Path("tools/generate_small_front_meuse_map.py"),
           ]
+
           for path in paths:
               text = path.read_text(encoding="utf-8")
-              if "supportAttachmentMechanizedArmour" in text:
-                  print(f"already patched: {path}")
-                  continue
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f"expected exact mechanized block once in {path}, found {count}")
-              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+              start = text.index(anchor)
+              end = text.index("</attachment>", start) + len("</attachment>")
+              block = text[start:end]
+              if attack_new not in block:
+                  if attack_old not in block:
+                      raise SystemExit(f"mechanized attack option missing in {path}")
+                  block = block.replace(attack_old, attack_new, 1)
+              replacement = block
+              if support_name not in text:
+                  replacement += support
+              text = text[:start] + replacement + text[end:]
+              path.write_text(text, encoding="utf-8")
               print(f"patched: {path}")
           PY
 
