@@ -156,7 +156,7 @@ class SmallFrontAiGameTest {
   }
 
   @Test
-  void nativeAirbasesProvideRearAreaScrambleAndAirControlPersists() {
+  void nativeAirbasesProvideRearAreaScrambleAndRoundScopedAirControl() {
     final GameData data = loadMap();
     final GamePlayer germans = data.getPlayerList().getPlayerId("Germans");
     final GamePlayer americans = data.getPlayerList().getPlayerId("Americans");
@@ -173,7 +173,7 @@ class SmallFrontAiGameTest {
     assertThat(new ScrambleLogic(data, americans, stVith).getUnitsThatCanScramble())
         .contains(germanFighter);
 
-    assertThat(AirControlTracker.isPersistent(data)).isTrue();
+    assertThat(AirControlTracker.isPersistent(data)).isFalse();
   }
 
   private static GameData loadMap() {
