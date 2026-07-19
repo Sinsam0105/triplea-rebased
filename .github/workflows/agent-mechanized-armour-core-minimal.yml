@@ -42,27 +42,35 @@ jobs:
                 <option name="bonusType" value="mechanizedArmour"/>
               </attachment>'''
 
-          paths = [
-              Path("maps/small_front_meuse/map/games/Small_Front_Meuse.xml"),
-              Path("game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml"),
-              Path("tools/generate_small_front_meuse_map.py"),
-          ]
+          paths = sorted(Path.cwd().rglob("Small_Front_Meuse.xml"))
+          generator = Path("tools/generate_small_front_meuse_map.py")
+          if generator.exists():
+              paths.append(generator)
 
+          changed = []
           for path in paths:
               text = path.read_text(encoding="utf-8")
+              if anchor not in text:
+                  print(f"skip, no mechanized attachment: {path}")
+                  continue
               start = text.index(anchor)
               end = text.index("</attachment>", start) + len("</attachment>")
               block = text[start:end]
-              if attack_new not in block:
-                  if attack_old not in block:
-                      raise SystemExit(f"mechanized attack option missing in {path}")
+              if attack_new not in block and attack_old in block:
                   block = block.replace(attack_old, attack_new, 1)
               replacement = block
               if support_name not in text:
                   replacement += support
-              text = text[:start] + replacement + text[end:]
-              path.write_text(text, encoding="utf-8")
-              print(f"patched: {path}")
+              patched = text[:start] + replacement + text[end:]
+              if patched != text:
+                  path.write_text(patched, encoding="utf-8")
+                  changed.append(path)
+                  print(f"patched: {path}")
+              else:
+                  print(f"already current: {path}")
+
+          if not changed:
+              raise SystemExit("no Meuse source was changed")
           PY
 
       - name: Commit and push
@@ -70,9 +78,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            maps/small_front_meuse/map/games/Small_Front_Meuse.xml \
-            game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml \
-            tools/generate_small_front_meuse_map.py
+          git add tools/generate_small_front_meuse_map.py maps/small_front_meuse/map/games/Small_Front_Meuse.xml game-app
           git commit -m "Add mechanized armour combined-arms support"
           git push origin HEAD:agent/mechanized-armour-support
