@@ -44,6 +44,11 @@ jobs:
               "if not generator_paths:\n    raise RuntimeError('Small Front generator not found')\n",
               "",
           )
+          test_path = Path('game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontMeuseScenarioTest.java')
+          if not test_path.exists():
+              block_start = script.index("\ntest_path = Path('game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontMeuseScenarioTest.java')")
+              block_end = script.index("\nzip_path = Path('maps/small_front_meuse.zip')", block_start)
+              script = script[:block_start] + script[block_end:]
           exec(compile(script, str(workflow_path), 'exec'), {'__name__': '__main__'})
           PYRUN
           status=$?
