@@ -161,9 +161,7 @@ public final class OperationalPlanRuntime {
       case GAIN_AIR_SUPERIORITY ->
           "air_assignment".equals(action.type()) ? 2 * objective.priority() : 0;
       case CAPTURE ->
-          "air_assignment".equals(action.type())
-              ? objective.priority() / 2
-              : objective.priority();
+          "air_assignment".equals(action.type()) ? objective.priority() / 2 : objective.priority();
       case HOLD, PROTECT_SUPPLY, REDEPLOY_RESERVE, SCREEN -> objective.priority();
     };
   }
