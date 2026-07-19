@@ -74,7 +74,6 @@ jobs:
         if: steps.patch.outputs.status == '0'
         shell: bash
         run: |
-          rm -f .github/workflows/apply-mechanized-armour-support.yml
           rm -f .github/agent-mechanized-armour-trigger
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
