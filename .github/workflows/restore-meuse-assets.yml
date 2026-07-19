@@ -1,3 +1,4 @@
+# Synchronize PR restore trigger.
 name: Restore Meuse PNG Assets
 
 on:
@@ -26,39 +27,23 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-
           REPO="$GITHUB_WORKSPACE"
           MAP_ROOT="$REPO/maps/small_front_meuse"
           WORK="$(mktemp -d)"
           export WORK
-
           mkdir -p "$WORK/map/games"
           cd "$MAP_ROOT"
-
-          # First pass: geometry and adjacency.
           java -Djava.awt.headless=true tools/MapGen.java "$WORK"
-
-          # MapGen only needs the XML contents. Strip the external DTD declaration
-          # from the temporary copy so the source-file runner does not look for a
-          # sibling game.dtd file.
           python3 - <<'PY'
           import os
           from pathlib import Path
-
           source = Path('map/games/Small_Front_Meuse.xml').read_text(encoding='utf-8')
           source = source.replace('<!DOCTYPE game SYSTEM "game.dtd">\n', '')
           target = Path(os.environ['WORK']) / 'map/games/Small_Front_Meuse.xml'
           target.write_text(source, encoding='utf-8')
           PY
-
-          # Second pass: render terrain, roads, objectives, tiles and smallMap.png.
-          java -Djava.awt.headless=true tools/MapGen.java \
-            "$WORK" \
-            "$WORK/map/games/Small_Front_Meuse.xml"
-
-          # Regenerate both players' unit counters.
+          java -Djava.awt.headless=true tools/MapGen.java "$WORK" "$WORK/map/games/Small_Front_Meuse.xml"
           java -Djava.awt.headless=true tools/UnitGen.java "$WORK"
-
           rm -rf map/baseTiles map/reliefTiles map/units
           cp -a "$WORK/map/baseTiles" map/
           cp -a "$WORK/map/reliefTiles" map/
@@ -67,33 +52,20 @@ jobs:
           cp "$WORK/map/smallMap.png" map/smallMap.png
           cp "$WORK/map/misc/vc.png" map/misc/vc.png
           cp "$WORK/preview.png" preview/meuse_map_preview.png
-
           python3 tools/manifest.py .
           python3 tools/validate_map.py
-
           test -s map/smallMap.png
           test "$(find map/baseTiles -type f -name '*.png' | wc -l)" -eq 28
           test "$(find map/reliefTiles -type f -name '*.png' | wc -l)" -eq 28
-
           if ! grep -qxF '!maps/**/*.png' "$REPO/.gitignore"; then
             printf '\n# Packaged map runtime assets\n!maps/**/*.png\n' >> "$REPO/.gitignore"
           fi
-
           cd "$REPO"
           rm .github/workflows/restore-meuse-assets.yml
-
           git config user.name "OpenAI Agent"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add .gitignore maps/small_front_meuse/manifest.json
-          git add -f \
-            maps/small_front_meuse/map/baseTiles \
-            maps/small_front_meuse/map/reliefTiles \
-            maps/small_front_meuse/map/units \
-            maps/small_front_meuse/map/smallMap.png \
-            maps/small_front_meuse/map/misc/vc.png \
-            maps/small_front_meuse/preview/meuse_map_preview.png
+          git add -f maps/small_front_meuse/map/baseTiles maps/small_front_meuse/map/reliefTiles maps/small_front_meuse/map/units maps/small_front_meuse/map/smallMap.png maps/small_front_meuse/map/misc/vc.png maps/small_front_meuse/preview/meuse_map_preview.png
           git add -u .github/workflows/restore-meuse-assets.yml
-
           git commit -m "Restore generated Meuse PNG assets"
           git push origin HEAD:agent/restore-meuse-png-assets
