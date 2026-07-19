@@ -10,6 +10,8 @@ import games.strategy.engine.player.Player;
 import games.strategy.net.LocalNoOpMessenger;
 import games.strategy.net.Messengers;
 import games.strategy.net.websocket.ClientNetworkBridge;
+import games.strategy.triplea.attachments.UnitAttachment;
+import games.strategy.triplea.attachments.UnitSupportAttachment;
 import games.strategy.triplea.delegate.battle.AirControlTracker;
 import games.strategy.triplea.delegate.battle.ScrambleLogic;
 import games.strategy.triplea.delegate.scoring.SmallFrontScoringService;
@@ -118,6 +120,40 @@ class SmallFrontAiGameTest {
     assertThat(SupplyNetworkResolver.getRoadNeighbors(hotton, data)).doesNotContain(marche);
     assertThat(SupplyNetworkResolver.getRoadNeighbors(vielsalm, data)).doesNotContain(durbuy);
     assertThat(SupplyNetworkResolver.getRoadNeighbors(libramont, data)).doesNotContain(neufchateau);
+  }
+
+  @Test
+  void mechanizedArmourSupportEncodesCombinedArmsRule() {
+    final GameData data = loadMap();
+    final GamePlayer germans = data.getPlayerList().getPlayerId("Germans");
+    final UnitAttachment mechanized =
+        UnitAttachment.get(
+            data.getUnitTypeList().getUnitTypeOrThrow("mechanized"), "unitAttachment");
+    assertThat(mechanized.getAttack(germans)).isEqualTo(1);
+
+    final UnitSupportAttachment support =
+        UnitSupportAttachment.get(data.getUnitTypeList()).stream()
+            .filter(
+                rule ->
+                    rule.getAttachedTo()
+                        == data.getUnitTypeList().getUnitTypeOrThrow("mechanized"))
+            .filter(
+                rule ->
+                    rule.getBonusType() != null
+                        && rule.getBonusType().getName().equals("mechanizedArmour"))
+            .findFirst()
+            .orElseThrow();
+    assertThat(support.getUnitType())
+        .containsExactly(data.getUnitTypeList().getUnitTypeOrThrow("armour"));
+    assertThat(support.getBonus()).isEqualTo(1);
+    assertThat(support.getNumber()).isEqualTo(1);
+    assertThat(support.getOffence()).isTrue();
+    assertThat(support.getDefence()).isFalse();
+    assertThat(support.getStrength()).isTrue();
+    assertThat(support.getRoll()).isFalse();
+    assertThat(support.getPlayers()).containsExactly(germans);
+    assertThat(support.getBonusType()).isNotNull();
+    assertThat(support.getBonusType().getCount()).isEqualTo(1);
   }
 
   @Test
