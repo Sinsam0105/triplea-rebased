@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/mechanized-armour-support
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -32,7 +35,6 @@ jobs:
 
           ROOT = Path.cwd()
           SUPPORT_NAME = "supportAttachmentMechanizedArmour"
-          BONUS_TYPE = "mechanizedArmour"
           SUPPORT_BLOCK = '''    <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
                 <option name="unitType" value="armour"/>
                 <option name="faction" value="allied"/>
@@ -95,15 +97,15 @@ jobs:
               raise RuntimeError("mechanized rulebook row was not found")
           combined_arms = '''### 기갑-기계화 제병협동
 
-- **mechanized**의 기본 공격력은 1이다.
-- 함께 공격하는 mechanized 1개는 **armour 1개의 공격 수치를 +1** 한다.
-- 지원은 1:1이다. mechanized 1개는 armour 1개만 지원하며, armour 1개는 기계화 지원을 한 번만 받는다.
-- armour의 2개 공격 주사위 모두에 증가한 공격 수치가 적용된다.
-- 이 보너스는 포병 지원 및 공중 통제 공격 보너스와 별개의 지원 유형이므로 중첩될 수 있다.
+          - **mechanized**의 기본 공격력은 1이다.
+          - 함께 공격하는 mechanized 1개는 **armour 1개의 공격 수치를 +1** 한다.
+          - 지원은 1:1이다. mechanized 1개는 armour 1개만 지원하며, armour 1개는 기계화 지원을 한 번만 받는다.
+          - armour의 2개 공격 주사위 모두에 증가한 공격 수치가 적용된다.
+          - 이 보너스는 포병 지원 및 공중 통제 공격 보너스와 별개의 지원 유형이므로 중첩될 수 있다.
 
-이 규칙은 단독 기계화 공세를 약화하고, 제한된 스택 용량 안에서 기갑·기계화·포병·항공을 결합한 전투단 편성을 보상한다.
+          이 규칙은 단독 기계화 공세를 약화하고, 제한된 스택 용량 안에서 기갑·기계화·포병·항공을 결합한 전투단 편성을 보상한다.
 
-'''
+          '''
           terrain_marker = "## 5. 지형\n"
           if "### 기갑-기계화 제병협동" not in rulebook_text:
               if terrain_marker not in rulebook_text:
@@ -138,11 +140,7 @@ jobs:
               if attack_assertion not in test_text:
                   if stack_assertion not in test_text:
                       raise RuntimeError(f"mechanized stack assertion was not found in {test}")
-                  test_text = test_text.replace(
-                      stack_assertion,
-                      stack_assertion + attack_assertion,
-                      1,
-                  )
+                  test_text = test_text.replace(stack_assertion, stack_assertion + attack_assertion, 1)
               support_assertions = '''
               final var mechanizedSupport =
                   UnitSupportAttachment.get(data.getUnitTypeList()).stream()
@@ -200,8 +198,10 @@ jobs:
 
           if SUPPORT_NAME not in generator.read_text(encoding="utf-8"):
               raise RuntimeError("generator does not contain mechanized armour support")
-          if any('<option name="attack" value="2"/>' in UNIT_BLOCK.search(p.read_text(encoding="utf-8")).group("block") for p in xml_paths):
-              raise RuntimeError("an XML still has mechanized attack 2")
+          for path in xml_paths:
+              block = UNIT_BLOCK.search(path.read_text(encoding="utf-8")).group("block")
+              if '<option name="attack" value="2"/>' in block:
+                  raise RuntimeError(f"{path} still has mechanized attack 2")
           PY
 
           python -m py_compile tools/generate_small_front_meuse_map.py
