@@ -40,6 +40,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # Scenario-specific structural and synchronization checks.
       - name: Validate Poland scenario package
         shell: bash
         run: |
