@@ -136,8 +136,7 @@ public final class HeuristicOperationalPlanner implements OperationalTurnPlanner
             .filter(HeuristicOperationalPlanner::isObjective)
             .filter(
                 territory ->
-                    !visible.contains(territory)
-                        || !isFriendly(territory.getOwner(), player, data))
+                    !visible.contains(territory) || !isFriendly(territory.getOwner(), player, data))
             .toList();
     final List<Territory> contacts =
         visible.stream()
