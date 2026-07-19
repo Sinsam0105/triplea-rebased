@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE game SYSTEM "game.dtd">
+<game>
+  <info name="Small Front: Vistula Withdrawal" version="0.1"/>
+  <loader javaClass="games.strategy.triplea.TripleA"/>
+  <triplea minimumVersion="2.7.0"/>
+  <diceSides value="6"/>
+
+  <map>
+    <territory name="Breslau"/>
+    <territory name="Brest"/>
+    <territory name="Bydgoszcz"/>
+    <territory name="Czestochowa"/>
+    <territory name="Danzig"/>
+    <territory name="Deblin"/>
+    <territory name="Frankfurt Oder"/>
+    <territory name="Gdynia"/>
+    <territory name="Grudziadz"/>
+    <territory name="Kalisz"/>
+    <territory name="Katowice"/>
+    <territory name="Kielce"/>
+    <territory name="Krakow"/>
+    <territory name="Kutno"/>
+    <territory name="Lodz"/>
+    <territory name="Lublin"/>
+    <territory name="Lukow"/>
+    <territory name="Lwow"/>
+    <territory name="Marienwerder"/>
+    <territory name="Modlin"/>
+    <territory name="Oppeln"/>
+    <territory name="Piotrkow"/>
+    <territory name="Plock"/>
+    <territory name="Poznan"/>
+    <territory name="Radom"/>
+    <territory name="Sandomierz"/>
+    <territory name="Schneidemuhl"/>
+    <territory name="Siedlce"/>
+    <territory name="Tarnow"/>
+    <territory name="Tczew"/>
+    <territory name="Teschen"/>
+    <territory name="Torun"/>
+    <territory name="Warsaw"/>
+    <territory name="Wloclawek"/>
+    <territory name="Zamosc"/>
+    <connection t1="Breslau" t2="Frankfurt Oder"/>
+    <connection t1="Breslau" t2="Kalisz"/>
+    <connection t1="Breslau" t2="Oppeln"/>
+    <connection t1="Breslau" t2="Poznan"/>
+    <connection t1="Brest" t2="Lublin"/>
+    <connection t1="Brest" t2="Lukow"/>
+    <connection t1="Brest" t2="Siedlce"/>
+    <connection t1="Brest" t2="Zamosc"/>
+    <connection t1="Bydgoszcz" t2="Grudziadz"/>
+    <connection t1="Bydgoszcz" t2="Poznan"/>
+    <connection t1="Bydgoszcz" t2="Schneidemuhl"/>
+    <connection t1="Bydgoszcz" t2="Tczew"/>
+    <connection t1="Bydgoszcz" t2="Torun"/>
+    <connection t1="Bydgoszcz" t2="Wloclawek"/>
+    <connection t1="Czestochowa" t2="Katowice"/>
+    <connection t1="Czestochowa" t2="Kielce"/>
+    <connection t1="Czestochowa" t2="Krakow"/>
+    <connection t1="Czestochowa" t2="Lodz"/>
+    <connection t1="Czestochowa" t2="Piotrkow"/>
+    <connection t1="Danzig" t2="Gdynia"/>
+    <connection t1="Danzig" t2="Marienwerder"/>
+    <connection t1="Danzig" t2="Tczew"/>
+    <connection t1="Deblin" t2="Lublin"/>
+    <connection t1="Deblin" t2="Lukow"/>
+    <connection t1="Deblin" t2="Radom"/>
+    <connection t1="Deblin" t2="Sandomierz"/>
+    <connection t1="Deblin" t2="Warsaw"/>
+    <connection t1="Deblin" t2="Zamosc"/>
+    <connection t1="Frankfurt Oder" t2="Poznan"/>
+    <connection t1="Frankfurt Oder" t2="Schneidemuhl"/>
+    <connection t1="Gdynia" t2="Grudziadz"/>
+    <connection t1="Gdynia" t2="Tczew"/>
+    <connection t1="Grudziadz" t2="Tczew"/>
+    <connection t1="Grudziadz" t2="Torun"/>
+    <connection t1="Kalisz" t2="Katowice"/>
+    <connection t1="Kalisz" t2="Lodz"/>
+    <connection t1="Kalisz" t2="Poznan"/>
+    <connection t1="Katowice" t2="Krakow"/>
+    <connection t1="Katowice" t2="Oppeln"/>
+    <connection t1="Katowice" t2="Teschen"/>
+    <connection t1="Kielce" t2="Krakow"/>
+    <connection t1="Kielce" t2="Piotrkow"/>
+    <connection t1="Kielce" t2="Sandomierz"/>
+    <connection t1="Kielce" t2="Tarnow"/>
+    <connection t1="Krakow" t2="Teschen"/>
+    <connection t1="Kutno" t2="Lodz"/>
+    <connection t1="Kutno" t2="Modlin"/>
+    <connection t1="Kutno" t2="Piotrkow"/>
+    <connection t1="Kutno" t2="Plock"/>
+    <connection t1="Kutno" t2="Radom"/>
+    <connection t1="Kutno" t2="Wloclawek"/>
+    <connection t1="Lodz" t2="Piotrkow"/>
+    <connection t1="Lodz" t2="Wloclawek"/>
+    <connection t1="Lublin" t2="Lukow"/>
+    <connection t1="Lublin" t2="Zamosc"/>
+    <connection t1="Lukow" t2="Siedlce"/>
+    <connection t1="Lukow" t2="Warsaw"/>
+    <connection t1="Lwow" t2="Zamosc"/>
+    <connection t1="Marienwerder" t2="Schneidemuhl"/>
+    <connection t1="Marienwerder" t2="Tczew"/>
+    <connection t1="Modlin" t2="Plock"/>
+    <connection t1="Modlin" t2="Radom"/>
+    <connection t1="Modlin" t2="Siedlce"/>
+    <connection t1="Modlin" t2="Warsaw"/>
+    <connection t1="Oppeln" t2="Teschen"/>
+    <connection t1="Piotrkow" t2="Radom"/>
+    <connection t1="Piotrkow" t2="Sandomierz"/>
+    <connection t1="Plock" t2="Torun"/>
+    <connection t1="Plock" t2="Wloclawek"/>
+    <connection t1="Poznan" t2="Schneidemuhl"/>
+    <connection t1="Radom" t2="Sandomierz"/>
+    <connection t1="Radom" t2="Warsaw"/>
+    <connection t1="Sandomierz" t2="Tarnow"/>
+    <connection t1="Schneidemuhl" t2="Tczew"/>
+    <connection t1="Siedlce" t2="Warsaw"/>
+    <connection t1="Torun" t2="Wloclawek"/>
+  </map>
+
+  <resourceList>
+    <resource name="PUs"/>
+  </resourceList>
+
+  <playerList>
+    <player name="Germans" optional="false" defaultType="Human"/>
+    <player name="Poland" optional="false" defaultType="Human"/>
+    <alliance player="Germans" alliance="Axis"/>
+    <alliance player="Poland" alliance="Allies"/>
+  </playerList>
+
+  <unitList>
+    <unit name="infantry"/>
+    <unit name="polishInfantry"/>
+    <unit name="polishArtillery"/>
+    <unit name="cavalry"/>
+    <unit name="armour"/>
+    <unit name="mechanized"/>
+    <unit name="selfPropelledArtillery"/>
+  </unitList>
+
+  <relationshipTypes>
+    <relationshipType name="War"/>
+    <relationshipType name="Allied"/>
+  </relationshipTypes>
+
+  <territoryEffectList>
+    <territoryEffect name="Open"/>
+    <territoryEffect name="Forest"/>
+    <territoryEffect name="Town"/>
+  </territoryEffectList>
+
+  <gamePlay>
+    <delegate name="initialization" javaClass="games.strategy.triplea.delegate.InitializationDelegate" display="Initialize"/>
+    <delegate name="reinforcement" javaClass="games.strategy.triplea.delegate.FixedReinforcementDelegate" display="Fixed Reinforcements"/>
+    <delegate name="supply" javaClass="games.strategy.triplea.delegate.SupplyDelegate" display="Supply"/>
+    <delegate name="move" javaClass="games.strategy.triplea.delegate.SupplyAwareMoveDelegate" display="Move"/>
+    <delegate name="battle" javaClass="games.strategy.triplea.delegate.BattleDelegate" display="Battle"/>
+    <delegate name="endTurn" javaClass="games.strategy.triplea.delegate.NoPUEndTurnDelegate" display="End Turn"/>
+    <delegate name="endRound" javaClass="games.strategy.triplea.delegate.SmallFrontEndRoundDelegate" display="End Round"/>
+
+    <sequence>
+      <step name="initializationStep" delegate="initialization" maxRunCount="1"/>
+
+      <step name="germanReinforcement" delegate="reinforcement" player="Germans"/>
+      <step name="germanSupply" delegate="supply" player="Germans"/>
+      <step name="germanCombatMove" delegate="move" player="Germans" display="Combat Move"/>
+      <step name="germanBattle" delegate="battle" player="Germans"/>
+      <step name="germanRedeployment" delegate="move" player="Germans" display="Redeployment">
+        <stepProperty name="nonCombatMove" value="true"/>
+        <stepProperty name="removeAirThatCanNotLand" value="false"/>
+      </step>
+      <step name="germanEndTurn" delegate="endTurn" player="Germans"/>
+
+      <step name="polishReinforcement" delegate="reinforcement" player="Poland"/>
+      <step name="polishSupply" delegate="supply" player="Poland"/>
+      <step name="polishCombatMove" delegate="move" player="Poland" display="Combat Move"/>
+      <step name="polishBattle" delegate="battle" player="Poland"/>
+      <step name="polishRedeployment" delegate="move" player="Poland" display="Redeployment">
+        <stepProperty name="nonCombatMove" value="true"/>
+        <stepProperty name="removeAirThatCanNotLand" value="false"/>
+      </step>
+      <step name="polishEndTurn" delegate="endTurn" player="Poland"/>
+
+      <step name="endRoundStep" delegate="endRound"/>
+    </sequence>
+  </gamePlay>
+  <attachmentList>
+    <attachment name="relationshipTypeAttachment" attachTo="War" javaClass="games.strategy.triplea.attachments.RelationshipTypeAttachment" type="relationship">
+      <option name="archeType" value="war"/>
+    </attachment>
+    <attachment name="relationshipTypeAttachment" attachTo="Allied" javaClass="games.strategy.triplea.attachments.RelationshipTypeAttachment" type="relationship">
+      <option name="archeType" value="allied"/>
+    </attachment>
+
+    <attachment name="territoryEffectAttachment" attachTo="Open" javaClass="games.strategy.triplea.attachments.TerritoryEffectAttachment" type="territoryEffect">
+      <option name="maxGroundBattleRounds" value="4"/>
+      <option name="maxAirBattleRounds" value="1"/>
+      <option name="stackCapacity" value="7"/>
+    </attachment>
+    <attachment name="territoryEffectAttachment" attachTo="Forest" javaClass="games.strategy.triplea.attachments.TerritoryEffectAttachment" type="territoryEffect">
+      <option name="maxGroundBattleRounds" value="2"/>
+      <option name="maxAirBattleRounds" value="1"/>
+      <option name="stackCapacity" value="5"/>
+    </attachment>
+    <attachment name="territoryEffectAttachment" attachTo="Town" javaClass="games.strategy.triplea.attachments.TerritoryEffectAttachment" type="territoryEffect">
+      <option name="maxGroundBattleRounds" value="3"/>
+      <option name="maxAirBattleRounds" value="1"/>
+      <option name="stackCapacity" value="6"/>
+    </attachment>
+
+    <attachment name="unitAttachment" attachTo="infantry" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="1"/>
+      <option name="combatMovement" value="1"/>
+      <option name="redeploymentMovement" value="1"/>
+      <option name="attack" value="1"/>
+      <option name="defense" value="2"/>
+      <option name="isInfantry" value="true"/>
+      <option name="artillerySupportable" value="true"/>
+      <option name="stackCost" value="1"/>
+      <option name="tuv" value="3"/>
+    </attachment>
+    <attachment name="unitAttachment" attachTo="polishInfantry" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="1"/>
+      <option name="combatMovement" value="1"/>
+      <option name="redeploymentMovement" value="3"/>
+      <option name="attack" value="1"/>
+      <option name="defense" value="2"/>
+      <option name="isInfantry" value="true"/>
+      <option name="artillerySupportable" value="true"/>
+      <option name="stackCost" value="1"/>
+      <option name="tuv" value="3"/>
+    </attachment>
+    <attachment name="unitAttachment" attachTo="polishArtillery" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="1"/>
+      <option name="combatMovement" value="1"/>
+      <option name="redeploymentMovement" value="2"/>
+      <option name="attack" value="2"/>
+      <option name="defense" value="2"/>
+      <option name="artillery" value="true"/>
+      <option name="stackCost" value="1"/>
+      <option name="tuv" value="4"/>
+    </attachment>
+    <attachment name="unitAttachment" attachTo="cavalry" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="2"/>
+      <option name="combatMovement" value="2"/>
+      <option name="redeploymentMovement" value="4"/>
+      <option name="attack" value="1"/>
+      <option name="defense" value="2"/>
+      <option name="isInfantry" value="true"/>
+      <option name="artillerySupportable" value="true"/>
+      <option name="stackCost" value="1"/>
+      <option name="tuv" value="4"/>
+    </attachment>
+    <attachment name="unitAttachment" attachTo="armour" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="2"/>
+      <option name="combatMovement" value="2"/>
+      <option name="redeploymentMovement" value="3"/>
+      <option name="attack" value="3"/>
+      <option name="defense" value="3"/>
+      <option name="canBlitz" value="true"/>
+      <option name="artillerySupportable" value="true"/>
+      <option name="stackCost" value="2"/>
+      <option name="tuv" value="7"/>
+    </attachment>
+    <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="2"/>
+      <option name="combatMovement" value="2"/>
+      <option name="redeploymentMovement" value="3"/>
+      <option name="attack" value="2"/>
+      <option name="defense" value="2"/>
+      <option name="isInfantry" value="true"/>
+      <option name="artillerySupportable" value="true"/>
+      <option name="stackCost" value="1"/>
+      <option name="tuv" value="5"/>
+    </attachment>
+    <attachment name="unitAttachment" attachTo="selfPropelledArtillery" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+      <option name="movement" value="2"/>
+      <option name="combatMovement" value="2"/>
+      <option name="redeploymentMovement" value="3"/>
+      <option name="attack" value="2"/>
+      <option name="defense" value="2"/>
+      <option name="artillery" value="true"/>
+      <option name="stackCost" value="1"/>
+      <option name="tuv" value="5"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Breslau" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Breslau" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Oppeln"/>
+      <option name="roadConnection" value="Kalisz"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Brest" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="capital" value="Poland"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Brest" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Lukow"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Bydgoszcz" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Bydgoszcz" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Torun"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Czestochowa" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Czestochowa" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Piotrkow"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Danzig" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Danzig" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Marienwerder"/>
+      <option name="roadConnection" value="Gdynia"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Deblin" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Deblin" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Warsaw"/>
+      <option name="roadConnection" value="Lublin"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Frankfurt Oder" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="capital" value="Germans"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Frankfurt Oder" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Breslau"/>
+      <option name="roadConnection" value="Poznan"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Gdynia" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Gdynia" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Tczew"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Grudziadz" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Kalisz" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Kalisz" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Lodz"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Katowice" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Katowice" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Czestochowa"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Kielce" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Kielce" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Tarnow"/>
+      <option name="roadConnection" value="Sandomierz"/>
+      <option name="roadConnection" value="Piotrkow"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Krakow" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Krakow" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Kielce"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Kutno" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Kutno" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Modlin"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Lodz" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Lodz" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Kutno"/>
+      <option name="roadConnection" value="Piotrkow"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Lublin" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Lublin" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Lukow"/>
+      <option name="roadConnection" value="Zamosc"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Lukow" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Lukow" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Siedlce"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Lwow" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Lwow" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Marienwerder" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Marienwerder" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Schneidemuhl"/>
+      <option name="roadConnection" value="Tczew"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Modlin" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Modlin" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Warsaw"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Oppeln" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Oppeln" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Teschen"/>
+      <option name="roadConnection" value="Katowice"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Piotrkow" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Piotrkow" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Radom"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Plock" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Poznan" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Poznan" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Kalisz"/>
+      <option name="roadConnection" value="Bydgoszcz"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Radom" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Radom" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Warsaw"/>
+      <option name="roadConnection" value="Deblin"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Sandomierz" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Sandomierz" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Radom"/>
+      <option name="roadConnection" value="Deblin"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Schneidemuhl" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Schneidemuhl" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Frankfurt Oder"/>
+      <option name="roadConnection" value="Bydgoszcz"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Siedlce" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Siedlce" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Brest"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Tarnow" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Tczew" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Tczew" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Bydgoszcz"/>
+      <option name="roadConnection" value="Grudziadz"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Teschen" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Teschen" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="supplySource" value="true"/>
+      <option name="roadConnection" value="Krakow"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Torun" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Torun" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Wloclawek"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Warsaw" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="1"/>
+      <option name="territoryEffect" value="Town"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Warsaw" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Siedlce"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Wloclawek" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Wloclawek" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Plock"/>
+      <option name="roadConnection" value="Kutno"/>
+    </attachment>
+    <attachment name="territoryAttachment" attachTo="Zamosc" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
+      <option name="production" value="0"/>
+      <option name="victoryCity" value="0"/>
+      <option name="territoryEffect" value="Forest"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Zamosc" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Lwow"/>
+    </attachment>
+
+    <attachment name="fixedReinforcementAttachment" attachTo="Germans" javaClass="games.strategy.triplea.attachments.FixedReinforcementAttachment" type="player">
+      <option name="reinforcement" value="1:Frankfurt Oder:armour:1"/>
+      <option name="reinforcement" value="1:Oppeln:mechanized:1"/>
+      <option name="reinforcement" value="2:Danzig:armour:1"/>
+      <option name="reinforcement" value="2:Breslau:selfPropelledArtillery:1"/>
+      <option name="reinforcement" value="3:Schneidemuhl:infantry:2"/>
+      <option name="reinforcement" value="3:Teschen:armour:1"/>
+      <option name="reinforcement" value="4:Frankfurt Oder:mechanized:1"/>
+      <option name="reinforcement" value="4:Danzig:infantry:2"/>
+      <option name="reinforcement" value="5:Breslau:armour:1"/>
+    </attachment>
+    <attachment name="fixedReinforcementAttachment" attachTo="Poland" javaClass="games.strategy.triplea.attachments.FixedReinforcementAttachment" type="player">
+      <option name="reinforcement" value="2:Warsaw:polishInfantry:1"/>
+      <option name="reinforcement" value="2:Lublin:cavalry:1"/>
+      <option name="reinforcement" value="3:Siedlce:polishInfantry:2"/>
+      <option name="reinforcement" value="4:Lublin:polishArtillery:1"/>
+      <option name="reinforcement" value="5:Brest:polishInfantry:2"/>
+      <option name="reinforcement" value="6:Lwow:cavalry:1"/>
+    </attachment>
+
+    <attachment name="scoringAttachment" attachTo="Germans" javaClass="games.strategy.triplea.attachments.SmallFrontScoringAttachment" type="player">
+      <option name="pointsPerObjective" value="1"/>
+      <option name="suppliedOccupationBonus" value="2:Warsaw:Deblin"/>
+      <option name="suppliedOccupationBonus" value="2:Siedlce:Lublin:Brest"/>
+      <option name="suppliedOccupationBonus" value="1:Kutno:Lodz:Radom"/>
+    </attachment>
+    <attachment name="scoringAttachment" attachTo="Poland" javaClass="games.strategy.triplea.attachments.SmallFrontScoringAttachment" type="player">
+      <option name="pointsPerObjective" value="1"/>
+      <option name="enemyAbsentBonus" value="2:Warsaw:Deblin"/>
+      <option name="enemyAbsentBonus" value="1:Siedlce:Lublin:Brest:Lwow"/>
+      <option name="winsTies" value="true"/>
+    </attachment>
+  </attachmentList>
+
+  <initialize>
+    <ownerInitialize>
+      <territoryOwner territory="Breslau" owner="Germans"/>
+      <territoryOwner territory="Brest" owner="Poland"/>
+      <territoryOwner territory="Bydgoszcz" owner="Poland"/>
+      <territoryOwner territory="Czestochowa" owner="Poland"/>
+      <territoryOwner territory="Danzig" owner="Germans"/>
+      <territoryOwner territory="Deblin" owner="Poland"/>
+      <territoryOwner territory="Frankfurt Oder" owner="Germans"/>
+      <territoryOwner territory="Gdynia" owner="Poland"/>
+      <territoryOwner territory="Grudziadz" owner="Poland"/>
+      <territoryOwner territory="Kalisz" owner="Poland"/>
+      <territoryOwner territory="Katowice" owner="Poland"/>
+      <territoryOwner territory="Kielce" owner="Poland"/>
+      <territoryOwner territory="Krakow" owner="Poland"/>
+      <territoryOwner territory="Kutno" owner="Poland"/>
+      <territoryOwner territory="Lodz" owner="Poland"/>
+      <territoryOwner territory="Lublin" owner="Poland"/>
+      <territoryOwner territory="Lukow" owner="Poland"/>
+      <territoryOwner territory="Lwow" owner="Poland"/>
+      <territoryOwner territory="Marienwerder" owner="Germans"/>
+      <territoryOwner territory="Modlin" owner="Poland"/>
+      <territoryOwner territory="Oppeln" owner="Germans"/>
+      <territoryOwner territory="Piotrkow" owner="Poland"/>
+      <territoryOwner territory="Plock" owner="Poland"/>
+      <territoryOwner territory="Poznan" owner="Poland"/>
+      <territoryOwner territory="Radom" owner="Poland"/>
+      <territoryOwner territory="Sandomierz" owner="Poland"/>
+      <territoryOwner territory="Schneidemuhl" owner="Germans"/>
+      <territoryOwner territory="Siedlce" owner="Poland"/>
+      <territoryOwner territory="Tarnow" owner="Poland"/>
+      <territoryOwner territory="Tczew" owner="Poland"/>
+      <territoryOwner territory="Teschen" owner="Germans"/>
+      <territoryOwner territory="Torun" owner="Poland"/>
+      <territoryOwner territory="Warsaw" owner="Poland"/>
+      <territoryOwner territory="Wloclawek" owner="Poland"/>
+      <territoryOwner territory="Zamosc" owner="Poland"/>
+    </ownerInitialize>
+    <unitInitialize>
+      <unitPlacement unitType="infantry" territory="Danzig" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="mechanized" territory="Danzig" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="infantry" territory="Marienwerder" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="armour" territory="Marienwerder" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="infantry" territory="Schneidemuhl" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="armour" territory="Schneidemuhl" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="infantry" territory="Frankfurt Oder" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="armour" territory="Frankfurt Oder" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="infantry" territory="Breslau" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="armour" territory="Breslau" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="selfPropelledArtillery" territory="Breslau" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="infantry" territory="Oppeln" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="mechanized" territory="Oppeln" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="infantry" territory="Teschen" quantity="2" owner="Germans"/>
+      <unitPlacement unitType="armour" territory="Teschen" quantity="1" owner="Germans"/>
+      <unitPlacement unitType="polishInfantry" territory="Gdynia" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="polishArtillery" territory="Gdynia" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Tczew" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Bydgoszcz" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="polishArtillery" territory="Bydgoszcz" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Poznan" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="cavalry" territory="Poznan" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Kalisz" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Katowice" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="polishArtillery" territory="Katowice" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Krakow" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="cavalry" territory="Krakow" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Grudziadz" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Torun" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Wloclawek" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Kutno" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Lodz" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="polishArtillery" territory="Lodz" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Piotrkow" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Czestochowa" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Kielce" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Plock" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Modlin" quantity="2" owner="Poland"/>
+      <unitPlacement unitType="polishArtillery" territory="Modlin" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Warsaw" quantity="3" owner="Poland"/>
+      <unitPlacement unitType="polishArtillery" territory="Warsaw" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Radom" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Deblin" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Sandomierz" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Tarnow" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Siedlce" quantity="1" owner="Poland"/>
+      <unitPlacement unitType="polishInfantry" territory="Lublin" quantity="1" owner="Poland"/>
+    </unitInitialize>
+    <relationshipInitialize>
+      <relationship player1="Germans" player2="Poland" type="War" roundValue="0"/>
+    </relationshipInitialize>
+  </initialize>
+
+  <propertyList>
+    <property name="Supply Network Enabled" value="true" editable="false"/>
+    <property name="Out Of Supply Removal Turns" value="2" editable="false"/>
+    <property name="Fog Of War Enabled" value="true" editable="false"/>
+    <property name="Fog Of War Vision Radius" value="1" editable="false"/>
+    <property name="Auto Termination" value="true" editable="true"/>
+    <property name="Scoring Round" value="7" editable="false"/>
+    <property name="Land Battle Rounds" value="3" editable="false"/>
+    <property name="Air Battle Rounds" value="1" editable="false"/>
+    <property name="Sea Battle Rounds" value="3" editable="false"/>
+  </propertyList>
+</game>

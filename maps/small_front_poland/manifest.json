@@ -1,0 +1,150 @@
+[
+  {
+    "path": ".gitignore",
+    "bytes": 19
+  },
+  {
+    "path": "README.md",
+    "bytes": 2070
+  },
+  {
+    "path": "map/baseTiles/0_0.png",
+    "bytes": 5147
+  },
+  {
+    "path": "map/baseTiles/0_1.png",
+    "bytes": 4244
+  },
+  {
+    "path": "map/baseTiles/0_2.png",
+    "bytes": 3366
+  },
+  {
+    "path": "map/baseTiles/1_0.png",
+    "bytes": 5996
+  },
+  {
+    "path": "map/baseTiles/1_1.png",
+    "bytes": 5405
+  },
+  {
+    "path": "map/baseTiles/1_2.png",
+    "bytes": 5501
+  },
+  {
+    "path": "map/baseTiles/2_0.png",
+    "bytes": 1260
+  },
+  {
+    "path": "map/baseTiles/2_1.png",
+    "bytes": 6067
+  },
+  {
+    "path": "map/baseTiles/2_2.png",
+    "bytes": 8228
+  },
+  {
+    "path": "map/baseTiles/3_0.png",
+    "bytes": 890
+  },
+  {
+    "path": "map/baseTiles/3_1.png",
+    "bytes": 4489
+  },
+  {
+    "path": "map/baseTiles/3_2.png",
+    "bytes": 4709
+  },
+  {
+    "path": "map/centers.txt",
+    "bytes": 658
+  },
+  {
+    "path": "map/games/Small_Front_Poland.notes.html",
+    "bytes": 1445
+  },
+  {
+    "path": "map/games/Small_Front_Poland.xml",
+    "bytes": 42507
+  },
+  {
+    "path": "map/games/game.dtd",
+    "bytes": 3871
+  },
+  {
+    "path": "map/map.properties",
+    "bytes": 532
+  },
+  {
+    "path": "map/misc/vc.png",
+    "bytes": 181
+  },
+  {
+    "path": "map/name_place.txt",
+    "bytes": 657
+  },
+  {
+    "path": "map/place.txt",
+    "bytes": 1801
+  },
+  {
+    "path": "map/polygons.txt",
+    "bytes": 2347
+  },
+  {
+    "path": "map/smallMap.png",
+    "bytes": 41921
+  },
+  {
+    "path": "map/units/Germans/armour.png",
+    "bytes": 261
+  },
+  {
+    "path": "map/units/Germans/infantry.png",
+    "bytes": 289
+  },
+  {
+    "path": "map/units/Germans/mechanized.png",
+    "bytes": 322
+  },
+  {
+    "path": "map/units/Germans/selfPropelledArtillery.png",
+    "bytes": 250
+  },
+  {
+    "path": "map/units/Poland/cavalry.png",
+    "bytes": 241
+  },
+  {
+    "path": "map/units/Poland/polishArtillery.png",
+    "bytes": 190
+  },
+  {
+    "path": "map/units/Poland/polishInfantry.png",
+    "bytes": 299
+  },
+  {
+    "path": "map/vc.txt",
+    "bytes": 176
+  },
+  {
+    "path": "map.yml",
+    "bytes": 122
+  },
+  {
+    "path": "preview/vistula_withdrawal_preview.png",
+    "bytes": 177537
+  },
+  {
+    "path": "tools/README.md",
+    "bytes": 670
+  },
+  {
+    "path": "tools/generate_map.py",
+    "bytes": 41597
+  },
+  {
+    "path": "tools/validate_map.py",
+    "bytes": 7801
+  }
+]

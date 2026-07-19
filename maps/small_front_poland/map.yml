@@ -1,0 +1,3 @@
+map_name: small_front_poland
+games:
+- {game_name: "Small Front: Vistula Withdrawal", file_name: "Small_Front_Poland.xml"}
