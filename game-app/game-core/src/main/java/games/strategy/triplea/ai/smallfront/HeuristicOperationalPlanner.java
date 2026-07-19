@@ -155,7 +155,7 @@ public final class HeuristicOperationalPlanner implements OperationalTurnPlanner
     return java.util.stream.Stream.concat(objectives.stream(), contacts.stream())
         .distinct()
         .sorted(
-            Comparator.comparingInt(
+            Comparator.<Territory>comparingInt(
                     territory -> minimumDistance(data, friendlyOrigins, territory))
                 .thenComparing(Territory::getName))
         .toList();
