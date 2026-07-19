@@ -65,7 +65,7 @@
   },
   {
     "path": "map/games/Small_Front_Poland.xml",
-    "bytes": 42507
+    "bytes": 42509
   },
   {
     "path": "map/games/game.dtd",
@@ -141,10 +141,10 @@
   },
   {
     "path": "tools/generate_map.py",
-    "bytes": 41597
+    "bytes": 41599
   },
   {
     "path": "tools/validate_map.py",
-    "bytes": 7801
+    "bytes": 7802
   }
 ]

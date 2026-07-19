@@ -184,7 +184,7 @@ def main() -> None:
     }
     assert capacities == {"Open": "7", "Forest": "5", "Town": "6"}
 
-    polish_redeployment = root.find("./gamePlay/sequence/step[@name='polishRedeployment']")
+    polish_redeployment = root.find("./gamePlay/sequence/step[@name='polishNonCombatMove']")
     assert polish_redeployment is not None
     step_options = {
         item.get("name", ""): item.get("value", "")

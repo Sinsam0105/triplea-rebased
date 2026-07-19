@@ -168,7 +168,7 @@
       <step name="germanSupply" delegate="supply" player="Germans"/>
       <step name="germanCombatMove" delegate="move" player="Germans" display="Combat Move"/>
       <step name="germanBattle" delegate="battle" player="Germans"/>
-      <step name="germanRedeployment" delegate="move" player="Germans" display="Redeployment">
+      <step name="germanNonCombatMove" delegate="move" player="Germans" display="Redeployment">
         <stepProperty name="nonCombatMove" value="true"/>
         <stepProperty name="removeAirThatCanNotLand" value="false"/>
       </step>
@@ -178,7 +178,7 @@
       <step name="polishSupply" delegate="supply" player="Poland"/>
       <step name="polishCombatMove" delegate="move" player="Poland" display="Combat Move"/>
       <step name="polishBattle" delegate="battle" player="Poland"/>
-      <step name="polishRedeployment" delegate="move" player="Poland" display="Redeployment">
+      <step name="polishNonCombatMove" delegate="move" player="Poland" display="Redeployment">
         <stepProperty name="nonCombatMove" value="true"/>
         <stepProperty name="removeAirThatCanNotLand" value="false"/>
       </step>
