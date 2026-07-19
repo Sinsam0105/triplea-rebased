@@ -578,7 +578,7 @@
       <option name="reinforcement" value="5:Prum:infantry:2"/>
     </attachment>
     <attachment name="fixedReinforcementAttachment" attachTo="Americans" javaClass="games.strategy.triplea.attachments.FixedReinforcementAttachment" type="player">
-      <option name="reinforcement" value="2:Marche:americanInfantry:2"/>
+      <option name="reinforcement" value="1:Marche:americanInfantry:2"/>
       <option name="reinforcement" value="3:Namur:armour:1"/>
       <option name="reinforcement" value="3:Ciney:fighter:1"/>
       <option name="reinforcement" value="4:Namur:americanInfantry:2"/>
@@ -655,12 +655,13 @@
       <unitPlacement unitType="infantry" territory="Vianden" quantity="2" owner="Germans"/>
       <unitPlacement unitType="selfPropelledArtillery" territory="Vianden" quantity="1" owner="Germans"/>
       <unitPlacement unitType="fighter" territory="Bitburg" quantity="1" owner="Germans"/>
-      <unitPlacement unitType="americanInfantry" territory="St. Vith" quantity="2" owner="Americans"/>
+      <unitPlacement unitType="americanInfantry" territory="St. Vith" quantity="3" owner="Americans"/>
       <unitPlacement unitType="artillery" territory="St. Vith" quantity="1" owner="Americans"/>
-      <unitPlacement unitType="americanInfantry" territory="Houffalize" quantity="1" owner="Americans"/>
-      <unitPlacement unitType="americanInfantry" territory="Bastogne" quantity="2" owner="Americans"/>
+      <unitPlacement unitType="americanInfantry" territory="Houffalize" quantity="2" owner="Americans"/>
+      <unitPlacement unitType="americanInfantry" territory="Bastogne" quantity="3" owner="Americans"/>
       <unitPlacement unitType="artillery" territory="Bastogne" quantity="1" owner="Americans"/>
       <unitPlacement unitType="americanInfantry" territory="Martelange" quantity="1" owner="Americans"/>
+      <unitPlacement unitType="americanInfantry" territory="Wiltz" quantity="1" owner="Americans"/>
       <unitPlacement unitType="americanInfantry" territory="Vielsalm" quantity="1" owner="Americans"/>
       <unitPlacement unitType="americanInfantry" territory="La Roche" quantity="1" owner="Americans"/>
       <unitPlacement unitType="americanInfantry" territory="Erezee" quantity="1" owner="Americans"/>
