@@ -51,12 +51,14 @@ jobs:
           tar -xzf /tmp/poland-bootstrap.tar.gz
           python -m pip install --disable-pip-version-check pillow
           python maps/small_front_poland/tools/generate_map.py maps/small_front_poland
-          python maps/small_front_poland/tools/validate_map.py             maps/small_front_poland             game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Poland.xml
+          python maps/small_front_poland/tools/validate_map.py maps/small_front_poland game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Poland.xml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add maps/small_front_poland             game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Poland.xml             game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontPolandGameTest.java
+          git add -f maps/small_front_poland
+          git add game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Poland.xml
+          git add game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontPolandGameTest.java
           if ! git diff --cached --quiet; then
-            git commit -m 'Add Vistula Withdrawal scenario assets'
+            git commit -m 'Add Vistula Withdrawal binary assets'
             git push origin "HEAD:${{ github.ref_name }}"
           fi
 
@@ -64,8 +66,8 @@ jobs:
         shell: bash
         run: |
           python -m pip install --disable-pip-version-check pillow
-          python -m py_compile             maps/small_front_poland/tools/generate_map.py             maps/small_front_poland/tools/validate_map.py
-          python maps/small_front_poland/tools/validate_map.py             maps/small_front_poland             game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Poland.xml
+          python -m py_compile maps/small_front_poland/tools/generate_map.py maps/small_front_poland/tools/validate_map.py
+          python maps/small_front_poland/tools/validate_map.py maps/small_front_poland game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Poland.xml
 
       - name: Run focused tests and formatting checks
         shell: bash
