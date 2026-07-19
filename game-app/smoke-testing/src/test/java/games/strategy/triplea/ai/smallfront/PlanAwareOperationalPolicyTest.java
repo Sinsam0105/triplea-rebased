@@ -110,8 +110,7 @@ class PlanAwareOperationalPolicyTest {
         action("air_assignment", new Route(prum, bitburg), List.of(fighter));
 
     assertThat(
-            policy.choose(
-                List.of(stVithAssignment, bitburgAssignment), data, germans, List.of()))
+            policy.choose(List.of(stVithAssignment, bitburgAssignment), data, germans, List.of()))
         .contains(bitburgAssignment);
   }
 
