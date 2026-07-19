@@ -16,22 +16,7 @@ jobs:
           distribution: temurin
           java-version: 25
       - name: Run Build Checks
-        id: verify
-        shell: bash
-        run: |
-          set +e
-          ./verify --exclude-task spotlessApply > verify.log 2>&1
-          echo "status=$?" >> "$GITHUB_OUTPUT"
-          exit 0
-      - name: Upload Verify log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: full-verify-log
-          path: verify.log
-          if-no-files-found: error
-      - name: Fail when Verify fails
-        if: steps.verify.outputs.status != '0'
-        run: |
-          tail -200 verify.log
-          exit 1
+        # We skip 'spotlessApply' such that only 'spotlessCheck' will run to validate formatting.
+        # This is a good setup for a CI server, meanwhile if a developer runs 'verify', they
+        # will have the 'spotlessApply' task run and it will automatically format the code.
+        run: ./verify --exclude-task spotlessApply
