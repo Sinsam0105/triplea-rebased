@@ -1,0 +1,226 @@
+name: Apply mechanized armour balance
+
+on:
+  push:
+    branches:
+      - agent/mechanized-armour-support
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Apply scenario balance changes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import os
+          import re
+          import zipfile
+          from pathlib import Path
+          from xml.etree import ElementTree
+
+          ROOT = Path.cwd()
+          SUPPORT_NAME = "supportAttachmentMechanizedArmour"
+          BONUS_TYPE = "mechanizedArmour"
+          SUPPORT_BLOCK = '''    <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
+                <option name="unitType" value="armour"/>
+                <option name="faction" value="allied"/>
+                <option name="side" value="offence"/>
+                <option name="dice" value="strength"/>
+                <option name="bonus" value="1"/>
+                <option name="number" value="1"/>
+                <option name="bonusType" value="mechanizedArmour"/>
+              </attachment>'''
+
+          UNIT_BLOCK = re.compile(
+              r'(?P<block>    <attachment name="unitAttachment" attachTo="mechanized"'
+              r'.*?</attachment>)',
+              re.DOTALL,
+          )
+
+          def patch_unit_rules(text: str, *, source: Path) -> str:
+              matches = list(UNIT_BLOCK.finditer(text))
+              if len(matches) != 1:
+                  raise RuntimeError(f"expected one mechanized attachment in {source}, found {len(matches)}")
+              block = matches[0].group("block")
+              patched_block, count = re.subn(
+                  r'(<option name="attack" value=")2("/>)',
+                  r'\g<1>1\2',
+                  block,
+                  count=1,
+              )
+              if count != 1 and '<option name="attack" value="1"/>' not in block:
+                  raise RuntimeError(f"could not set mechanized attack to 1 in {source}")
+              replacement = patched_block
+              if SUPPORT_NAME not in text:
+                  replacement += "\n" + SUPPORT_BLOCK
+              return text[: matches[0].start()] + replacement + text[matches[0].end() :]
+
+          xml_paths = sorted(ROOT.rglob("Small_Front_Meuse.xml"))
+          if not xml_paths:
+              raise RuntimeError("Small Front Meuse XML was not found")
+          for path in xml_paths:
+              original = path.read_text(encoding="utf-8")
+              patched = patch_unit_rules(original, source=path)
+              if patched != original:
+                  path.write_text(patched, encoding="utf-8")
+              ElementTree.parse(path)
+              print(f"patched XML: {path}")
+
+          generator = ROOT / "tools" / "generate_small_front_meuse_map.py"
+          generator_text = generator.read_text(encoding="utf-8")
+          generator_patched = patch_unit_rules(generator_text, source=generator)
+          if generator_patched != generator_text:
+              generator.write_text(generator_patched, encoding="utf-8")
+          print(f"patched generator: {generator}")
+
+          rulebook = ROOT / "docs" / "small-front-meuse-rulebook.md"
+          rulebook_text = rulebook.read_text(encoding="utf-8")
+          old_row = "| mechanized | 2 | 2 | 2 | 3 | 1 | 기계화 보병, 포병 지원 가능 |"
+          new_row = "| mechanized | 1 | 2 | 2 | 3 | 1 | 기계화 보병, 포병 지원 가능, 기갑 1개 지원 |"
+          if old_row in rulebook_text:
+              rulebook_text = rulebook_text.replace(old_row, new_row, 1)
+          elif new_row not in rulebook_text:
+              raise RuntimeError("mechanized rulebook row was not found")
+          combined_arms = '''### 기갑-기계화 제병협동
+
+- **mechanized**의 기본 공격력은 1이다.
+- 함께 공격하는 mechanized 1개는 **armour 1개의 공격 수치를 +1** 한다.
+- 지원은 1:1이다. mechanized 1개는 armour 1개만 지원하며, armour 1개는 기계화 지원을 한 번만 받는다.
+- armour의 2개 공격 주사위 모두에 증가한 공격 수치가 적용된다.
+- 이 보너스는 포병 지원 및 공중 통제 공격 보너스와 별개의 지원 유형이므로 중첩될 수 있다.
+
+이 규칙은 단독 기계화 공세를 약화하고, 제한된 스택 용량 안에서 기갑·기계화·포병·항공을 결합한 전투단 편성을 보상한다.
+
+'''
+          terrain_marker = "## 5. 지형\n"
+          if "### 기갑-기계화 제병협동" not in rulebook_text:
+              if terrain_marker not in rulebook_text:
+                  raise RuntimeError("rulebook terrain marker was not found")
+              rulebook_text = rulebook_text.replace(terrain_marker, combined_arms + terrain_marker, 1)
+          rulebook.write_text(rulebook_text, encoding="utf-8")
+          print(f"patched rulebook: {rulebook}")
+
+          readme = ROOT / "maps" / "small_front_meuse" / "README.md"
+          readme_text = readme.read_text(encoding="utf-8")
+          old_armour = '''Armour rolls two attack dice at attack 2, retains one defense die at defense 3, costs two stack
+          capacity, and has TUV 7. The change concentrates its value in offensive shock without increasing its
+          defensive output.'''
+          new_armour = '''Armour rolls two attack dice at attack 2, retains one defense die at defense 3, costs two stack
+          capacity, and has TUV 7. Mechanized battalions attack at 1 on their own; each attacking mechanized
+          battalion supports one armour battalion with +1 attack strength. One armour battalion can receive this
+          mechanized bonus only once, but it stacks with artillery support and air control. The resulting premium
+          rewards a difficult combined-arms Kampfgruppe without making unsupported mechanized formations an
+          equally efficient assault substitute.'''
+          if old_armour in readme_text:
+              readme_text = readme_text.replace(old_armour, new_armour, 1)
+          elif "Mechanized battalions attack at 1 on their own" not in readme_text:
+              raise RuntimeError("README armour paragraph was not found")
+          readme.write_text(readme_text, encoding="utf-8")
+          print(f"patched map README: {readme}")
+
+          tests = sorted(ROOT.rglob("SmallFrontMeuseScenarioTest.java"))
+          for test in tests:
+              test_text = test.read_text(encoding="utf-8")
+              stack_assertion = '    assertThat(unit(data, "mechanized").getStackCost()).isEqualTo(1);\n'
+              attack_assertion = '    assertThat(unit(data, "mechanized").getAttack(germans)).isEqualTo(1);\n'
+              if attack_assertion not in test_text:
+                  if stack_assertion not in test_text:
+                      raise RuntimeError(f"mechanized stack assertion was not found in {test}")
+                  test_text = test_text.replace(
+                      stack_assertion,
+                      stack_assertion + attack_assertion,
+                      1,
+                  )
+              support_assertions = '''
+              final var mechanizedSupport =
+                  UnitSupportAttachment.get(data.getUnitTypeList()).stream()
+                      .filter(
+                          rule ->
+                              rule.getAttachedTo()
+                                  == data.getUnitTypeList().getUnitTypeOrThrow("mechanized"))
+                      .filter(rule -> rule.getBonusType() != null)
+                      .filter(rule -> rule.getBonusType().getName().equals("mechanizedArmour"))
+                      .findFirst()
+                      .orElseThrow();
+              assertThat(mechanizedSupport.getUnitType())
+                  .containsExactly(data.getUnitTypeList().getUnitTypeOrThrow("armour"));
+              assertThat(mechanizedSupport.getBonus()).isEqualTo(1);
+              assertThat(mechanizedSupport.getNumber()).isEqualTo(1);
+              assertThat(mechanizedSupport.getBonusType().getCount()).isEqualTo(1);
+              assertThat(mechanizedSupport.getAllied()).isTrue();
+              assertThat(mechanizedSupport.getOffence()).isTrue();
+              assertThat(mechanizedSupport.getStrength()).isTrue();
+          '''
+              targets_marker = "    final var targets =\n"
+              if "final var mechanizedSupport" not in test_text:
+                  if targets_marker not in test_text:
+                      raise RuntimeError(f"support target marker was not found in {test}")
+                  test_text = test_text.replace(targets_marker, support_assertions + "\n" + targets_marker, 1)
+              test.write_text(test_text, encoding="utf-8")
+              print(f"patched regression test: {test}")
+
+          archive = ROOT / "maps" / "small_front_meuse.zip"
+          if archive.exists():
+              replacements = {
+                  "map/games/Small_Front_Meuse.xml": (
+                      ROOT / "maps" / "small_front_meuse" / "map" / "games" / "Small_Front_Meuse.xml"
+                  ).read_bytes(),
+                  "README.md": readme.read_bytes(),
+              }
+              temp_archive = archive.with_suffix(".zip.tmp")
+              replaced: set[str] = set()
+              with zipfile.ZipFile(archive, "r") as source_zip, zipfile.ZipFile(temp_archive, "w") as target_zip:
+                  target_zip.comment = source_zip.comment
+                  for info in source_zip.infolist():
+                      data = source_zip.read(info.filename)
+                      for suffix, replacement in replacements.items():
+                          if info.filename == suffix or info.filename.endswith("/" + suffix):
+                              data = replacement
+                              replaced.add(suffix)
+                              break
+                      target_zip.writestr(info, data)
+              missing = set(replacements) - replaced
+              if missing:
+                  temp_archive.unlink(missing_ok=True)
+                  raise RuntimeError(f"archive entries were not found: {sorted(missing)}")
+              os.replace(temp_archive, archive)
+              print(f"patched installable archive: {archive}")
+
+          if SUPPORT_NAME not in generator.read_text(encoding="utf-8"):
+              raise RuntimeError("generator does not contain mechanized armour support")
+          if any('<option name="attack" value="2"/>' in UNIT_BLOCK.search(p.read_text(encoding="utf-8")).group("block") for p in xml_paths):
+              raise RuntimeError("an XML still has mechanized attack 2")
+          PY
+
+          python -m py_compile tools/generate_small_front_meuse_map.py
+
+      - name: Commit balance update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            docs/small-front-meuse-rulebook.md \
+            tools/generate_small_front_meuse_map.py \
+            maps/small_front_meuse/README.md \
+            maps/small_front_meuse/map/games/Small_Front_Meuse.xml \
+            maps/small_front_meuse.zip \
+            game-app
+          if git diff --cached --quiet; then
+            echo "No balance changes to commit"
+            exit 0
+          fi
+          git commit -m "Add mechanized armour combined-arms support"
+          git push origin HEAD:agent/mechanized-armour-support
