@@ -1,0 +1,89 @@
+name: Apply mechanized armour core minimal
+
+on:
+  push:
+    branches:
+      - agent/mechanized-armour-support
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/mechanized-armour-support
+          fetch-depth: 0
+
+      - name: Replace mechanized rules
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          old = '''    <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+                <option name="movement" value="2"/>
+                <option name="combatMovement" value="2"/>
+                <option name="redeploymentMovement" value="3"/>
+                <option name="attack" value="2"/>
+                <option name="defense" value="2"/>
+                <option name="isInfantry" value="true"/>
+                <option name="artillerySupportable" value="true"/>
+                <option name="stackCost" value="1"/>
+                <option name="tuv" value="4"/>
+              </attachment>'''
+          new = '''    <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
+                <option name="movement" value="2"/>
+                <option name="combatMovement" value="2"/>
+                <option name="redeploymentMovement" value="3"/>
+                <option name="attack" value="1"/>
+                <option name="defense" value="2"/>
+                <option name="isInfantry" value="true"/>
+                <option name="artillerySupportable" value="true"/>
+                <option name="stackCost" value="1"/>
+                <option name="tuv" value="4"/>
+              </attachment>
+              <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
+                <option name="unitType" value="armour"/>
+                <option name="faction" value="allied"/>
+                <option name="side" value="offence"/>
+                <option name="dice" value="strength"/>
+                <option name="bonus" value="1"/>
+                <option name="number" value="1"/>
+                <option name="bonusType" value="mechanizedArmour"/>
+              </attachment>'''
+
+          paths = [
+              Path("maps/small_front_meuse/map/games/Small_Front_Meuse.xml"),
+              Path("game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml"),
+              Path("tools/generate_small_front_meuse_map.py"),
+          ]
+          for path in paths:
+              text = path.read_text(encoding="utf-8")
+              if "supportAttachmentMechanizedArmour" in text:
+                  print(f"already patched: {path}")
+                  continue
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"expected exact mechanized block once in {path}, found {count}")
+              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+              print(f"patched: {path}")
+          PY
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            maps/small_front_meuse/map/games/Small_Front_Meuse.xml \
+            game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml \
+            tools/generate_small_front_meuse_map.py
+          git commit -m "Add mechanized armour combined-arms support"
+          git push origin HEAD:agent/mechanized-armour-support
