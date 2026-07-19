@@ -1,4 +1,4 @@
-name: Apply mechanized armour patch to target branch
+name: Clean up mechanized armour combined-arms change
 
 on:
   push:
@@ -12,71 +12,123 @@ permissions:
   contents: write
 
 jobs:
-  patch:
+  cleanup:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/mechanized-armour-combined-arms
+          ref: agent/mechanized-armour-cleanup
           fetch-depth: 0
 
-      - name: Execute target branch patch script
-        id: patch
+      - name: Clean generated XML and add regression coverage
         shell: bash
         run: |
-          set +e
-          python3 - <<'PYRUN' > patch-run.log 2>&1
+          python3 - <<'PY'
           from pathlib import Path
+          import re
+          import xml.etree.ElementTree as ET
 
-          workflow_path = Path('.github/workflows/apply-mechanized-armour-support.yml')
-          workflow = workflow_path.read_text(encoding='utf-8')
-          start_marker = "          python3 - <<'PY'\n"
-          end_marker = "\n          PY\n"
-          if start_marker not in workflow or end_marker not in workflow:
-              raise RuntimeError('embedded patch script markers not found')
-          script = workflow.split(start_marker, 1)[1].split(end_marker, 1)[0]
-          script = '\n'.join(
-              line[10:] if line.startswith('          ') else line
-              for line in script.splitlines()
+          support = '''    <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
+                <option name="unitType" value="armour"/>
+                <option name="faction" value="allied"/>
+                <option name="side" value="offence"/>
+                <option name="dice" value="strength"/>
+                <option name="bonus" value="1"/>
+                <option name="number" value="1"/>
+                <option name="bonusType" value="mechanizedArmour"/>
+                <option name="players" value="Germans"/>
+              </attachment>'''
+
+          xml_paths = [
+              Path('maps/small_front_meuse/map/games/Small_Front_Meuse.xml'),
+              Path('game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml'),
+          ]
+          pattern = re.compile(
+              r'    <attachment name="supportAttachmentMechanizedArmour" '
+              r'attachTo="mechanized" .*?    </attachment>',
+              re.DOTALL,
           )
-          script = script.replace(
-              "if not generator_paths:\n    raise RuntimeError('Small Front generator not found')\n",
-              "",
+          for path in xml_paths:
+              text = path.read_text(encoding='utf-8')
+              text, count = pattern.subn(support, text, count=1)
+              if count != 1:
+                  raise RuntimeError(f'mechanized armour support not found in {path}')
+              path.write_text(text, encoding='utf-8')
+              ET.parse(path)
+
+          rulebook = Path('docs/small-front-meuse-rulebook.md')
+          text = rulebook.read_text(encoding='utf-8')
+          text = text.replace(
+              '- 이 지원은 독일군 mechanized에만 적용된다.\n\n\n## 5. 지형',
+              '- 이 지원은 독일군 mechanized에만 적용된다.\n\n## 5. 지형',
           )
-          test_path = Path('game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontMeuseScenarioTest.java')
-          if not test_path.exists():
-              block_start = script.index("\ntest_path = Path('game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontMeuseScenarioTest.java')")
-              block_end = script.index("\nzip_path = Path('maps/small_front_meuse.zip')", block_start)
-              script = script[:block_start] + script[block_end:]
-          exec(compile(script, str(workflow_path), 'exec'), {'__name__': '__main__'})
-          PYRUN
-          status=$?
-          echo "status=$status" >> "$GITHUB_OUTPUT"
-          exit 0
+          rulebook.write_text(text, encoding='utf-8')
 
-      - name: Upload patch execution log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: mechanized-armour-patch-log
-          path: patch-run.log
-          if-no-files-found: error
+          test_path = Path('game-app/smoke-testing/src/test/java/games/strategy/engine/data/SmallFrontAiGameTest.java')
+          test = test_path.read_text(encoding='utf-8')
+          import_anchor = 'import games.strategy.net.websocket.ClientNetworkBridge;\n'
+          imports = (
+              'import games.strategy.triplea.attachments.UnitAttachment;\n'
+              'import games.strategy.triplea.attachments.UnitSupportAttachment;\n'
+          )
+          if 'import games.strategy.triplea.attachments.UnitSupportAttachment;' not in test:
+              test = test.replace(import_anchor, import_anchor + imports, 1)
 
-      - name: Fail on patch error
-        if: steps.patch.outputs.status != '0'
+          method = '''
+  @Test
+  void mechanizedArmourSupportEncodesCombinedArmsRule() {
+    final GameData data = loadMap();
+    final GamePlayer germans = data.getPlayerList().getPlayerId("Germans");
+    final UnitAttachment mechanized =
+        UnitAttachment.get(
+            data.getUnitTypeList().getUnitTypeOrThrow("mechanized"), "unitAttachment");
+    assertThat(mechanized.getAttack(germans)).isEqualTo(1);
+
+    final UnitSupportAttachment support =
+        UnitSupportAttachment.get(data.getUnitTypeList()).stream()
+            .filter(
+                rule ->
+                    rule.getAttachedTo()
+                        == data.getUnitTypeList().getUnitTypeOrThrow("mechanized"))
+            .filter(
+                rule ->
+                    rule.getBonusType() != null
+                        && rule.getBonusType().getName().equals("mechanizedArmour"))
+            .findFirst()
+            .orElseThrow();
+    assertThat(support.getUnitType())
+        .containsExactly(data.getUnitTypeList().getUnitTypeOrThrow("armour"));
+    assertThat(support.getBonus()).isEqualTo(1);
+    assertThat(support.getNumber()).isEqualTo(1);
+    assertThat(support.getOffence()).isTrue();
+    assertThat(support.getDefence()).isFalse();
+    assertThat(support.getStrength()).isTrue();
+    assertThat(support.getRoll()).isFalse();
+    assertThat(support.getPlayers()).containsExactly(germans);
+    assertThat(support.getBonusType()).isNotNull();
+    assertThat(support.getBonusType().getCount()).isEqualTo(1);
+  }
+
+'''
+          method_anchor = '  @Test\n  void nativeAirbasesProvideRearAreaScrambleAndAirControlPersists() {'
+          if 'mechanizedArmourSupportEncodesCombinedArmsRule' not in test:
+              if method_anchor not in test:
+                  raise RuntimeError('Small Front test insertion point not found')
+              test = test.replace(method_anchor, method + method_anchor, 1)
+          test_path.write_text(test, encoding='utf-8')
+
+          Path('patch-run.log').unlink(missing_ok=True)
+          PY
+
+      - name: Format Java
+        run: ./gradlew spotlessApply --no-daemon
+
+      - name: Commit cleanup branch
         shell: bash
         run: |
-          cat patch-run.log
-          exit 1
-
-      - name: Commit target branch changes
-        if: steps.patch.outputs.status == '0'
-        shell: bash
-        run: |
-          rm -f .github/agent-mechanized-armour-trigger
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Add mechanized armour combined-arms support"
-          git push origin HEAD:agent/mechanized-armour-combined-arms
+          git commit -m "Clean up mechanized armour support"
+          git push origin HEAD:agent/mechanized-armour-cleanup
