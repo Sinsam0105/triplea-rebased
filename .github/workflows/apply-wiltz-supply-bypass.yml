@@ -30,22 +30,17 @@ jobs:
               Path("maps/small_front_meuse/map/games/Small_Front_Meuse.xml"),
               Path("game-app/smoke-testing/src/test/resources/map-xmls/Small_Front_Meuse.xml"),
           ]
-          libramont_block = '''    <attachment name="territoryAttachment" attachTo="Libramont" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
-              <option name="production" value="0"/>
-              <option name="victoryCity" value="0"/>
-              <option name="territoryEffect" value="Open"/>
-            </attachment>
-          '''
-          bypass_block = '''    <attachment name="supplyTerritoryAttachment" attachTo="Libramont" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+          bypass_block = """    <attachment name="supplyTerritoryAttachment" attachTo="Libramont" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
               <option name="roadConnection" value="Neufchateau"/>
             </attachment>
-          '''
+          """
+          losheim_marker = "    <attachment name=\"territoryAttachment\" attachTo=\"Losheim Gap\""
           for path in xml_paths:
               text = path.read_text()
-              if bypass_block not in text:
-                  if text.count(libramont_block) != 1:
-                      raise RuntimeError(f"could not find unique Libramont block in {path}")
-                  text = text.replace(libramont_block, libramont_block + bypass_block, 1)
+              if "supplyTerritoryAttachment\" attachTo=\"Libramont\"" not in text:
+                  if text.count(losheim_marker) != 1:
+                      raise RuntimeError(f"could not find unique Losheim Gap marker in {path}")
+                  text = text.replace(losheim_marker, bypass_block + losheim_marker, 1)
                   path.write_text(text)
               ET.parse(path)
 
