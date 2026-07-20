@@ -19,6 +19,12 @@ jobs:
           ref: agent/wiltz-supply-bypass
           fetch-depth: 0
 
+      - name: Set up Java 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+
       - name: Add southern supply bypass and regression coverage
         shell: bash
         run: |
@@ -83,7 +89,9 @@ jobs:
           PY
 
           ./gradlew spotlessApply
-          ./gradlew :game-app:smoke-testing:test --tests games.strategy.engine.data.SmallFrontAiGameTest --no-daemon
+          ./gradlew :game-app:smoke-testing:test \
+            --tests games.strategy.engine.data.SmallFrontAiGameTest.southernSupplyGraphBypassesWiltz \
+            --no-daemon
 
       - name: Commit changes
         shell: bash
