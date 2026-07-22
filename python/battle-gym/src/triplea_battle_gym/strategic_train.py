@@ -50,6 +50,21 @@ def build_parser() -> argparse.ArgumentParser:
         default=1,
         help="parallel learner games, each with its own TripleA server process",
     )
+    parser.add_argument(
+        "--resume",
+        type=Path,
+        help="existing MaskablePPO checkpoint to continue for --timesteps additional timesteps",
+    )
+    parser.add_argument(
+        "--tensorboard-log",
+        type=Path,
+        help="directory for TensorBoard event files",
+    )
+    parser.add_argument(
+        "--device",
+        default="auto",
+        help="PyTorch device accepted by Stable-Baselines3, such as auto, cpu, or cuda",
+    )
     return parser
 
 
@@ -59,11 +74,18 @@ def main() -> None:
         raise SystemExit("--timesteps must be positive")
     if args.n_envs <= 0:
         raise SystemExit("--n-envs must be positive")
+    if args.max_actions <= 0:
+        raise SystemExit("--max-actions must be positive")
+    if args.max_territories <= 0:
+        raise SystemExit("--max-territories must be positive")
+    if args.checkpoint_every < 0:
+        raise SystemExit("--checkpoint-every must not be negative")
     if not args.scenario.is_file():
         raise SystemExit(f"--scenario is not a file: {args.scenario}")
+    if args.resume is not None and not args.resume.is_file():
+        raise SystemExit(f"--resume is not a file: {args.resume}")
     try:
         from sb3_contrib import MaskablePPO
-        from sb3_contrib.common.wrappers import ActionMasker
         from stable_baselines3.common.callbacks import CheckpointCallback
         from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
     except ImportError as error:
@@ -71,11 +93,8 @@ def main() -> None:
             "training dependencies are missing; install triplea-battle-gym[train]"
         ) from error
 
-    def mask(environment: Any) -> Any:
-        return environment.action_masks()
-
     def make(rank: int) -> Any:
-        def build() -> Any:
+        def build() -> SingleSideStrategicEnv:
             # Workers interleave disjoint episode seeds:
             # rank 0 => seed, seed+n, ...; rank 1 => seed+1, seed+1+n, ...
             env = TripleAStrategicEnv(
@@ -91,21 +110,44 @@ def main() -> None:
                 max_actions=args.max_actions,
                 episode_seed_stride=args.n_envs,
             )
-            learner = SingleSideStrategicEnv(
+            return SingleSideStrategicEnv(
                 env,
                 learner_player=args.learner_player,
             )
-            return ActionMasker(learner, mask)
 
         return build
 
     # One server process per worker: the environment is bound to one game, and a step is a
     # round-trip into Java, so throughput comes from running games side by side.
+    # SingleSideStrategicEnv implements action_masks() directly, as required by MaskablePPO when
+    # SubprocVecEnv is used. ActionMasker must not wrap subprocess environments.
     factories = [make(rank) for rank in range(args.n_envs)]
     wrapped = DummyVecEnv(factories) if len(factories) == 1 else SubprocVecEnv(factories)
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    tensorboard_log = None
+    if args.tensorboard_log is not None:
+        args.tensorboard_log.mkdir(parents=True, exist_ok=True)
+        tensorboard_log = str(args.tensorboard_log)
+
     try:
-        model = MaskablePPO("MultiInputPolicy", wrapped, verbose=1, seed=args.seed)
+        if args.resume is None:
+            model = MaskablePPO(
+                "MultiInputPolicy",
+                wrapped,
+                verbose=1,
+                seed=args.seed,
+                tensorboard_log=tensorboard_log,
+                device=args.device,
+            )
+        else:
+            model = MaskablePPO.load(
+                str(args.resume),
+                env=wrapped,
+                device=args.device,
+                tensorboard_log=tensorboard_log,
+            )
+            print(f"resuming policy from {args.resume}")
+
         callback = None
         if args.checkpoint_every > 0:
             # Callback calls count vector steps rather than individual timesteps.
@@ -115,7 +157,12 @@ def main() -> None:
                 save_path=str(args.output.parent / "checkpoints"),
                 name_prefix=args.output.stem,
             )
-        model.learn(total_timesteps=args.timesteps, callback=callback)
+        model.learn(
+            total_timesteps=args.timesteps,
+            callback=callback,
+            reset_num_timesteps=args.resume is None,
+            tb_log_name=args.output.stem,
+        )
         model.save(str(args.output))
         print(f"saved policy to {args.output}")
     finally:
