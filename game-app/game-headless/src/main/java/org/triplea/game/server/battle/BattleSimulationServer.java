@@ -14,6 +14,7 @@ import games.strategy.triplea.delegate.strategic.simulation.StrategicAction;
 import games.strategy.triplea.delegate.strategic.simulation.StrategicEnvironment;
 import games.strategy.triplea.delegate.strategic.simulation.StrategicObservation;
 import games.strategy.triplea.delegate.strategic.simulation.StrategicResetRequest;
+import games.strategy.triplea.settings.ClientSetting;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,6 +45,7 @@ public final class BattleSimulationServer {
   private BattleSimulationServer() {}
 
   public static void main(final String[] args) throws IOException {
+    ClientSetting.initialize();
     final Optional<BattleEnvironment> battleEnvironment =
         ServiceLoader.load(BattleEnvironment.class).findFirst();
     final Optional<StrategicEnvironment> strategicEnvironment =
@@ -140,8 +142,7 @@ public final class BattleSimulationServer {
                         Map.of("observation", value.reset(parseStrategicResetRequest(data)))));
         case "strategicLegalActions" ->
             withStrategicEnvironment(
-                strategicEnvironment,
-                value -> Response.success("strategicLegalActions", value.legalActions()));
+                strategicEnvironment, value -> Response.success("strategicLegalActions", value.legalActions()));
         case "strategicStep" ->
             withStrategicEnvironment(
                 strategicEnvironment,
