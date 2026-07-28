@@ -5,7 +5,6 @@ import games.strategy.engine.data.Territory;
 import games.strategy.engine.data.TerritoryEffect;
 import games.strategy.triplea.Properties;
 import games.strategy.triplea.attachments.TerritoryEffectAttachment;
-import games.strategy.triplea.delegate.supply.SupplyNetworkResolver;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.OptionalInt;
@@ -20,8 +19,7 @@ public final class BattleRoundResolver {
    *
    * <p>Water battles retain the existing global sea-battle setting. When several territory effects
    * configure a land battle limit, the shortest finite limit wins. If every configured effect uses
-   * {@code -1}, the battle is unlimited. Supply-network scenarios shorten every finite multi-round
-   * limit by one, while preserving one-round and unlimited battles.
+   * {@code -1}, the battle is unlimited.
    */
   public static int resolveGroundBattleRounds(
       final Territory battleSite,
@@ -32,15 +30,12 @@ public final class BattleRoundResolver {
     Objects.requireNonNull(gameData);
 
     if (battleSite.isWater()) {
-      return applySmallFrontReduction(
-          Properties.getSeaBattleRounds(gameData.getProperties()), gameData);
+      return Properties.getSeaBattleRounds(gameData.getProperties());
     }
-    return applySmallFrontReduction(
-        resolveOverride(
-            territoryEffects,
-            TerritoryEffectAttachment::getMaxGroundBattleRounds,
-            Properties.getLandBattleRounds(gameData.getProperties())),
-        gameData);
+    return resolveOverride(
+        territoryEffects,
+        TerritoryEffectAttachment::getMaxGroundBattleRounds,
+        Properties.getLandBattleRounds(gameData.getProperties()));
   }
 
   /** Resolves the round limit for an air battle at any territory. */
@@ -49,16 +44,10 @@ public final class BattleRoundResolver {
     Objects.requireNonNull(territoryEffects);
     Objects.requireNonNull(gameData);
 
-    return applySmallFrontReduction(
-        resolveOverride(
-            territoryEffects,
-            TerritoryEffectAttachment::getMaxAirBattleRounds,
-            Properties.getAirBattleRounds(gameData.getProperties())),
-        gameData);
-  }
-
-  private static int applySmallFrontReduction(final int rounds, final GameData gameData) {
-    return SupplyNetworkResolver.isEnabled(gameData) && rounds > 1 ? rounds - 1 : rounds;
+    return resolveOverride(
+        territoryEffects,
+        TerritoryEffectAttachment::getMaxAirBattleRounds,
+        Properties.getAirBattleRounds(gameData.getProperties()));
   }
 
   private static int resolveOverride(
