@@ -31,12 +31,12 @@ class BattleRoundResolverTest {
   }
 
   @Test
-  void smallFrontGroundBattleReducesGlobalLandRoundsByOne() {
+  void smallFrontGroundBattleKeepsGlobalLandRounds() {
     final GameData gameData = smallFrontGameData();
     gameData.getProperties().set(Constants.LAND_BATTLE_ROUNDS, 6);
 
     assertEquals(
-        5,
+        6,
         BattleRoundResolver.resolveGroundBattleRounds(
             new Territory("Plain", gameData), List.of(), gameData));
   }
@@ -54,22 +54,22 @@ class BattleRoundResolverTest {
   }
 
   @Test
-  void smallFrontWaterBattleReducesGlobalSeaRoundsByOne() {
+  void smallFrontWaterBattleKeepsGlobalSeaRounds() {
     final GameData gameData = smallFrontGameData();
     gameData.getProperties().set(Constants.SEA_BATTLE_ROUNDS, 5);
 
     assertEquals(
-        4,
+        5,
         BattleRoundResolver.resolveGroundBattleRounds(
             new Territory("Sea", true, gameData), List.of(), gameData));
   }
 
   @Test
-  void smallFrontUsesShortestFiniteGroundLimitThenReducesItByOne() {
+  void smallFrontUsesShortestFiniteGroundLimit() {
     final GameData gameData = smallFrontGameData();
 
     assertEquals(
-        1,
+        2,
         BattleRoundResolver.resolveGroundBattleRounds(
             new Territory("Mountain City", gameData),
             List.of(
@@ -78,7 +78,7 @@ class BattleRoundResolverTest {
   }
 
   @Test
-  void smallFrontOneRoundLimitIsNotReducedBelowOne() {
+  void smallFrontOneRoundLimitIsKept() {
     final GameData gameData = smallFrontGameData();
 
     assertEquals(
@@ -100,12 +100,12 @@ class BattleRoundResolverTest {
   }
 
   @Test
-  void smallFrontAirBattleUsesReducedIndependentTerrainLimit() {
+  void smallFrontAirBattleUsesIndependentTerrainLimit() {
     final GameData gameData = smallFrontGameData();
     gameData.getProperties().set(Constants.AIR_BATTLE_ROUNDS, 1);
 
     assertEquals(
-        2, BattleRoundResolver.resolveAirBattleRounds(List.of(effect(gameData, 1, 3)), gameData));
+        3, BattleRoundResolver.resolveAirBattleRounds(List.of(effect(gameData, 1, 3)), gameData));
   }
 
   @Test
