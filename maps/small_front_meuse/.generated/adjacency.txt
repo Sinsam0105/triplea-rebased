@@ -1,0 +1,72 @@
+Blankenheim | Prum
+Blankenheim | Losheim Gap
+Prum | Bitburg
+Prum | Losheim Gap
+Prum | Clervaux
+Bitburg | Echternach
+Bitburg | Clervaux
+Bitburg | Vianden
+Echternach | Vianden
+Losheim Gap | Clervaux
+Losheim Gap | St. Vith
+Losheim Gap | Houffalize
+Clervaux | Vianden
+Clervaux | Houffalize
+Clervaux | Wiltz
+Vianden | Wiltz
+Vianden | Bastogne
+Vianden | Martelange
+St. Vith | Houffalize
+St. Vith | Vielsalm
+St. Vith | Erezee
+Houffalize | Wiltz
+Houffalize | Erezee
+Houffalize | Hotton
+Wiltz | Bastogne
+Wiltz | Hotton
+Bastogne | Martelange
+Bastogne | Hotton
+Bastogne | Saint-Hubert
+Martelange | Libramont
+Vielsalm | Erezee
+Vielsalm | Durbuy
+Erezee | La Roche
+Erezee | Durbuy
+La Roche | Hotton
+La Roche | Marche
+La Roche | Durbuy
+Hotton | Nassogne
+Hotton | Saint-Hubert
+Hotton | Marche
+Nassogne | Saint-Hubert
+Nassogne | Marche
+Nassogne | Neufchateau
+Nassogne | Rochefort
+Saint-Hubert | Libramont
+Saint-Hubert | Neufchateau
+Libramont | Neufchateau
+Marche | Ciney
+Marche | Rochefort
+Neufchateau | Beauraing
+Neufchateau | Bertrix
+Durbuy | Ciney
+Durbuy | Havelange
+Durbuy | Huy
+Ciney | Rochefort
+Ciney | Havelange
+Ciney | Wellin
+Ciney | Namur
+Rochefort | Beauraing
+Rochefort | Wellin
+Beauraing | Bertrix
+Beauraing | Wellin
+Beauraing | Givet
+Bertrix | Givet
+Havelange | Huy
+Havelange | Andenne
+Wellin | Namur
+Wellin | Dinant
+Huy | Andenne
+Andenne | Namur
+Namur | Dinant
+Dinant | Givet
