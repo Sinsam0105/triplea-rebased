@@ -41,7 +41,11 @@ public final class SupplyService {
       if (territory.isWater()) {
         continue;
       }
-      final boolean supplied = SupplyNetworkResolver.isSupplied(territory, player, data);
+      // wouldBeSupplied, not isSupplied: a unit left on contested enemy ground after a drawn
+      // battle owns no friendly land there, so isSupplied would always starve it. Counting it as
+      // supplied when a road from that territory reaches the player's own network keeps a stalled
+      // attack alive, while a reckless dash that has outrun its own roads still attrites.
+      final boolean supplied = SupplyNetworkResolver.wouldBeSupplied(territory, player, data);
       final List<Unit> units =
           territory.getUnitCollection().getUnits().stream()
               .filter(unit -> unit.isOwnedBy(player))
