@@ -112,6 +112,39 @@ assert armour["attackRolls"] == "2"
 assert armour["defense"] == "3"
 assert armour["tuv"] == "7"
 
+# Early-game redeployment penalty: mobile ground redeployment starts at the combat-movement value
+# and is restored to the pre-existing reach at round 5 by a trigger.
+assert unit_options["americanInfantry"]["redeploymentMovement"] == "1"
+for mobile in ("armour", "mechanized", "selfPropelledArtillery"):
+    assert unit_options[mobile]["redeploymentMovement"] == "2", (
+        mobile,
+        unit_options[mobile].get("redeploymentMovement"),
+    )
+
+attachments_by_name = {
+    attachment.attrib["name"]: attachment
+    for attachment in game_root.findall("./attachmentList/attachment")
+}
+round_condition = attachments_by_name["smallFrontRoundFivePlus"]
+assert round_condition.attrib["javaClass"].endswith("RulesAttachment")
+assert any(
+    option.attrib["name"] == "rounds" and option.attrib["value"] == "5-+"
+    for option in round_condition.findall("option")
+)
+for trigger_name, expected_property in (
+    ("raiseInfantryRedeployment", "2:redeploymentMovement"),
+    ("raiseMobileRedeployment", "3:redeploymentMovement"),
+):
+    trigger = attachments_by_name[trigger_name]
+    assert trigger.attrib["javaClass"].endswith("TriggerAttachment")
+    trigger_options = {
+        option.attrib["name"]: option.attrib["value"] for option in trigger.findall("option")
+    }
+    assert trigger_options["conditions"] == "smallFrontRoundFivePlus"
+    assert trigger_options["when"] == "before:germanReinforcement"
+    assert trigger_options["unitProperty"] == expected_property
+    assert trigger_options["uses"] == "1"
+
 fighter = unit_options["fighter"]
 assert fighter["canScramble"] == "true"
 assert fighter["maxScrambleDistance"] == "2"
@@ -137,6 +170,7 @@ properties = {
     prop.attrib["name"]: prop.attrib["value"] for prop in game_root.findall("./propertyList/property")
 }
 for name, expected in {
+    "Use Triggers": "true",
     "Air Control Persistent": "false",
     "Scramble Rules In Effect": "true",
     "Scrambled Units Return To Base": "true",

@@ -12,6 +12,7 @@ built to make the choice of *where* the load-bearing decision.
 - road-based supply and two-turn isolation attrition
 - terrain stack capacity and terrain-specific battle round limits
 - fixed reinforcements through round 7; no purchase or placement phase
+- mobile ground redeployment held to combat-movement range until round 5 (a trigger restores it)
 - separate air and ground combat, independent air control
 - radius-1 fog of war
 - scored at the end of round 8

@@ -155,6 +155,7 @@ def main():
             add('    </attachment>')
 
     add(REINFORCEMENTS_AND_SCORING.rstrip())
+    add(REDEPLOYMENT_TRIGGERS.rstrip())
     add('  </attachmentList>')
     add('')
     add('  <initialize>')
@@ -268,7 +269,7 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
     <attachment name="unitAttachment" attachTo="americanInfantry" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="1"/>
       <option name="combatMovement" value="1"/>
-      <option name="redeploymentMovement" value="2"/>
+      <option name="redeploymentMovement" value="1"/>
       <option name="attack" value="1"/>
       <option name="defense" value="2"/>
       <option name="isInfantry" value="true"/>
@@ -289,7 +290,7 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
     <attachment name="unitAttachment" attachTo="selfPropelledArtillery" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
-      <option name="redeploymentMovement" value="3"/>
+      <option name="redeploymentMovement" value="2"/>
       <option name="attack" value="2"/>
       <option name="defense" value="2"/>
       <option name="artillery" value="true"/>
@@ -299,7 +300,7 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
     <attachment name="unitAttachment" attachTo="armour" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
-      <option name="redeploymentMovement" value="3"/>
+      <option name="redeploymentMovement" value="2"/>
       <option name="attack" value="2"/>
       <option name="attackRolls" value="2"/>
       <option name="defense" value="3"/>
@@ -311,7 +312,7 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
     <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
-      <option name="redeploymentMovement" value="3"/>
+      <option name="redeploymentMovement" value="2"/>
       <option name="attack" value="1"/>
       <option name="defense" value="2"/>
       <option name="isInfantry" value="true"/>
@@ -395,6 +396,34 @@ REINFORCEMENTS_AND_SCORING = '''
     </attachment>
 '''
 
+# Ground redeployment (afmov) starts at combat-movement value, modelling the December confusion, and
+# only recovers to the pre-existing redeployment reach from round 5. It is unit-type wide (afmov is a
+# unit property, so it cannot be scoped to one player), which also slows German lateral redeployment
+# early -- acceptable, since the German plan runs on combat move and exploitation, not afmov.
+# One RulesAttachment (rounds 5+) gates a single-use TriggerAttachment fired at the round's first
+# BaseTripleADelegate step (germanReinforcement), which is where 'Use Triggers' + 'when' resolve.
+REDEPLOYMENT_TRIGGERS = '''
+    <attachment name="smallFrontRoundFivePlus" attachTo="Americans" javaClass="games.strategy.triplea.attachments.RulesAttachment" type="player">
+      <option name="rounds" value="5-+"/>
+    </attachment>
+    <attachment name="raiseMobileRedeployment" attachTo="Americans" javaClass="games.strategy.triplea.attachments.TriggerAttachment" type="player">
+      <option name="conditions" value="smallFrontRoundFivePlus"/>
+      <option name="when" value="before:germanReinforcement"/>
+      <option name="unitType" value="armour:mechanized:selfPropelledArtillery"/>
+      <option name="unitAttachmentName" value="unitAttachment:UnitAttachment"/>
+      <option name="unitProperty" value="3:redeploymentMovement"/>
+      <option name="uses" value="1"/>
+    </attachment>
+    <attachment name="raiseInfantryRedeployment" attachTo="Americans" javaClass="games.strategy.triplea.attachments.TriggerAttachment" type="player">
+      <option name="conditions" value="smallFrontRoundFivePlus"/>
+      <option name="when" value="before:germanReinforcement"/>
+      <option name="unitType" value="americanInfantry"/>
+      <option name="unitAttachmentName" value="unitAttachment:UnitAttachment"/>
+      <option name="unitProperty" value="2:redeploymentMovement"/>
+      <option name="uses" value="1"/>
+    </attachment>
+'''
+
 PROPERTIES = '''  <propertyList>
     <property name="Supply Network Enabled" value="true" editable="false"/>
     <property name="Out Of Supply Removal Turns" value="2" editable="false"/>
@@ -410,6 +439,7 @@ PROPERTIES = '''  <propertyList>
     <property name="Can Scramble Into Air Battles" value="true" editable="false"/>
     <property name="Fog Of War Enabled" value="true" editable="false"/>
     <property name="Fog Of War Vision Radius" value="1" editable="false"/>
+    <property name="Use Triggers" value="true" editable="false"/>
     <property name="Auto Termination" value="true" editable="true"/>
     <property name="Scoring Round" value="8" editable="false"/>
     <property name="Land Battle Rounds" value="3" editable="false"/>

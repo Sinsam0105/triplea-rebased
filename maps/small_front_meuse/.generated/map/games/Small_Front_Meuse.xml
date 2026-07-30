@@ -229,7 +229,7 @@
     <attachment name="unitAttachment" attachTo="americanInfantry" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="1"/>
       <option name="combatMovement" value="1"/>
-      <option name="redeploymentMovement" value="2"/>
+      <option name="redeploymentMovement" value="1"/>
       <option name="attack" value="1"/>
       <option name="defense" value="2"/>
       <option name="isInfantry" value="true"/>
@@ -250,7 +250,7 @@
     <attachment name="unitAttachment" attachTo="selfPropelledArtillery" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
-      <option name="redeploymentMovement" value="3"/>
+      <option name="redeploymentMovement" value="2"/>
       <option name="attack" value="2"/>
       <option name="defense" value="2"/>
       <option name="artillery" value="true"/>
@@ -260,7 +260,7 @@
     <attachment name="unitAttachment" attachTo="armour" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
-      <option name="redeploymentMovement" value="3"/>
+      <option name="redeploymentMovement" value="2"/>
       <option name="attack" value="2"/>
       <option name="attackRolls" value="2"/>
       <option name="defense" value="3"/>
@@ -272,7 +272,7 @@
     <attachment name="unitAttachment" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
-      <option name="redeploymentMovement" value="3"/>
+      <option name="redeploymentMovement" value="2"/>
       <option name="attack" value="1"/>
       <option name="defense" value="2"/>
       <option name="isInfantry" value="true"/>
@@ -647,6 +647,26 @@
       <option name="enemyAbsentBonus" value="2:Huy:Andenne:Namur:Dinant:Givet"/>
       <option name="winsTies" value="true"/>
     </attachment>
+
+    <attachment name="smallFrontRoundFivePlus" attachTo="Americans" javaClass="games.strategy.triplea.attachments.RulesAttachment" type="player">
+      <option name="rounds" value="5-+"/>
+    </attachment>
+    <attachment name="raiseMobileRedeployment" attachTo="Americans" javaClass="games.strategy.triplea.attachments.TriggerAttachment" type="player">
+      <option name="conditions" value="smallFrontRoundFivePlus"/>
+      <option name="when" value="before:germanReinforcement"/>
+      <option name="unitType" value="armour:mechanized:selfPropelledArtillery"/>
+      <option name="unitAttachmentName" value="unitAttachment:UnitAttachment"/>
+      <option name="unitProperty" value="3:redeploymentMovement"/>
+      <option name="uses" value="1"/>
+    </attachment>
+    <attachment name="raiseInfantryRedeployment" attachTo="Americans" javaClass="games.strategy.triplea.attachments.TriggerAttachment" type="player">
+      <option name="conditions" value="smallFrontRoundFivePlus"/>
+      <option name="when" value="before:germanReinforcement"/>
+      <option name="unitType" value="americanInfantry"/>
+      <option name="unitAttachmentName" value="unitAttachment:UnitAttachment"/>
+      <option name="unitProperty" value="2:redeploymentMovement"/>
+      <option name="uses" value="1"/>
+    </attachment>
   </attachmentList>
 
   <initialize>
@@ -747,6 +767,7 @@
     <property name="Can Scramble Into Air Battles" value="true" editable="false"/>
     <property name="Fog Of War Enabled" value="true" editable="false"/>
     <property name="Fog Of War Vision Radius" value="1" editable="false"/>
+    <property name="Use Triggers" value="true" editable="false"/>
     <property name="Auto Termination" value="true" editable="true"/>
     <property name="Scoring Round" value="8" editable="false"/>
     <property name="Land Battle Rounds" value="3" editable="false"/>
