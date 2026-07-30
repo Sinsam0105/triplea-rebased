@@ -62,23 +62,16 @@ public final class SupplyNetworkResolver {
     return Matches.unitIsLand().test(unit);
   }
 
-  public static boolean canMove(
-      final Unit unit, final Territory start, final GamePlayer player, final GameState data) {
-    return canMove(unit, start, player, data, getTracker(data).orElse(null));
-  }
-
-  static boolean canMove(
-      final Unit unit,
-      final Territory start,
-      final GamePlayer player,
-      final GameState data,
-      final @Nullable SupplyTracker tracker) {
-    if (!isEnabled(data) || start.isWater() || !requiresSupply(unit)) {
-      return true;
-    }
-    return tracker == null
-        ? isSupplied(start, player, data)
-        : tracker.getOutOfSupplyTurns(unit) == 0;
+  /**
+   * Whether a land unit is currently isolated. Out-of-supply units are no longer frozen in place:
+   * their movement is capped and their support is suppressed elsewhere, so callers only need to
+   * know the isolation state, not a movement veto.
+   */
+  public static boolean isOutOfSupply(final Unit unit, final @Nullable GameState data) {
+    return data != null
+        && isEnabled(data)
+        && requiresSupply(unit)
+        && getOutOfSupplyTurns(unit, data) > 0;
   }
 
   public static boolean isSupplied(
@@ -168,19 +161,6 @@ public final class SupplyNetworkResolver {
       }
     }
     return List.copyOf(neighbors);
-  }
-
-  public static List<Unit> getOutOfSupplyUnits(
-      final Collection<Unit> units,
-      final Territory territory,
-      final GamePlayer player,
-      final GameState data) {
-    return units.stream()
-        .filter(unit -> unit.isOwnedBy(player))
-        .filter(SupplyNetworkResolver::requiresSupply)
-        .filter(unit -> !canMove(unit, territory, player, data))
-        .sorted(Comparator.comparing(unit -> unit.getId().toString()))
-        .toList();
   }
 
   private static boolean isFriendlyLand(

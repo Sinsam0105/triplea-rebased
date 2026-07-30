@@ -17,6 +17,7 @@ import games.strategy.engine.history.IDelegateHistoryWriter;
 import games.strategy.triplea.Constants;
 import games.strategy.triplea.attachments.SupplyTerritoryAttachment;
 import games.strategy.triplea.attachments.UnitAttachment;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -69,6 +70,33 @@ class SupplyServiceTest {
     assertThat(front.getUnitCollection()).doesNotContain(unit);
     assertThat(tracker.getOutOfSupplyTurns(unit)).isZero();
     assertThat(tracker.getLastProcessedRound(player)).isEqualTo(2);
+  }
+
+  @Test
+  void isolationWearsDownOneUnitPerTerritoryEachTurn() {
+    // Three isolated units in one territory: one is lost per owner turn from the second turn on,
+    // and the survivors keep their accumulated turns (they are not cleared on a partial removal).
+    front.getUnitCollection().addAll(infantry.create(2, player));
+    assertThat(ownedLandUnits()).hasSize(3);
+
+    SupplyService.apply(bridge, player, tracker); // round 1: all reach one turn, nothing removed
+    assertThat(ownedLandUnits()).hasSize(3);
+
+    data.getSequence().setRoundOffset(1); // round 2
+    SupplyService.apply(bridge, player, tracker);
+    assertThat(ownedLandUnits()).hasSize(2);
+
+    data.getSequence().setRoundOffset(2); // round 3: survivors are still isolated, one more lost
+    SupplyService.apply(bridge, player, tracker);
+    assertThat(ownedLandUnits()).hasSize(1);
+
+    data.getSequence().setRoundOffset(3); // round 4: the last isolated unit is worn down
+    SupplyService.apply(bridge, player, tracker);
+    assertThat(ownedLandUnits()).isEmpty();
+  }
+
+  private List<Unit> ownedLandUnits() {
+    return front.getUnitCollection().getUnits().stream().filter(u -> u.isOwnedBy(player)).toList();
   }
 
   @Test

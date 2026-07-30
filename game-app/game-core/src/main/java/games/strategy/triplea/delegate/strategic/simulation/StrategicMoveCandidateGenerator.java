@@ -11,7 +11,6 @@ import games.strategy.triplea.delegate.StackCapacityResolver;
 import games.strategy.triplea.delegate.UndoableMove;
 import games.strategy.triplea.delegate.data.MoveValidationResult;
 import games.strategy.triplea.delegate.move.validation.MoveValidator;
-import games.strategy.triplea.delegate.supply.SupplyNetworkResolver;
 import games.strategy.triplea.delegate.visibility.VisibilityService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -104,7 +103,7 @@ public final class StrategicMoveCandidateGenerator {
     for (final Territory destination : destinations) {
       data.getMap()
           .getRouteForUnits(origin, destination, visible::contains, units, player)
-          .filter(route -> isLegal(data, player, phase, origin, units, route, undoableMoves))
+          .filter(route -> isLegal(data, player, phase, units, route, undoableMoves))
           .ifPresent(route -> actions.add(moveAction(phase, units, route, false)));
     }
   }
@@ -117,10 +116,6 @@ public final class StrategicMoveCandidateGenerator {
       final Territory origin,
       final List<Unit> units,
       final List<StrategicAction> actions) {
-    if (units.stream()
-        .anyMatch(unit -> !SupplyNetworkResolver.canMove(unit, origin, player, data))) {
-      return;
-    }
     for (final Territory destination :
         data.getMap().getNeighbors(origin).stream()
             .filter(neighbor -> !visible.contains(neighbor))
@@ -139,14 +134,9 @@ public final class StrategicMoveCandidateGenerator {
       final GameData data,
       final GamePlayer player,
       final StrategicPhase phase,
-      final Territory origin,
       final List<Unit> units,
       final Route route,
       final List<UndoableMove> undoableMoves) {
-    if (units.stream()
-        .anyMatch(unit -> !SupplyNetworkResolver.canMove(unit, origin, player, data))) {
-      return false;
-    }
     // Capacity represents where a force can stop, not the territories it passes through.
     if (!StackCapacityResolver.canFit(units, player, route.getEnd(), List.of())) {
       return false;

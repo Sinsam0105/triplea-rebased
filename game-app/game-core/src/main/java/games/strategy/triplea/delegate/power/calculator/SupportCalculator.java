@@ -5,6 +5,7 @@ import games.strategy.engine.data.UnitType;
 import games.strategy.triplea.attachments.UnitSupportAttachment;
 import games.strategy.triplea.delegate.Matches;
 import games.strategy.triplea.delegate.battle.BattleState;
+import games.strategy.triplea.delegate.supply.SupplyNetworkResolver;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -67,6 +68,12 @@ public class SupportCalculator {
       final IntegerMap<Unit> unitsForRule = new IntegerMap<>();
       for (Unit unit : unitsGivingTheSupport) {
         if (!canSupport.test(unit)) {
+          continue;
+        }
+        // An isolated supporter has no ammunition to spare: an out-of-supply unit provides no
+        // support bonus while cut off (the Air Control ground-attack bonus is a separate,
+        // property-driven mechanism and is unaffected).
+        if (SupplyNetworkResolver.isOutOfSupply(unit, unit.getData())) {
           continue;
         }
 

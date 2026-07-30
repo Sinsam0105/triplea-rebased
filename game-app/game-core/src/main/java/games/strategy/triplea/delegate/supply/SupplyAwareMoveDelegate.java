@@ -15,24 +15,16 @@ import java.util.Optional;
 
 /** Move delegate that enforces Small Front supply and terrain stack-capacity rules. */
 public final class SupplyAwareMoveDelegate extends MoveDelegate {
-  public static final String OUT_OF_SUPPLY_UNITS_CANNOT_MOVE =
-      "Out-of-supply land units cannot move";
   public static final String STACK_CAPACITY_EXCEEDED = "Terrain stack capacity exceeded";
 
   @Override
   public Optional<String> performMove(final MoveDescription move) {
     final GameData data = getData();
+    // Out-of-supply units are no longer blocked here; their reduced movement (a single step, no
+    // redeployment) is enforced by MovementAllowanceResolver, so ordinary movement validation
+    // already stops an over-reach. This delegate still guards terrain stack capacity.
     if (!EditDelegate.getEditMode(data.getProperties()) && !move.getRoute().hasNoSteps()) {
       final GamePlayer movingPlayer = getUnitsOwner(move.getUnits());
-      if (SupplyNetworkResolver.isEnabled(data)) {
-        final List<Unit> outOfSupply =
-            SupplyNetworkResolver.getOutOfSupplyUnits(
-                move.getUnits(), move.getRoute().getStart(), movingPlayer, data);
-        if (!outOfSupply.isEmpty()) {
-          return Optional.of(
-              OUT_OF_SUPPLY_UNITS_CANNOT_MOVE + ": " + MyFormatter.unitsToTextNoOwner(outOfSupply));
-        }
-      }
       final Optional<String> capacityError = validateStackCapacity(move, movingPlayer);
       if (capacityError.isPresent()) {
         return capacityError;

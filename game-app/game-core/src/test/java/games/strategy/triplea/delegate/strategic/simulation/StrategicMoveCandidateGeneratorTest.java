@@ -11,6 +11,7 @@ import games.strategy.engine.data.UnitType;
 import games.strategy.triplea.Constants;
 import games.strategy.triplea.attachments.TerritoryAttachment;
 import games.strategy.triplea.attachments.UnitAttachment;
+import games.strategy.triplea.delegate.supply.SupplyDelegate;
 import games.strategy.triplea.delegate.supply.SupplyNetworkResolver;
 import games.strategy.triplea.delegate.visibility.VisibilityService;
 import java.lang.reflect.Field;
@@ -39,17 +40,23 @@ class StrategicMoveCandidateGeneratorTest {
   }
 
   @Test
-  void removesOutOfSupplyLandMovesImmediately() throws Exception {
+  void outOfSupplyLandUnitsStillOfferACappedMove() throws Exception {
     final Fixture fixture = createFixture();
     fixture.data().getProperties().set(SupplyNetworkResolver.SUPPLY_NETWORK_ENABLED, true);
+    final SupplyDelegate supply = new SupplyDelegate();
+    supply.initialize("supply", "Supply");
+    fixture.data().addDelegate(supply);
+    // Mark the land unit isolated. It is no longer frozen; its movement is merely capped, so it
+    // still appears in the move space rather than being removed outright.
+    fixture.data().getMap().getTerritories().stream()
+        .flatMap(territory -> territory.getUnitCollection().getUnits().stream())
+        .forEach(supply.getTracker()::increment);
 
     final List<StrategicAction> actions =
         StrategicMoveCandidateGenerator.generate(
             fixture.data(), fixture.blue(), StrategicPhase.COMBAT_MOVE, 8);
 
-    assertThat(actions)
-        .containsExactly(
-            new StrategicAction("end_phase", java.util.Map.of("phase", "COMBAT_MOVE")));
+    assertThat(actions).anyMatch(action -> action.type().equals("move"));
   }
 
   @Test

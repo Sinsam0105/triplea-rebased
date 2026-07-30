@@ -10,6 +10,7 @@ import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.GameSequence;
 import games.strategy.engine.data.Unit;
 import games.strategy.engine.data.UnitType;
+import games.strategy.engine.data.properties.GameProperties;
 import games.strategy.triplea.Constants;
 import games.strategy.triplea.attachments.UnitAttachment;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,7 @@ class MovementAllowanceResolverTest {
     final UnitAttachment attachment = mock(UnitAttachment.class);
     final GamePlayer player = mock(GamePlayer.class);
     when(data.getSequence()).thenReturn(sequence);
+    when(data.getProperties()).thenReturn(mock(GameProperties.class));
     when(sequence.size()).thenReturn(0);
     when(unit.getData()).thenReturn(data);
     when(unit.getUnitAttachment()).thenReturn(attachment);

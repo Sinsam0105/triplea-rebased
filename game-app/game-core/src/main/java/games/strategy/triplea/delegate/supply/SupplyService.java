@@ -48,6 +48,11 @@ public final class SupplyService {
               .filter(SupplyNetworkResolver::requiresSupply)
               .sorted(Comparator.comparing(unit -> unit.getId().toString()))
               .toList();
+      // Isolation grinds a pocket down rather than wiping it out: at most one unit per territory
+      // is lost each owner turn, so a garrison bleeds one loss at a time and the besieger must keep
+      // the pocket cut to finish it. Survivors keep their accumulated turns (no clear), so every
+      // subsequent turn a unit stays isolated it is again eligible for the next loss.
+      boolean removedFromTerritory = false;
       for (final Unit unit : units) {
         final int previousTurns = tracker.getOutOfSupplyTurns(unit);
         if (supplied) {
@@ -61,15 +66,15 @@ public final class SupplyService {
         }
 
         final int turns = tracker.increment(unit);
-        if (turns >= removalTurns) {
+        if (!removedFromTerritory && turns >= removalTurns) {
+          removedFromTerritory = true;
           removals.computeIfAbsent(territory, ignored -> new ArrayList<>()).add(unit);
           tracker.clear(unit);
           history.addChildToEvent(
-              "Removed "
-                  + unit.getType().getName()
-                  + " from "
+              unit.getType().getName()
+                  + " in "
                   + territory.getName()
-                  + " after "
+                  + " is worn down by isolation after "
                   + turns
                   + " owner turns without supply",
               List.of(unit));
@@ -80,8 +85,6 @@ public final class SupplyService {
                   + territory.getName()
                   + " has been out of supply for "
                   + turns
-                  + " of "
-                  + removalTurns
                   + " owner turns",
               List.of(unit));
         }
