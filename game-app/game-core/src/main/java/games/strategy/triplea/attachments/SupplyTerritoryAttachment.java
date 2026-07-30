@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import games.strategy.engine.data.Attachable;
 import games.strategy.engine.data.DefaultAttachment;
 import games.strategy.engine.data.GameData;
+import games.strategy.engine.data.GamePlayer;
 import games.strategy.engine.data.GameState;
 import games.strategy.engine.data.MutableProperty;
 import games.strategy.engine.data.Territory;
@@ -21,6 +22,7 @@ public final class SupplyTerritoryAttachment extends DefaultAttachment {
 
   private boolean supplySource;
   private final List<Territory> roadConnections = new ArrayList<>();
+  private final List<GamePlayer> supplySourceOwners = new ArrayList<>();
 
   public SupplyTerritoryAttachment(
       final String name, final Attachable attachable, final GameData gameData) {
@@ -90,6 +92,48 @@ public final class SupplyTerritoryAttachment extends DefaultAttachment {
     roadConnections.clear();
   }
 
+  public List<GamePlayer> getSupplySourceOwners() {
+    return List.copyOf(supplySourceOwners);
+  }
+
+  /**
+   * Restricts which players a supply source belongs to. An empty list keeps the historical
+   * behaviour of a source that supplies whoever holds it.
+   */
+  @VisibleForTesting
+  public void setSupplySourceOwner(final String value) throws GameParseException {
+    if (value.isBlank()) {
+      return;
+    }
+    for (final String playerName : splitOnColon(value)) {
+      final GamePlayer player =
+          getPlayerByName(playerName.trim())
+              .orElseThrow(
+                  () ->
+                      new GameParseException(
+                          MessageFormat.format(
+                              "SupplyTerritoryAttachment: No player found for {0}; Setting supplySourceOwner not possible with value {1}",
+                              playerName, value)));
+      if (!supplySourceOwners.contains(player)) {
+        supplySourceOwners.add(player);
+      }
+    }
+  }
+
+  private void replaceSupplySourceOwners(final List<GamePlayer> values) {
+    supplySourceOwners.clear();
+    supplySourceOwners.addAll(values);
+  }
+
+  private void resetSupplySourceOwner() {
+    supplySourceOwners.clear();
+  }
+
+  /** Whether this territory is a supply source usable by {@code player}. */
+  public boolean isSupplySourceFor(final GamePlayer player) {
+    return supplySource && (supplySourceOwners.isEmpty() || supplySourceOwners.contains(player));
+  }
+
   @Override
   public void validate(final GameState data) throws GameParseException {
     if (!(getAttachedTo() instanceof Territory territory)) {
@@ -127,6 +171,13 @@ public final class SupplyTerritoryAttachment extends DefaultAttachment {
                   this::setRoadConnection,
                   this::getRoadConnections,
                   this::resetRoadConnection));
+      case "supplySourceOwner" ->
+          Optional.of(
+              MutableProperty.of(
+                  this::replaceSupplySourceOwners,
+                  this::setSupplySourceOwner,
+                  this::getSupplySourceOwners,
+                  this::resetSupplySourceOwner));
       default -> Optional.empty();
     };
   }

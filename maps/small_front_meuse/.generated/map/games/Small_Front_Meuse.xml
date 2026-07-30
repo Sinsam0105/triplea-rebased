@@ -310,6 +310,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Andenne" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Americans"/>
       <option name="roadConnection" value="Namur"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Bastogne" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
@@ -343,6 +344,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Bitburg" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Germans"/>
       <option name="roadConnection" value="Echternach"/>
       <option name="roadConnection" value="Vianden"/>
     </attachment>
@@ -353,6 +355,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Blankenheim" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Germans"/>
       <option name="roadConnection" value="Losheim Gap"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Ciney" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
@@ -379,6 +382,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Dinant" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Americans"/>
       <option name="roadConnection" value="Givet"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Durbuy" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
@@ -397,6 +401,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Echternach" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Germans"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Erezee" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
       <option name="production" value="0"/>
@@ -413,6 +418,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Givet" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Americans"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Havelange" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
       <option name="production" value="0"/>
@@ -446,6 +452,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Huy" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Americans"/>
       <option name="roadConnection" value="Andenne"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="La Roche" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
@@ -498,6 +505,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Namur" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Americans"/>
       <option name="roadConnection" value="Dinant"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Nassogne" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
@@ -525,6 +533,7 @@
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Prum" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
       <option name="supplySource" value="true"/>
+      <option name="supplySourceOwner" value="Germans"/>
       <option name="roadConnection" value="Blankenheim"/>
       <option name="roadConnection" value="Bitburg"/>
       <option name="roadConnection" value="Clervaux"/>

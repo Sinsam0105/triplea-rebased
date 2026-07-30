@@ -26,8 +26,13 @@ DROP = {
     ('Havelange', 'Huy'), ('Wellin', 'Namur'), ('Bertrix', 'Givet'),
 }
 
-SUPPLY_SOURCES = ['Blankenheim', 'Prum', 'Bitburg', 'Echternach',
-                  'Huy', 'Andenne', 'Namur', 'Dinant', 'Givet']
+# Each supply source belongs to a player: capturing an enemy source does not put the captor
+# in supply there. An empty owner would keep the engine's whoever-holds-it default.
+SUPPLY_SOURCES = {
+    'Blankenheim': 'Germans', 'Prum': 'Germans', 'Bitburg': 'Germans', 'Echternach': 'Germans',
+    'Huy': 'Americans', 'Andenne': 'Americans', 'Namur': 'Americans',
+    'Dinant': 'Americans', 'Givet': 'Americans',
+}
 
 # Main roads only. Two former cross-links are deliberately absent:
 # Vielsalm-Durbuy and Hotton-Marche. Movement remains possible across those borders.
@@ -138,6 +143,7 @@ def main():
             add(f'    <attachment name="supplyTerritoryAttachment" attachTo="{name}" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">')
             if source:
                 add('      <option name="supplySource" value="true"/>')
+                add(f'      <option name="supplySourceOwner" value="{SUPPLY_SOURCES[name]}"/>')
             for target in road_targets:
                 add(f'      <option name="roadConnection" value="{target}"/>')
             add('    </attachment>')

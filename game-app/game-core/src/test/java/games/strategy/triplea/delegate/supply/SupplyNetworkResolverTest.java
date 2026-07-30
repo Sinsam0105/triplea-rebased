@@ -91,6 +91,39 @@ class SupplyNetworkResolverTest {
     assertThat(SupplyNetworkResolver.wouldBeSupplied(front, blue, data)).isTrue();
   }
 
+  @Test
+  void unrestrictedSupplySourceSuppliesWhoeverHoldsIt() throws Exception {
+    // No supplySourceOwner declared, so the source supplies its current holder either way.
+    depot.setOwner(red);
+
+    assertThat(SupplyNetworkResolver.getSupplySources(red, data)).containsExactly(depot);
+    assertThat(SupplyNetworkResolver.isSupplied(depot, red, data)).isTrue();
+    assertThat(SupplyNetworkResolver.getSupplySources(blue, data)).isEmpty();
+  }
+
+  @Test
+  void capturingAnEnemyOwnedSupplySourceGrantsNoSupply() throws Exception {
+    SupplyTerritoryAttachment.get(depot).orElseThrow().setSupplySourceOwner("Blue");
+    depot.setOwner(red);
+
+    // The source belongs to Blue, so Red holding it does not make it a Red source.
+    assertThat(SupplyNetworkResolver.getSupplySources(red, data)).isEmpty();
+    assertThat(SupplyNetworkResolver.isSupplied(depot, red, data)).isFalse();
+    assertThat(SupplyNetworkResolver.wouldBeSupplied(depot, red, data)).isFalse();
+  }
+
+  @Test
+  void recapturingAnOwnedSupplySourceRestoresSupply() throws Exception {
+    SupplyTerritoryAttachment.get(depot).orElseThrow().setSupplySourceOwner("Blue");
+    depot.setOwner(red);
+    assertThat(SupplyNetworkResolver.isSupplied(depot, red, data)).isFalse();
+
+    depot.setOwner(blue);
+
+    assertThat(SupplyNetworkResolver.getSupplySources(blue, data)).containsExactly(depot);
+    assertThat(SupplyNetworkResolver.isSupplied(depot, blue, data)).isTrue();
+  }
+
   private SupplyTerritoryAttachment attach(final Territory territory) {
     final SupplyTerritoryAttachment attachment =
         new SupplyTerritoryAttachment("supplyAttachment", territory, data);

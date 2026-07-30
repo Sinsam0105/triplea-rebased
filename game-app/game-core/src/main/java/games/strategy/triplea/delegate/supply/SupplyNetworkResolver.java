@@ -103,9 +103,7 @@ public final class SupplyNetworkResolver {
     }
     final Set<Territory> supplied = getSuppliedTerritories(player, data);
     return supplied.contains(territory)
-        || SupplyTerritoryAttachment.get(territory)
-            .map(SupplyTerritoryAttachment::getSupplySource)
-            .orElse(false)
+        || isSupplySourceFor(territory, player)
         || getRoadNeighbors(territory, data).stream().anyMatch(supplied::contains);
   }
 
@@ -137,12 +135,19 @@ public final class SupplyNetworkResolver {
   public static List<Territory> getSupplySources(final GamePlayer player, final GameState data) {
     return sortedTerritories(data.getMap().getTerritories()).stream()
         .filter(territory -> isFriendlyLand(territory, player, data))
-        .filter(
-            territory ->
-                SupplyTerritoryAttachment.get(territory)
-                    .map(SupplyTerritoryAttachment::getSupplySource)
-                    .orElse(false))
+        .filter(territory -> isSupplySourceFor(territory, player))
         .toList();
+  }
+
+  /**
+   * Whether {@code territory} is a supply source that {@code player} may draw from. A source that
+   * declares {@code supplySourceOwner} only supplies the listed players; a source without that
+   * restriction supplies whoever holds it, preserving the historical behaviour.
+   */
+  private static boolean isSupplySourceFor(final Territory territory, final GamePlayer player) {
+    return SupplyTerritoryAttachment.get(territory)
+        .map(attachment -> attachment.isSupplySourceFor(player))
+        .orElse(false);
   }
 
   public static List<Territory> getRoadNeighbors(final Territory territory, final GameState data) {
