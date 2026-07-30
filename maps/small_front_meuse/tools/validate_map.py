@@ -51,13 +51,13 @@ for attachment in game_root.findall("./attachmentList/attachment"):
                 assert target in territories
                 roads.add(tuple(sorted((source, target))))
 
-assert len(roads) == 44, len(roads)
+assert len(roads) == 45, len(roads)
 assert roads <= movement_edges, roads - movement_edges
 assert tuple(sorted(("La Roche", "Marche"))) in roads
+assert tuple(sorted(("Libramont", "Neufchateau"))) in roads
 for removed in {
     tuple(sorted(("Vielsalm", "Durbuy"))),
     tuple(sorted(("Hotton", "Marche"))),
-    tuple(sorted(("Libramont", "Neufchateau"))),
 }:
     assert removed not in roads, removed
 
@@ -137,7 +137,7 @@ properties = {
     prop.attrib["name"]: prop.attrib["value"] for prop in game_root.findall("./propertyList/property")
 }
 for name, expected in {
-    "Air Control Persistent": "true",
+    "Air Control Persistent": "false",
     "Scramble Rules In Effect": "true",
     "Scrambled Units Return To Base": "true",
     "Scramble To Sea Only": "false",
@@ -160,5 +160,5 @@ for step in redeployment_steps:
 
 print(
     f"OK: {len(territories)} territories, {len(connections)} movement edges, "
-    f"{len(roads)} roads, native radius-2 scramble, persistent air control, armour 2x@2 TUV 7"
+    f"{len(roads)} roads, native radius-2 scramble, non-persistent air control, armour 2x@2 TUV 7"
 )

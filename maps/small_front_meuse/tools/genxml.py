@@ -29,9 +29,9 @@ DROP = {
 SUPPLY_SOURCES = ['Blankenheim', 'Prum', 'Bitburg', 'Echternach',
                   'Huy', 'Andenne', 'Namur', 'Dinant', 'Givet']
 
-# Main roads only. Three former cross-links are deliberately absent:
-# Vielsalm-Durbuy, Hotton-Marche and Libramont-Neufchateau. Movement remains possible across those
-# borders. La Roche-Marche preserves a second central supply axis without restoring a direct bypass.
+# Main roads only. Two former cross-links are deliberately absent:
+# Vielsalm-Durbuy and Hotton-Marche. Movement remains possible across those borders.
+# La Roche-Marche preserves a second central supply axis without restoring a direct bypass.
 ROADS = [
     ('Prum', 'Blankenheim'), ('Prum', 'Bitburg'), ('Bitburg', 'Echternach'),
     ('Blankenheim', 'Losheim Gap'), ('Prum', 'Clervaux'), ('Bitburg', 'Vianden'),
@@ -42,7 +42,7 @@ ROADS = [
     ('Bastogne', 'Saint-Hubert'), ('Martelange', 'Libramont'),
     ('Vielsalm', 'Erezee'), ('Erezee', 'La Roche'), ('La Roche', 'Hotton'),
     ('La Roche', 'Marche'), ('Hotton', 'Nassogne'), ('Nassogne', 'Neufchateau'),
-    ('Saint-Hubert', 'Libramont'),
+    ('Saint-Hubert', 'Libramont'), ('Libramont', 'Neufchateau'),
     ('Marche', 'Ciney'), ('Marche', 'Rochefort'),
     ('Neufchateau', 'Beauraing'), ('Neufchateau', 'Bertrix'),
     ('Durbuy', 'Havelange'), ('Ciney', 'Havelange'), ('Rochefort', 'Ciney'),
@@ -286,12 +286,22 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
       <option name="redeploymentMovement" value="3"/>
-      <option name="attack" value="2"/>
+      <option name="attack" value="1"/>
       <option name="defense" value="2"/>
       <option name="isInfantry" value="true"/>
       <option name="artillerySupportable" value="true"/>
       <option name="stackCost" value="1"/>
       <option name="tuv" value="4"/>
+    </attachment>
+    <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
+    <option name="unitType" value="armour"/>
+    <option name="faction" value="allied"/>
+    <option name="side" value="offence"/>
+    <option name="dice" value="strength"/>
+    <option name="bonus" value="1"/>
+    <option name="number" value="1"/>
+    <option name="bonusType" value="mechanizedArmour"/>
+    <option name="players" value="Germans"/>
     </attachment>
     <attachment name="unitAttachment" attachTo="fighter" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="4"/>

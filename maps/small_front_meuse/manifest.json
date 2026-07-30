@@ -5,7 +5,7 @@
   },
   {
     "path": "README.md",
-    "bytes": 5330
+    "bytes": 5340
   },
   {
     "path": "map.yml",
@@ -133,7 +133,7 @@
   },
   {
     "path": "map/games/Small_Front_Meuse.xml",
-    "bytes": 42328
+    "bytes": 43098
   },
   {
     "path": "map/games/game.dtd",
@@ -221,7 +221,7 @@
   },
   {
     "path": "map/reliefTiles/3_3.png",
-    "bytes": 10761
+    "bytes": 12005
   },
   {
     "path": "map/reliefTiles/4_0.png",
@@ -353,7 +353,7 @@
   },
   {
     "path": "tools/README.md",
-    "bytes": 3715
+    "bytes": 3690
   },
   {
     "path": "tools/UnitGen.java",
@@ -361,7 +361,7 @@
   },
   {
     "path": "tools/genxml.py",
-    "bytes": 21761
+    "bytes": 22299
   },
   {
     "path": "tools/manifest.py",
@@ -369,6 +369,6 @@
   },
   {
     "path": "tools/validate_map.py",
-    "bytes": 6060
+    "bytes": 6076
   }
 ]

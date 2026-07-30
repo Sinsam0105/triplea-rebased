@@ -51,8 +51,11 @@ The Voronoi adjacency is not used as-is. Five candidate edges are dropped:
 
 ### Supply road cuts
 
-Roads are a strict subset of movement edges: 44 of 67. The borders Vielsalm-Durbuy, Hotton-Marche
-and Libramont-Neufchateau remain legal movement edges, but no longer carry supply. La Roche-Marche
+Roads are a strict subset of movement edges: 45 of 67, leaving 22 borders that units may cross but
+that carry no supply. Most of those 22 are the natural consequence of the road network being a
+curated spine rather than every adjacency; two of them are deliberate supply-only cuts:
+Vielsalm-Durbuy and Hotton-Marche remain legal movement edges but do not carry supply, so a pocket
+can be isolated across those borders even while the front can still be crossed. La Roche-Marche
 provides an indirect second route across the central plateau, so losing Hotton, Nassogne or
 Neufchateau alone cannot divide the entire road network. A spearhead can still manoeuvre off-road,
 and coordinated control of several road hubs can isolate a meaningful pocket without making one
@@ -63,9 +66,9 @@ central territory an automatic half-map cutoff.
 Fighters use TripleA's native airbase and scramble system rather than a scenario-specific interceptor
 search. Prum, Bitburg, Ciney and Namur each contain a two-aircraft airfield; fighters may scramble up
 to two movement edges into a pending battle and return to their originating base after combat. This
-lets aircraft remain behind the front while still contesting nearby battles. Air control persists
-until a later battle changes it, and surviving numerical superiority establishes control while equal
-survivors leave it contested.
+lets aircraft remain behind the front while still contesting nearby battles. Air control is not
+persistent: it is contested afresh in each battle rather than carrying over, so surviving numerical
+superiority establishes control for that battle while equal survivors leave it contested.
 
 Armour rolls two attack dice at attack 2, retains one defense die at defense 3, costs two stack
 capacity, and has TUV 7. The change concentrates its value in offensive shock without increasing its
@@ -90,10 +93,7 @@ Set `Auto Termination` to false to play past round 8 with the rubric still talli
 ## Balance is unvalidated
 
 The reinforcement schedule and the starting order of battle are first guesses. They have not been
-played. The Pro AI cannot test them: this map, like its predecessor, has no economy, so
-`TuvCostsCalculator` returns an empty cost map, every unit is worth 0 to the AI, no attack ever
-scores as profitable, and the AI stands still for eight rounds. An all-AI game therefore always
-reports Americans 8, Germans 0 and proves only that the map runs.
+validated by play.
 
 ## Installation
 

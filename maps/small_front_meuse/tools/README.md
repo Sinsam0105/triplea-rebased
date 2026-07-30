@@ -22,10 +22,10 @@ renderer and the game rules: a road only appears on the map if the XML declares 
 
 `genxml.py` drops the edges in its `DROP` set to create the forest wall and the river crossings, and
 asserts every declared road is a real movement edge, so a typo in `ROADS` fails the build rather than
-silently orphaning supply. The three supply-only cuts are declared by omitting Vielsalm-Durbuy,
-Hotton-Marche and Libramont-Neufchateau from `ROADS`; those borders remain movement edges.
-La Roche-Marche remains a supply road, giving the central plateau an indirect second axis without
-restoring the removed Hotton-Marche shortcut.
+silently orphaning supply. The two supply-only cuts are declared by omitting Vielsalm-Durbuy and
+Hotton-Marche from `ROADS`; those borders remain movement edges. La Roche-Marche remains a supply
+road, giving the central plateau an indirect second axis without restoring the removed Hotton-Marche
+shortcut.
 
 `UnitGen` writes 48x48 transparent PNG counters for both players. Every counter uses a rectangular
 unit frame and a battalion `II` echelon marker. Armour uses a horizontal oval, mechanized infantry

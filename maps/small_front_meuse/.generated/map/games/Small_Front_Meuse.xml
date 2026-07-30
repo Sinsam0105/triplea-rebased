@@ -259,12 +259,22 @@
       <option name="movement" value="2"/>
       <option name="combatMovement" value="2"/>
       <option name="redeploymentMovement" value="3"/>
-      <option name="attack" value="2"/>
+      <option name="attack" value="1"/>
       <option name="defense" value="2"/>
       <option name="isInfantry" value="true"/>
       <option name="artillerySupportable" value="true"/>
       <option name="stackCost" value="1"/>
       <option name="tuv" value="4"/>
+    </attachment>
+    <attachment name="supportAttachmentMechanizedArmour" attachTo="mechanized" javaClass="games.strategy.triplea.attachments.UnitSupportAttachment" type="unitType">
+    <option name="unitType" value="armour"/>
+    <option name="faction" value="allied"/>
+    <option name="side" value="offence"/>
+    <option name="dice" value="strength"/>
+    <option name="bonus" value="1"/>
+    <option name="number" value="1"/>
+    <option name="bonusType" value="mechanizedArmour"/>
+    <option name="players" value="Germans"/>
     </attachment>
     <attachment name="unitAttachment" attachTo="fighter" javaClass="games.strategy.triplea.attachments.UnitAttachment" type="unitType">
       <option name="movement" value="4"/>
@@ -451,6 +461,9 @@
       <option name="production" value="0"/>
       <option name="victoryCity" value="0"/>
       <option name="territoryEffect" value="Open"/>
+    </attachment>
+    <attachment name="supplyTerritoryAttachment" attachTo="Libramont" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Neufchateau"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Losheim Gap" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
       <option name="production" value="0"/>
@@ -700,7 +713,7 @@
     <property name="Out Of Supply Removal Turns" value="2" editable="false"/>
     <property name="Separate Air And Ground Combat" value="true" editable="false"/>
     <property name="Air Control Enabled" value="true" editable="false"/>
-    <property name="Air Control Persistent" value="true" editable="false"/>
+    <property name="Air Control Persistent" value="false" editable="false"/>
     <property name="Air Control Ground Attack Bonus" value="1" editable="false"/>
     <property name="Scramble Rules In Effect" value="true" editable="false"/>
     <property name="Scrambled Units Return To Base" value="true" editable="false"/>
