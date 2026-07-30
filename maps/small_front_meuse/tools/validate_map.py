@@ -51,12 +51,12 @@ for attachment in game_root.findall("./attachmentList/attachment"):
                 assert target in territories
                 roads.add(tuple(sorted((source, target))))
 
-assert len(roads) == 45, len(roads)
+assert len(roads) == 46, len(roads)
 assert roads <= movement_edges, roads - movement_edges
 assert tuple(sorted(("La Roche", "Marche"))) in roads
 assert tuple(sorted(("Libramont", "Neufchateau"))) in roads
+assert tuple(sorted(("Vielsalm", "Durbuy"))) in roads
 for removed in {
-    tuple(sorted(("Vielsalm", "Durbuy"))),
     tuple(sorted(("Hotton", "Marche"))),
 }:
     assert removed not in roads, removed

@@ -51,15 +51,23 @@ The Voronoi adjacency is not used as-is. Five candidate edges are dropped:
 
 ### Supply road cuts
 
-Roads are a strict subset of movement edges: 45 of 67, leaving 22 borders that units may cross but
-that carry no supply. Most of those 22 are the natural consequence of the road network being a
-curated spine rather than every adjacency; two of them are deliberate supply-only cuts:
-Vielsalm-Durbuy and Hotton-Marche remain legal movement edges but do not carry supply, so a pocket
-can be isolated across those borders even while the front can still be crossed. La Roche-Marche
-provides an indirect second route across the central plateau, so losing Hotton, Nassogne or
-Neufchateau alone cannot divide the entire road network. A spearhead can still manoeuvre off-road,
-and coordinated control of several road hubs can isolate a meaningful pocket without making one
-central territory an automatic half-map cutoff.
+Roads are a strict subset of movement edges: 46 of 67, leaving 21 borders that units may cross but
+that carry no supply. Most of those 21 are the natural consequence of the road network being a
+curated spine rather than every adjacency; one of them is a deliberate supply-only cut:
+Hotton-Marche remains a legal movement edge but does not carry supply, so a pocket can be isolated
+across that border even while the front can still be crossed. La Roche-Marche provides an indirect
+second route across the central plateau, so losing Hotton, Nassogne or Neufchateau alone cannot
+divide the entire road network. A spearhead can still manoeuvre off-road, and coordinated control
+of several road hubs can isolate a meaningful pocket without making one central territory an
+automatic half-map cutoff.
+
+The Vielsalm-Durbuy road (the 7th Armored's St. Vith withdrawal route) ties the American northern
+shoulder to the western road net directly instead of routing it all through the Marche gate.
+Without it, one central capture strands almost half the American map at once — Beauraing+Marche cuts
+14 of 26 territories. With it, the worst any two German captures can sever is 4 territories, and
+that worst case is the Neufchateau+Wiltz Bastogne pocket; anything larger needs a three-territory
+combination. Isolation becomes a matter of building pockets one at a time rather than collapsing a
+whole flank in a single move.
 
 ## Air operations and armour
 

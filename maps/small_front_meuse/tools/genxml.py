@@ -34,9 +34,14 @@ SUPPLY_SOURCES = {
     'Dinant': 'Americans', 'Givet': 'Americans',
 }
 
-# Main roads only. Two former cross-links are deliberately absent:
-# Vielsalm-Durbuy and Hotton-Marche. Movement remains possible across those borders.
-# La Roche-Marche preserves a second central supply axis without restoring a direct bypass.
+# Main roads only. One former cross-link is deliberately absent: Hotton-Marche. Movement
+# remains possible across that border. La Roche-Marche preserves a second central supply axis
+# without restoring a direct bypass.
+# Vielsalm-Durbuy is a road (7th Armored's St. Vith withdrawal route): without it the American
+# northern shoulder draws supply through the single Marche gate, so one central capture
+# (Beauraing+Marche) strands 14 of 26 territories. The road caps the worst two-territory cut at
+# 4 (the Neufchateau+Wiltz Bastogne pocket) and forces a three-territory combination for anything
+# larger, turning "half the map at once" into taking pockets one at a time.
 ROADS = [
     ('Prum', 'Blankenheim'), ('Prum', 'Bitburg'), ('Bitburg', 'Echternach'),
     ('Blankenheim', 'Losheim Gap'), ('Prum', 'Clervaux'), ('Bitburg', 'Vianden'),
@@ -45,6 +50,7 @@ ROADS = [
     ('Bastogne', 'Martelange'),
     ('St. Vith', 'Vielsalm'), ('Houffalize', 'Erezee'), ('Wiltz', 'Hotton'),
     ('Bastogne', 'Saint-Hubert'), ('Martelange', 'Libramont'),
+    ('Vielsalm', 'Durbuy'),
     ('Vielsalm', 'Erezee'), ('Erezee', 'La Roche'), ('La Roche', 'Hotton'),
     ('La Roche', 'Marche'), ('Hotton', 'Nassogne'), ('Nassogne', 'Neufchateau'),
     ('Saint-Hubert', 'Libramont'), ('Libramont', 'Neufchateau'),

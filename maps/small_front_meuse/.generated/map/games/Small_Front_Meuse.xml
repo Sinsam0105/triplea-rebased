@@ -578,6 +578,7 @@
       <option name="territoryEffect" value="Open"/>
     </attachment>
     <attachment name="supplyTerritoryAttachment" attachTo="Vielsalm" javaClass="games.strategy.triplea.attachments.SupplyTerritoryAttachment" type="territory">
+      <option name="roadConnection" value="Durbuy"/>
       <option name="roadConnection" value="Erezee"/>
     </attachment>
     <attachment name="territoryAttachment" attachTo="Wellin" javaClass="games.strategy.triplea.attachments.TerritoryAttachment" type="territory">
