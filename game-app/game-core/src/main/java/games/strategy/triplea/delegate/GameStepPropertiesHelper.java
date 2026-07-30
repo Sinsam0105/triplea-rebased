@@ -135,6 +135,32 @@ public final class GameStepPropertiesHelper {
   }
 
   /**
+   * Exploitation move: the dedicated armour follow-up step that runs after the main battle. It is a
+   * combat-capable move (it may enter enemy territory) but is restricted to a single step and to
+   * armour that captured ground this turn, enforced in the Small Front move delegate.
+   */
+  public static boolean isExploitationMove(final GameData data) {
+    try (GameData.Unlocker ignored = data.acquireReadLock()) {
+      return Boolean.parseBoolean(
+          data.getSequence()
+              .getStep()
+              .getProperties()
+              .getProperty(GameStep.PropertyKeys.EXPLOITATION_MOVE));
+    }
+  }
+
+  /** Exploitation battle: resolves the follow-up combats with a shortened round limit. */
+  public static boolean isExploitationBattle(final GameData data) {
+    try (GameData.Unlocker ignored = data.acquireReadLock()) {
+      return Boolean.parseBoolean(
+          data.getSequence()
+              .getStep()
+              .getProperties()
+              .getProperty(GameStep.PropertyKeys.EXPLOITATION_BATTLE));
+    }
+  }
+
+  /**
    * Repairs damaged units. Normally would occur at either start of combat move or end of turn,
    * depending.
    */

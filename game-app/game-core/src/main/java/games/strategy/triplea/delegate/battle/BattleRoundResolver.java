@@ -38,6 +38,25 @@ public final class BattleRoundResolver {
         Properties.getLandBattleRounds(gameData.getProperties()));
   }
 
+  /** The exploitation follow-up is a probe, not a set-piece battle: at most this many rounds. */
+  public static final int EXPLOITATION_MAX_GROUND_ROUNDS = 2;
+
+  /**
+   * Resolves the round limit for an exploitation-phase land battle. It never exceeds {@link
+   * #EXPLOITATION_MAX_GROUND_ROUNDS}, capping the normal terrain limit so a follow-up cannot turn
+   * into a full engagement, without altering {@link #resolveGroundBattleRounds}.
+   */
+  public static int resolveExploitationGroundBattleRounds(
+      final Territory battleSite,
+      final Collection<TerritoryEffect> territoryEffects,
+      final GameData gameData) {
+    final int normal = resolveGroundBattleRounds(battleSite, territoryEffects, gameData);
+    if (normal < 0) {
+      return EXPLOITATION_MAX_GROUND_ROUNDS;
+    }
+    return Math.min(normal, EXPLOITATION_MAX_GROUND_ROUNDS);
+  }
+
   /** Resolves the round limit for an air battle at any territory. */
   public static int resolveAirBattleRounds(
       final Collection<TerritoryEffect> territoryEffects, final GameData gameData) {

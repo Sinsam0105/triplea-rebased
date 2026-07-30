@@ -17,6 +17,9 @@ public final class MovementAllowanceResolver {
    */
   private static final int OUT_OF_SUPPLY_MOVEMENT = 1;
 
+  /** Exploitation is a short follow-up bound: one step regardless of the unit's usual movement. */
+  private static final int EXPLOITATION_MOVEMENT = 1;
+
   public enum MovementPhase {
     COMBAT,
     REDEPLOYMENT,
@@ -24,7 +27,16 @@ public final class MovementAllowanceResolver {
   }
 
   public static int resolveMaximumMovement(final Unit unit) {
-    return resolveMaximumMovement(unit, resolveCurrentPhase(unit.getData()));
+    final GameData data = unit.getData();
+    final int movement = resolveMaximumMovement(unit, resolveCurrentPhase(data));
+    // Guard the empty-sequence case (pre-initialization) exactly as resolveCurrentPhase does, so
+    // there is no current step to read the exploitation property from.
+    if (data != null
+        && data.getSequence().size() > 0
+        && GameStepPropertiesHelper.isExploitationMove(data)) {
+      return Math.min(movement, EXPLOITATION_MOVEMENT);
+    }
+    return movement;
   }
 
   @VisibleForTesting

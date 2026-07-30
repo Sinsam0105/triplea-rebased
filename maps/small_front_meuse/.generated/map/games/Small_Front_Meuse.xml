@@ -158,6 +158,13 @@
       <step name="germanSupply" delegate="supply" player="Germans"/>
       <step name="germanCombatMove" delegate="move" player="Germans" display="Combat Move"/>
       <step name="germanBattle" delegate="battle" player="Germans"/>
+      <step name="germanExploitMove" delegate="move" player="Germans" display="Exploitation">
+        <stepProperty name="combatMove" value="true"/>
+        <stepProperty name="exploitationMove" value="true"/>
+      </step>
+      <step name="germanExploitBattle" delegate="battle" player="Germans" display="Exploitation">
+        <stepProperty name="exploitationBattle" value="true"/>
+      </step>
       <step name="germanNonCombatMove" delegate="move" player="Germans" display="Redeployment">
         <stepProperty name="nonCombatMove" value="true"/>
         <stepProperty name="removeAirThatCanNotLand" value="false"/>
@@ -168,6 +175,13 @@
       <step name="americanSupply" delegate="supply" player="Americans"/>
       <step name="americanCombatMove" delegate="move" player="Americans" display="Combat Move"/>
       <step name="americanBattle" delegate="battle" player="Americans"/>
+      <step name="americanExploitMove" delegate="move" player="Americans" display="Exploitation">
+        <stepProperty name="combatMove" value="true"/>
+        <stepProperty name="exploitationMove" value="true"/>
+      </step>
+      <step name="americanExploitBattle" delegate="battle" player="Americans" display="Exploitation">
+        <stepProperty name="exploitationBattle" value="true"/>
+      </step>
       <step name="americanNonCombatMove" delegate="move" player="Americans" display="Redeployment">
         <stepProperty name="nonCombatMove" value="true"/>
         <stepProperty name="removeAirThatCanNotLand" value="false"/>

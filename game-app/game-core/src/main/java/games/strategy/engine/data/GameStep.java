@@ -67,6 +67,8 @@ public class GameStep extends GameDataComponent {
     String COMBINED_TURNS = "combinedTurns";
     String REPAIR_PLAYERS = "repairPlayers";
     String ONLY_REPAIR_IF_DISABLED = "onlyRepairIfDisabled";
+    String EXPLOITATION_MOVE = "exploitationMove";
+    String EXPLOITATION_BATTLE = "exploitationBattle";
   }
 
   /**

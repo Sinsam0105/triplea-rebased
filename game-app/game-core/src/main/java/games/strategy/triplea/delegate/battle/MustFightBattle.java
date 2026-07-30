@@ -30,6 +30,7 @@ import games.strategy.engine.player.Player;
 import games.strategy.triplea.Properties;
 import games.strategy.triplea.UnitUtils;
 import games.strategy.triplea.delegate.ExecutionStack;
+import games.strategy.triplea.delegate.GameStepPropertiesHelper;
 import games.strategy.triplea.delegate.IExecutable;
 import games.strategy.triplea.delegate.Matches;
 import games.strategy.triplea.delegate.TransportTracker;
@@ -157,7 +158,17 @@ public class MustFightBattle extends DependentBattle
       final BattleTracker battleTracker) {
     super(battleSite, attacker, battleTracker, data);
     defendingUnits.addAll(this.battleSite.getMatches(Matches.enemyUnit(attacker)));
-    maxRounds = BattleRoundResolver.resolveGroundBattleRounds(battleSite, territoryEffects, data);
+    // The battle is created as units move in, so an exploitation move produces an exploitation
+    // battle: it inherits the shortened round cap from the step that spawned it (the battle-phase
+    // flag is also honoured for anything created during the exploitation battle itself).
+    final boolean exploitation =
+        GameStepPropertiesHelper.isExploitationMove(data)
+            || GameStepPropertiesHelper.isExploitationBattle(data);
+    maxRounds =
+        exploitation
+            ? BattleRoundResolver.resolveExploitationGroundBattleRounds(
+                battleSite, territoryEffects, data)
+            : BattleRoundResolver.resolveGroundBattleRounds(battleSite, territoryEffects, data);
   }
 
   void resetDefendingUnits(final GamePlayer attacker) {

@@ -133,7 +133,7 @@
   },
   {
     "path": "map/games/Small_Front_Meuse.xml",
-    "bytes": 43674
+    "bytes": 44480
   },
   {
     "path": "map/games/game.dtd",
@@ -361,7 +361,7 @@
   },
   {
     "path": "tools/genxml.py",
-    "bytes": 23134
+    "bytes": 23940
   },
   {
     "path": "tools/manifest.py",

@@ -178,6 +178,40 @@ class BattleRoundResolverTest {
     assertTrue(battle.shouldEndBattleDueToMaxRounds());
   }
 
+  @Test
+  void exploitationCapsALongerTerrainLimit() {
+    final GameData gameData = smallFrontGameData();
+    final TerritoryEffect open = effect(gameData, 4, null);
+
+    assertEquals(
+        BattleRoundResolver.EXPLOITATION_MAX_GROUND_ROUNDS,
+        BattleRoundResolver.resolveExploitationGroundBattleRounds(
+            new Territory("Open", gameData), List.of(open), gameData));
+  }
+
+  @Test
+  void exploitationKeepsAShorterTerrainLimit() {
+    final GameData gameData = smallFrontGameData();
+    final TerritoryEffect forest = effect(gameData, 1, null);
+
+    // A terrain limit already below the exploitation cap is not raised.
+    assertEquals(
+        1,
+        BattleRoundResolver.resolveExploitationGroundBattleRounds(
+            new Territory("Forest", gameData), List.of(forest), gameData));
+  }
+
+  @Test
+  void exploitationCapsAnUnlimitedBattle() {
+    final GameData gameData = smallFrontGameData();
+    final TerritoryEffect unlimited = effect(gameData, -1, null);
+
+    assertEquals(
+        BattleRoundResolver.EXPLOITATION_MAX_GROUND_ROUNDS,
+        BattleRoundResolver.resolveExploitationGroundBattleRounds(
+            new Territory("Open", gameData), List.of(unlimited), gameData));
+  }
+
   private static GameData smallFrontGameData() {
     final GameData gameData = new GameData();
     gameData.getProperties().set(SupplyNetworkResolver.SUPPLY_NETWORK_ENABLED, true);
