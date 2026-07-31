@@ -5,7 +5,7 @@
   },
   {
     "path": "README.md",
-    "bytes": 6038
+    "bytes": 6751
   },
   {
     "path": "map.yml",
@@ -133,7 +133,7 @@
   },
   {
     "path": "map/games/Small_Front_Meuse.xml",
-    "bytes": 45853
+    "bytes": 46417
   },
   {
     "path": "map/games/game.dtd",
@@ -361,7 +361,7 @@
   },
   {
     "path": "tools/genxml.py",
-    "bytes": 25979
+    "bytes": 26543
   },
   {
     "path": "tools/manifest.py",

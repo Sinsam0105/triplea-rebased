@@ -240,7 +240,7 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
     </attachment>
 
     <attachment name="territoryEffectAttachment" attachTo="Open" javaClass="games.strategy.triplea.attachments.TerritoryEffectAttachment" type="territoryEffect">
-      <option name="maxGroundBattleRounds" value="4"/>
+      <option name="maxGroundBattleRounds" value="3"/>
       <option name="maxAirBattleRounds" value="2"/>
       <option name="stackCapacity" value="7"/>
     </attachment>
@@ -250,7 +250,7 @@ STATIC_ATTACHMENTS = '''    <attachment name="relationshipTypeAttachment" attach
       <option name="stackCapacity" value="5"/>
     </attachment>
     <attachment name="territoryEffectAttachment" attachTo="Town" javaClass="games.strategy.triplea.attachments.TerritoryEffectAttachment" type="territoryEffect">
-      <option name="maxGroundBattleRounds" value="3"/>
+      <option name="maxGroundBattleRounds" value="2"/>
       <option name="maxAirBattleRounds" value="1"/>
       <option name="stackCapacity" value="6"/>
     </attachment>
@@ -370,6 +370,10 @@ REINFORCEMENTS_AND_SCORING = '''
       <option name="reinforcement" value="4:Echternach:infantry:2"/>
       <option name="reinforcement" value="4:Bitburg:fighter:1"/>
       <option name="reinforcement" value="5:Prum:infantry:2"/>
+      <option name="reinforcement" value="6:Bitburg:infantry:2"/>
+      <option name="reinforcement" value="6:Prum:mechanized:1"/>
+      <option name="reinforcement" value="7:Prum:infantry:2"/>
+      <option name="reinforcement" value="7:Blankenheim:armour:1"/>
     </attachment>
     <attachment name="fixedReinforcementAttachment" attachTo="Americans" javaClass="games.strategy.triplea.attachments.FixedReinforcementAttachment" type="player">
       <option name="reinforcement" value="2:Marche:americanInfantry:2"/>
@@ -382,6 +386,10 @@ REINFORCEMENTS_AND_SCORING = '''
       <option name="reinforcement" value="6:Huy:americanInfantry:2"/>
       <option name="reinforcement" value="6:Givet:americanInfantry:2"/>
       <option name="reinforcement" value="7:Namur:armour:1"/>
+      <option name="reinforcement" value="8:Martelange:americanInfantry:2"/>
+      <option name="reinforcement" value="8:Neufchateau:armour:1"/>
+      <option name="reinforcement" value="9:Martelange:americanInfantry:2"/>
+      <option name="reinforcement" value="10:Neufchateau:americanInfantry:2"/>
     </attachment>
 
     <attachment name="scoringAttachment" attachTo="Germans" javaClass="games.strategy.triplea.attachments.SmallFrontScoringAttachment" type="player">
@@ -441,7 +449,7 @@ PROPERTIES = '''  <propertyList>
     <property name="Fog Of War Vision Radius" value="1" editable="false"/>
     <property name="Use Triggers" value="true" editable="false"/>
     <property name="Auto Termination" value="true" editable="true"/>
-    <property name="Scoring Round" value="8" editable="false"/>
+    <property name="Scoring Round" value="10" editable="false"/>
     <property name="Land Battle Rounds" value="3" editable="false"/>
     <property name="Air Battle Rounds" value="1" editable="false"/>
     <property name="Sea Battle Rounds" value="3" editable="false"/>

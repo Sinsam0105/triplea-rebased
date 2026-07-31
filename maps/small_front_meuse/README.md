@@ -11,11 +11,12 @@ built to make the choice of *where* the load-bearing decision.
 - 2 players: Germans and Americans
 - road-based supply and two-turn isolation attrition
 - terrain stack capacity and terrain-specific battle round limits
-- fixed reinforcements through round 7; no purchase or placement phase
+- fixed reinforcements through round 10 (German through round 7, an American southern relief force
+  through round 10); no purchase or placement phase
 - mobile ground redeployment held to combat-movement range until round 5 (a trigger restores it)
 - separate air and ground combat, independent air control
 - radius-1 fog of war
-- scored at the end of round 8
+- scored at the end of round 10
 
 This is an operational prototype, not a geographically exact simulation.
 
@@ -85,7 +86,7 @@ defensive output.
 
 ## Victory scoring
 
-Scored at the end of round 8, by `SmallFrontScoringAttachment` on each player.
+Scored at the end of round 10, by `SmallFrontScoringAttachment` on each player.
 
 - 1 point per objective held: St. Vith, Bastogne, Marche, Neufchateau, Namur, Dinant
 - 2 additional German points for a supplied German land unit on any Meuse crossing
@@ -93,16 +94,22 @@ Scored at the end of round 8, by `SmallFrontScoringAttachment` on each player.
 - 2 additional American points if no supplied German land unit holds any Meuse crossing
 - ties favour the Americans
 
-The opening position scores Americans 8, Germans 0. Reaching the river is therefore decisive rather
-than incremental: taking objectives alone does not get the Germans there, because every objective
-taken is worth 2 of swing while the Meuse bonus pair is worth 4.
+The opening position scores Americans 8, Germans 0 (six objectives all American-held, plus the
+two-point bonus for no German on the Meuse). Reaching the river is therefore decisive rather than
+incremental: taking objectives alone does not get the Germans there, because every objective taken
+is worth 2 of swing while the Meuse bonus pair is worth 4. Extending scoring to round 10 gives the
+German offensive two more turns to reach the river before the count is taken.
 
-Set `Auto Termination` to false to play past round 8 with the rubric still tallied.
+Set `Auto Termination` to false to play past round 10 with the rubric still tallied.
 
 ## Balance is unvalidated
 
-The reinforcement schedule and the starting order of battle are first guesses. They have not been
-validated by play.
+The reinforcement schedule and the starting order of battle are first guesses. The round-10 schedule
+extends German reserves through round 7 and adds a southern American relief force (Patton's III Corps
+axis at Martelange/Neufchateau) through round 10; by round 10 the cumulative reinforcement TUV is
+roughly 85 German to 101 American. These numbers are structurally consistent (final reinforcement
+rounds line up with the round-10 scoring) but have not been tuned by play, and the balance still
+needs headless AI and human games to settle.
 
 ## Installation
 
